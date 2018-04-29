@@ -1,0 +1,37 @@
+@media screen and (min-width: 680px) {
+    .WrapLogin{
+        border: 1px solid #80CBC4;
+        border-radius: 5px;
+        text-align: center;
+        padding-bottom: 1%;
+        background-color: #E0F7FA;
+        margin-left: 30%;
+        margin-right: 30%;
+        margin-top: 10%;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .WrapLogin {
+        border-radius: 5px;
+        text-align: center;
+        padding-bottom: 1%;
+        margin-left: 30%;
+        margin-right: 30%;
+        margin-top: 10%;
+    }
+}
+
+.button{
+    margin-top: 20px;
+}
+
+.title{
+    margin-top: 20px;
+    color: #E0E0E0;
+    font-size: 1.5em;
+}
+
+.login{
+    margin: 0 auto;
+}
