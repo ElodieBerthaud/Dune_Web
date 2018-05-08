@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../css/Login.css";
 
-class Home extends Component{
+class Students extends Component{
 
     constructor(props) {
         super(props);
@@ -9,10 +9,10 @@ class Home extends Component{
 
     render(){
         return(
-            'Home'
+            'Students'
         );
     }
 
 }
 
-export default Home;
+export default Students;

@@ -1,23 +1,25 @@
-@media screen and (min-width: 680px) {
+@media screen and (min-width: 800px) {
     .WrapLogin{
         border: 1px solid #80CBC4;
         border-radius: 5px;
         text-align: center;
         padding-bottom: 1%;
         background-color: #E0F7FA;
-        margin-left: 30%;
-        margin-right: 30%;
+        margin-left: 35%;
+        margin-right: 35%;
         margin-top: 10%;
     }
 }
 
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 800px) {
     .WrapLogin {
+        order: 1px solid #80CBC4;
         border-radius: 5px;
         text-align: center;
         padding-bottom: 1%;
-        margin-left: 30%;
-        margin-right: 30%;
+        background-color: #E0F7FA;
+        margin-left: 15%;
+        margin-right: 15%;
         margin-top: 10%;
     }
 }
@@ -28,7 +30,7 @@
 
 .title{
     margin-top: 20px;
-    color: #E0E0E0;
+    color: #757575;
     font-size: 1.5em;
 }
 

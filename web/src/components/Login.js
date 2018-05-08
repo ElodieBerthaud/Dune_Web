@@ -14,10 +14,12 @@ class Login extends Component{
             <div className="WrapLogin">
                 <div className="text-center title">Connexion</div>
                 <TextField
+                    style={{width:'90%'}}
                     hintText="Votre identifiant"
                     floatingLabelText="Identifiant"
                 /><br />
                 <TextField
+                    style={{width:'90%'}}
                     hintText="Votre mot de passe"
                     floatingLabelText="Mot de passe"
                 /><br />
