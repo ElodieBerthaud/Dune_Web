@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import 'typeface-roboto';
 
 const styles = theme => ({
     root: {
@@ -61,22 +60,16 @@ class GuttersGrid extends React.Component {
         console.log(this.state.ishover2);
         return (
             <div className={classes.root}>
-                <h2 className="text-center"> Se connecter en tant que : </h2>
-                <Grid container spacing={24} style={{ margin: "0, auto"}}>
+                <h2 className="text-center"> Je veux me connecter en tant que : </h2>
+                <Grid container spacing={24}>
                     <Grid item xs={6} >
                         <div  onMouseEnter={ this.handleHover1 } onMouseLeave={ this.handleHover1 }>
-                            <Paper onClick={this.handleLogin} className={classes.paper} style={this.state.ishover1 ? {backgroundColor:"#fee599", cursor: "pointer"} : {backgroundColor: ""}}>
-                                Directeur<br/>
-                                <span style={{fontSize:'0.8em'}}>Vous aurez accès à la gestion de vos professeurs, de vos classes et de vos élèves</span>
-                            </Paper>
+                            <Paper onClick={this.handleLogin} className={classes.paper} style={this.state.ishover1 ? {backgroundColor:"#fee599", cursor: "pointer"} : {backgroundColor: ""}}>Directeur</Paper>
                         </div>
                     </Grid>
                     <Grid item xs={6}>
                         <div onMouseEnter={ this.handleHover2 } onMouseLeave={ this.handleHover2 }>
-                            <Paper onClick={this.handleLogin}  className={classes.paper} style={this.state.ishover2 ? {backgroundColor:"#E0F7FA", cursor: "pointer"} : {backgroundColor: ""}}>
-                                Professeur <br/>
-                                <span style={{fontSize:'0.8em'}}>Vous aurez accès à la gestion de vos élèves, leurs suivi pédagogiques et aux activités</span>
-                            </Paper>
+                            <Paper className={classes.paper} style={this.state.ishover2 ? {backgroundColor:"#E0F7FA", cursor: "pointer"} : {backgroundColor: ""}}>Professeur</Paper>
                         </div>
                     </Grid>
                 </Grid>

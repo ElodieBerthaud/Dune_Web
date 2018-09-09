@@ -21,3 +21,11 @@ footer{
     height: 15%;
     background-color: #E0F7FA;
 }
+
+main{
+    margin: 5%;
+}
+
+h2{
+    color: grey;
+}

@@ -36,6 +36,10 @@ class Header extends Component {
         window.location = '/students';
     }
 
+    handleTest(){
+        window.location = '/test';
+    }
+
     render() {
         return (
             <div className="text-center">
@@ -61,6 +65,7 @@ class Header extends Component {
                     <MenuItem onClick={this.handleProfessor}>Mon espace professeur</MenuItem>
                     <MenuItem onClick={this.handleFollow}>Suivi</MenuItem>
                     <MenuItem onClick={this.handleStudents}>Trombinoscope</MenuItem>
+                    <MenuItem onClick={this.handleTest}>Test</MenuItem>
                 </Drawer>
             </div>
         );

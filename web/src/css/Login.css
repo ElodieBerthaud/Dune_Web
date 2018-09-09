@@ -13,7 +13,7 @@
 
 @media screen and (max-width: 800px) {
     .WrapLogin {
-        order: 1px solid #80CBC4;
+        border: 1px solid #80CBC4;
         border-radius: 5px;
         text-align: center;
         padding-bottom: 1%;
@@ -22,6 +22,17 @@
         margin-right: 15%;
         margin-top: 10%;
     }
+}
+
+.WrapUser{
+    border: 1px solid #80CBC4;
+    border-radius: 5px;
+    text-align: center;
+    padding-bottom: 1%;
+    background-color: #fee599;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 10%;
 }
 
 .button{
@@ -36,4 +47,8 @@
 
 .login{
     margin: 0 auto;
+}
+
+.salut:hover{
+    background-color: red;
 }

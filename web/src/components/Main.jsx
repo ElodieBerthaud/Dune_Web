@@ -6,6 +6,7 @@ import { Switch, Route } from 'react-router-dom';
 import Professor from "./Professor";
 import Follow from "./Follow";
 import Students from "./Students";
+import UserT from "./User_type";
 
 
 class Main extends Component{
@@ -23,7 +24,7 @@ class Main extends Component{
                     <Route path='/professor' component={Professor}/>
                     <Route path='/follow' component={Follow}/>
                     <Route path='/students' component={Students}/>
-                    <Route path='/test' component={Test}/>
+                    <Route path='/test' component={UserT}/>
                 </Switch>
             </main>
         );
