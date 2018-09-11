@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from './Header';
 import "../css/Login.css";
 import Footer from './Footer';
-import Main from './Main';
+import Main from '../Main';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 

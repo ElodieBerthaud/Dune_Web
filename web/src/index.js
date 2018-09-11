@@ -3,13 +3,16 @@ import ReactDOM from 'react-dom';
 import './css/index.css';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
-import { Switch, Route } from 'react-router-dom';
 import { BrowserRouter } from 'react-router-dom'
+import store from './store.js';
+import {Provider} from 'react-redux'
 
 ReactDOM.render((
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </Provider>
 ), document.getElementById('root'));
 
 registerServiceWorker();

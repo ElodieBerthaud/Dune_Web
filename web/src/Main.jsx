@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import Home from "./Home";
-import Test from "./test";
-import Login from './Login';
+import Home from "./components/Home";
+import Test from "./components/test";
+import Login from './containers/LoginContainer';
 import { Switch, Route } from 'react-router-dom';
-import Professor from "./Professor";
-import Follow from "./Follow";
-import Students from "./Students";
-import UserT from "./User_type";
+import Professor from "./components/Professor";
+import Follow from "./components/Follow";
+import Students from "./components/Students";
+import UserT from "./components/User_type";
 
 
 class Main extends Component{

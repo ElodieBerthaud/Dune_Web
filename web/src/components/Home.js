@@ -39,7 +39,6 @@ class GuttersGrid extends React.Component {
     };
 
     handleHover1(){
-        console.log('1 ===== ' + this.state.ishover1);
         this.setState({
             ishover1: !this.state.ishover1
         });
@@ -73,7 +72,7 @@ class GuttersGrid extends React.Component {
                     </Grid>
                     <Grid item xs={6}>
                         <div onMouseEnter={ this.handleHover2 } onMouseLeave={ this.handleHover2 }>
-                            <Paper onClick={this.handleLogin}  className={classes.paper} style={this.state.ishover2 ? {backgroundColor:"#E0F7FA", cursor: "pointer"} : {backgroundColor: ""}}>
+                            <Paper onClick={this.handleLogin}  className={classes.paper} style={this.state.ishover2 ? {backgroundColor:"#00BCD4", cursor: "pointer"} : {backgroundColor: ""}}>
                                 Professeur <br/>
                                 <span style={{fontSize:'0.8em'}}>Vous aurez accès à la gestion de vos élèves, leurs suivi pédagogiques et aux activités</span>
                             </Paper>
