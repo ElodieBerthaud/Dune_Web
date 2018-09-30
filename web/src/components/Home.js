@@ -31,13 +31,6 @@ class GuttersGrid extends React.Component {
         this.handleHover2 = this.handleHover2.bind(this);
     }
 
-
-    handleChange = key => (event, value) => {
-        this.setState({
-            [key]: value,
-        });
-    };
-
     handleHover1(){
         this.setState({
             ishover1: !this.state.ishover1
@@ -60,7 +53,7 @@ class GuttersGrid extends React.Component {
         console.log(this.state.ishover2);
         return (
             <div className={classes.root}>
-                <h2 className="text-center"> Se connecter en tant que : </h2>
+                <h2 className="text-center"> Bonjour, sur quel type de compte voulez-vous vous connecter ? </h2>
                 <Grid container spacing={24} style={{ margin: "0, auto"}}>
                     <Grid item xs={6} >
                         <div  onMouseEnter={ this.handleHover1 } onMouseLeave={ this.handleHover1 }>

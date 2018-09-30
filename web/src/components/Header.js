@@ -36,8 +36,8 @@ class Header extends Component {
         window.location = '/students';
     }
 
-    handleTest(){
-        window.location = '/test';
+    handleAddProfessor(){
+        window.location = '/add-professor';
     }
 
     render() {
@@ -59,13 +59,13 @@ class Header extends Component {
                     containerStyle={{backgroundColor: '#fee599'}}
                 >
                     <header style={{height: '20%'}}>
-                        <img style={{width: '100%', height: '100%'}} src={require('../images/dune.png')}/>
+                        <a href='/'> <img style={{width: '100%', height: '100%'}} src={require('../images/dune.png')}/></a>
                     </header>
                     <MenuItem onClick={this.handleLogin}>Se connecter</MenuItem>
                     <MenuItem onClick={this.handleProfessor}>Mon espace professeur</MenuItem>
                     <MenuItem onClick={this.handleFollow}>Suivi</MenuItem>
                     <MenuItem onClick={this.handleStudents}>Trombinoscope</MenuItem>
-                    <MenuItem onClick={this.handleTest}>Test</MenuItem>
+                    <MenuItem onClick={this.handleAddProfessor}>Gérer les professeurs</MenuItem>
                 </Drawer>
             </div>
         );

@@ -60,7 +60,7 @@ class GuttersGrid extends React.Component {
         console.log(this.state.ishover2);
         return (
             <div className={classes.root}>
-                <h2 className="text-center"> Je veux me connecter en tant que : </h2>
+                <h2 className="text-center"> Je veux me connecter en tant VVVVque : </h2>
                 <Grid container spacing={24}>
                     <Grid item xs={6} >
                         <div  onMouseEnter={ this.handleHover1 } onMouseLeave={ this.handleHover1 }>

@@ -29,3 +29,8 @@ main{
 h2{
     color: grey;
 }
+
+p{
+    color: #9E9E9E;
+    margin:0;
+}
