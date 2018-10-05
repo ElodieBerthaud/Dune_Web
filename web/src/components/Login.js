@@ -27,11 +27,11 @@ class Login extends Component{
             requiredText3: ''
         };
 
-        this.handleCheckForm = this.handleCheckForm.bind(this);
+        this.handleCheckFormForgot = this.handleCheckFormForgot.bind(this);
         this.handleClickOpen = this.handleClickOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleChange = this.handleChange.bind(this);
-
+        this.handleCheckFormConnect = this.handleCheckFormConnect.bind(this);
 
     }
 
@@ -44,12 +44,19 @@ class Login extends Component{
         this.setState({loader: false});
     };
 
-    handleCheckForm(){
+    handleCheckFormForgot(){
         if (!emailRegex({exact: true}).test(this.state.emailforgot)){
             this.setState({ requiredText3: 'L\'adresse Email n\'est pas valide.'});
         }
         else{
             this.setState({ loader: true });
+        }
+    }
+
+    handleCheckFormConnect(){
+        if (this.state.email === '' || this.state.password === '') {
+            this.state.email === '' ? this.setState({requiredText1 : 'Champs Obligatoire.'}) : false;
+            this.state.password === '' ? this.setState({requiredText2 : 'Champs Obligatoire.'}) : false;
         }
     }
 
@@ -86,7 +93,7 @@ class Login extends Component{
                         value={this.state.password}
                         onChange={this.handleChange}
                     /><br/>
-                    <div className="button"><RaisedButton label="Se connecter" primary={true}/></div>
+                    <div className="button"><RaisedButton onClick={this.handleCheckFormConnect} label="Se connecter" primary={true}/></div>
                     <a onClick={this.handleClickOpen} style={{cursor:'pointer'}}>
                         <div style={{float: 'right', fontSize: '0.8' + 'em', margin: '2%'}}> Mot de passe oublié ?</div>
                     </a>
