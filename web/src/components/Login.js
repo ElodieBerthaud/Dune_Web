@@ -1,13 +1,12 @@
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 import React, { Component } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
 import "../css/Login.css";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
 import loader from '../images/loaders/bars-loader.gif';
 const emailRegex = require('email-regex');
 
@@ -22,16 +21,19 @@ class Login extends Component{
             email: '',
             password: '',
             emailforgot: '',
-            requiredText1: '',
-            requiredText2: '',
-            requiredText3: ''
+            emptyemail: false,
+            emptypassword: false,
+            emptyforgotemail: true,
+            mandatory: 'Ce champs est obligatoire.'
         };
 
         this.handleCheckFormForgot = this.handleCheckFormForgot.bind(this);
         this.handleClickOpen = this.handleClickOpen.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeLogin = this.handleChangeLogin.bind(this);
+        this.handleChangeForgot = this.handleChangeForgot.bind(this);
         this.handleCheckFormConnect = this.handleCheckFormConnect.bind(this);
+        this.checkEmailForgot = this.checkEmailForgot.bind(this);
 
     }
 
@@ -46,7 +48,7 @@ class Login extends Component{
 
     handleCheckFormForgot(){
         if (!emailRegex({exact: true}).test(this.state.emailforgot)){
-            this.setState({ requiredText3: 'L\'adresse Email n\'est pas valide.'});
+            this.setState({emptyforgotemail : true});
         }
         else{
             this.setState({ loader: true });
@@ -55,17 +57,27 @@ class Login extends Component{
 
     handleCheckFormConnect(){
         if (this.state.email === '' || this.state.password === '') {
-            this.state.email === '' ? this.setState({requiredText1 : 'Champs Obligatoire.'}) : false;
-            this.state.password === '' ? this.setState({requiredText2 : 'Champs Obligatoire.'}) : false;
+            this.state.email === '' ? this.setState({emptyemail : true}) : this.setState({emptyemail : false});
+            this.state.password === '' ? this.setState({emptypassword : true}) : this.setState({emptypassword : false});
         }
     }
 
-    handleChange(evt){
+    handleChangeLogin(evt){
         this.setState({[evt.target.name]: evt.target.value});
-        this.state.email !== '' ? this.setState({requiredText1 : ''}) : false;
-        this.state.password !== '' ? this.setState({requiredText2 : ''}) : false;
-        this.state.emailforgot !== '' ? this.setState({requiredText3 : ''}) : false;
+        this.state.email !== '' ? this.setState({emptyemail : false}) : this.setState({emptyemail : true});
+        this.state.password !== '' ? this.setState({emptypassword : false}) : this.setState({emptypassword : true});
         console.log(evt.target.name);
+    }
+
+    handleChangeForgot(evt){
+        this.setState({[evt.target.name]: evt.target.value});
+        !emailRegex({exact: true}).test(this.state.emailforgot) ? this.setState({emptyforgotemail : true}) : this.setState({emptyforgotemail : false});
+        console.log(this.state.emptyforgotemail);
+    }
+
+    checkEmailForgot(){
+        console.log("coiucoucocuc");
+        return (emailRegex({exact: true}).test(this.state.emailforgot));
     }
 
     render() {
@@ -76,24 +88,30 @@ class Login extends Component{
                 <form>
                     <TextField
                         style={{width: '90%'}}
-                        hintText="Votre identifiant"
-                        floatingLabelText="Identifiant"
+                        label="Votre identifiant"
+                        placeholder="Identifiant"
                         name="email"
-                        errorText={this.state.requiredText1}
                         value={this.state.email}
-                        onChange={this.handleChange}
+                        onChange={this.handleChangeLogin}
+                        error={this.state.emptyemail}
+                        helperText={this.state.emptyemail ? this.state.mandatory : ''}
                     /><br/>
                     <TextField
                         style={{width: '90%'}}
-                        hintText="Votre mot de passe"
-                        floatingLabelText="Mot de passe"
+                        label="Votre mot de passe"
+                        placeholder="Mot de passe"
                         name="password"
                         type='password'
-                        errorText={this.state.requiredText2}
+                        error={this.state.emptypassword}
                         value={this.state.password}
-                        onChange={this.handleChange}
+                        onChange={this.handleChangeLogin}
+                        helperText={this.state.emptypassword ? this.state.mandatory : ''}
                     /><br/>
-                    <div className="button"><RaisedButton onClick={this.handleCheckFormConnect} label="Se connecter" primary={true}/></div>
+                    <div className="button">
+                        <Button onClick={this.handleCheckFormConnect} variant="contained" color="primary">
+                            Se connecter
+                        </Button>
+                    </div>
                     <a onClick={this.handleClickOpen} style={{cursor:'pointer'}}>
                         <div style={{float: 'right', fontSize: '0.8' + 'em', margin: '2%'}}> Mot de passe oublié ?</div>
                     </a>
@@ -124,15 +142,16 @@ class Login extends Component{
                             type="email"
                             value={this.state.emailForgot}
                             fullWidth
-                            errorText={this.state.requiredText3}
-                            onChange={this.handleChange}
+                            error={this.state.emptyforgotemail}
+                            onChange={this.handleChangeForgot}
+                            helperText={!this.checkEmailForgot() ? 'Email invalide.' : ''}
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Annuler
                         </Button>
-                        <Button onClick={this.handleCheckForm} color="primary">
+                        <Button onClick={this.handleCheckFormForgot} color="primary">
                             Recevoir mon nouveau mot de passe
                         </Button>
                     </DialogActions>

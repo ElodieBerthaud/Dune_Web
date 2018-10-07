@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "../css/Login.css";
 import ItemForm from './AddItemForm.js';
 import Paper from '@material-ui/core/Paper';
+import loader from '../images/loaders/bars-loader.gif';
 
 const styles = theme => ({
     container: {
@@ -31,8 +32,6 @@ class ManageProfessor extends Component{
     constructor(props) {
         super(props);
     }
-
-
 
     render(){
 

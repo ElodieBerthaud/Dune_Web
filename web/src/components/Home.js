@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import 'typeface-roboto';
 
 const styles = theme => ({
     root: {
@@ -49,8 +48,6 @@ class GuttersGrid extends React.Component {
 
     render(){
         const { classes } = this.props;
-        console.log(this.state.ishover1);
-        console.log(this.state.ishover2);
         return (
             <div className={classes.root}>
                 <h2 className="text-center"> Bonjour, sur quel type de compte voulez-vous vous connecter ? </h2>

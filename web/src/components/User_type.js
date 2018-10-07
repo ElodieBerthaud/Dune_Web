@@ -38,7 +38,6 @@ class GuttersGrid extends React.Component {
     };
 
     handleHover1(){
-        console.log('1 ===== ' + this.state.ishover1);
         this.setState({
             ishover1: !this.state.ishover1
         });
@@ -56,8 +55,6 @@ class GuttersGrid extends React.Component {
 
     render(){
         const { classes } = this.props;
-        console.log(this.state.ishover1);
-        console.log(this.state.ishover2);
         return (
             <div className={classes.root}>
                 <h2 className="text-center"> Je veux me connecter en tant VVVVque : </h2>

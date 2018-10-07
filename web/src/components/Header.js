@@ -1,75 +1,197 @@
-import React, { Component } from 'react';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import AppBar from 'material-ui/AppBar';
-import '../css/Header.css';
+import React from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import Badge from '@material-ui/core/Badge';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import { withStyles } from '@material-ui/core/styles';
+import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MailIcon from '@material-ui/icons/Mail';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import Drawer from './Drawer';
+import {connect} from 'react-redux';
 
-class Header extends Component {
+const styles = theme => ({
+    root: {
+        width: '100%',
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 20,
+    },
+    title: {
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+            display: 'block',
+        },
+    },
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+            display: 'flex',
+        },
+    },
+    sectionMobile: {
+        display: 'flex',
+        [theme.breakpoints.up('md')]: {
+            display: 'none',
+        },
+    },
+});
 
-    constructor(props) {
+class Header extends React.Component {
+
+
+    constructor(props){
         super(props);
-        this.state = {open: false};
-        this.handleLogin = this.handleLogin.bind(this);
-        this.handleProfessor = this.handleProfessor.bind(this);
-        this.handleFollow = this.handleFollow.bind(this);
-        this.handleStudents = this.handleStudents.bind(this);
+
+        this.state = {
+            anchorEl: null,
+            mobileMoreAnchorEl: null
+        };
     }
 
-    handleToggle = () => this.setState({open: !this.state.open});
+    handleProfileMenuOpen = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
 
-    handleClose = () => this.setState({open: false});
+    handleMenuClose = () => {
+        this.setState({ anchorEl: null });
+        this.handleMobileMenuClose();
+    };
 
+    handleMobileMenuOpen = event => {
+        this.setState({ mobileMoreAnchorEl: event.currentTarget });
+    };
 
-    handleLogin(){
-        window.location = '/login';
-    }
-
-    handleProfessor(){
-        window.location = '/professor';
-    }
-
-    handleFollow(){
-        window.location = '/follow';
-    }
-
-    handleStudents(){
-        window.location = '/students';
-    }
-
-    handleAddProfessor(){
-        window.location = '/add-professor';
-    }
+    handleMobileMenuClose = () => {
+        this.setState({ mobileMoreAnchorEl: null });
+    };
 
     render() {
+        const { anchorEl, mobileMoreAnchorEl } = this.state;
+        const { classes } = this.props;
+        const isMenuOpen = Boolean(anchorEl);
+        const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+        const { isOpened, onOpenDrawer } = this.props;
+
+        const renderMenu = (
+            <Menu
+                anchorEl={anchorEl}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={isMenuOpen}
+                onClose={this.handleMenuClose}
+            >
+                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                <MenuItem onClick={this.handleClose}>My account</MenuItem>
+            </Menu>
+        );
+
+        const renderMobileMenu = (
+            <Menu
+                anchorEl={mobileMoreAnchorEl}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={isMobileMenuOpen}
+                onClose={this.handleMobileMenuClose}
+            >
+                <MenuItem>
+                    <IconButton color="inherit">
+                        <Badge className={classes.margin} badgeContent={4} color="secondary">
+                            <MailIcon />
+                        </Badge>
+                    </IconButton>
+                    <p>Messages</p>
+                </MenuItem>
+                <MenuItem>
+                    <IconButton color="inherit">
+                        <Badge className={classes.margin} badgeContent={11} color="secondary">
+                            <NotificationsIcon />
+                        </Badge>
+                    </IconButton>
+                    <p>Notifications</p>
+                </MenuItem>
+                <MenuItem onClick={this.handleProfileMenuOpen}>
+                    <IconButton color="inherit">
+                        <AccountCircle />
+                    </IconButton>
+                    <p>Profile</p>
+                </MenuItem>
+            </Menu>
+        );
+
         return (
-            <div className="text-center">
-                <header>
-                    <AppBar
-                        title="Dune"
-                        iconClassNameRight="muidocs-icon-navigation-expand-more"
-                        onLeftIconButtonClick={this.handleToggle}
-                        style={{height: '100px'}}
-                    />
-                </header>
-                <Drawer
-                    docked={false}
-                    width={300}
-                    open={this.state.open}
-                    onRequestChange={(open) => this.setState({open})}
-                    containerStyle={{backgroundColor: '#fee599'}}
-                >
-                    <header style={{height: '20%'}}>
-                        <a href='/'> <img style={{width: '100%', height: '100%'}} src={require('../images/dune.png')}/></a>
-                    </header>
-                    <MenuItem onClick={this.handleLogin}>Se connecter</MenuItem>
-                    <MenuItem onClick={this.handleProfessor}>Mon espace professeur</MenuItem>
-                    <MenuItem onClick={this.handleFollow}>Suivi</MenuItem>
-                    <MenuItem onClick={this.handleStudents}>Trombinoscope</MenuItem>
-                    <MenuItem onClick={this.handleAddProfessor}>Gérer les professeurs</MenuItem>
-                </Drawer>
+            <div className={classes.root}>
+                <AppBar position="static">
+                    <Toolbar>
+                        <IconButton onClick={onOpenDrawer} className={classes.menuButton} color="inherit" aria-label="Open drawer">
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography className={classes.title} variant="title" color="inherit" noWrap>
+                           Dune
+                        </Typography>
+                        <div className={classes.grow} />
+                        <div className={classes.sectionDesktop}>
+                            <IconButton color="inherit">
+                                <Badge className={classes.margin} badgeContent={4} color="secondary">
+                                    <MailIcon />
+                                </Badge>
+                            </IconButton>
+                            <IconButton color="inherit">
+                                <Badge className={classes.margin} badgeContent={17} color="secondary">
+                                    <NotificationsIcon />
+                                </Badge>
+                            </IconButton>
+                            <IconButton
+                                aria-owns={isMenuOpen ? 'material-appbar' : null}
+                                aria-haspopup="true"
+                                onClick={this.handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                        </div>
+                        <div className={classes.sectionMobile}>
+                            <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
+                                <MoreIcon />
+                            </IconButton>
+                        </div>
+                    </Toolbar>
+                </AppBar>
+                {renderMenu}
+                {renderMobileMenu}
+
+                <Drawer open={this.state.open}/>
             </div>
+
+
         );
     }
 }
 
-export default Header;
+Header.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => {
+    return {
+        opened: state.drawer.opened
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onOpenDrawer: () => dispatch({ type: "OPEN_DRAWER_REQUEST" })
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

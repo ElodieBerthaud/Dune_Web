@@ -1,11 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './css/index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import { createStore, applyMiddleware, compose } from "redux";
+import createSagaMiddleware from "redux-saga";
+import { Provider } from "react-redux";
+
+import reducers from "./reducers/index.js";
+import { watcherSaga } from "./sagas";
+
+import {BrowserRouter} from 'react-router-dom';
 import App from './components/App';
-import registerServiceWorker from './registerServiceWorker';
-import { BrowserRouter } from 'react-router-dom'
-import store from './store.js';
-import {Provider} from 'react-redux'
+
+import registerServiceWorker from "./registerServiceWorker";
+
+// create the saga middleware
+const sagaMiddleware = createSagaMiddleware();
+
+// dev tools middleware
+const reduxDevTools =
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+
+// create a redux store with our reducer above and middleware
+let store = createStore(
+    reducers,
+    compose(applyMiddleware(sagaMiddleware), reduxDevTools)
+);
+
+// run the saga
+sagaMiddleware.run(watcherSaga);
 
 ReactDOM.render((
     <Provider store={store}>
@@ -14,5 +35,4 @@ ReactDOM.render((
         </BrowserRouter>
     </Provider>
 ), document.getElementById('root'));
-
 registerServiceWorker();

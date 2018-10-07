@@ -4,6 +4,7 @@ import "../css/Login.css";
 import Footer from './Footer';
 import Main from '../Main';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Theme from './colors';
 
 
 class App extends Component {
@@ -14,7 +15,7 @@ class App extends Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider theme={Theme}>
                 <div>
                     <Header/>
                     <Main/>

@@ -1,9 +1,10 @@
-const reducer = combineReducers({
-    CountReducer
+import { combineReducers } from 'redux';
+import drawer from './drawerReducer';
+import professor from './ProfessorReducer';
+
+const reducers =  combineReducers({
+    drawer,
+    professor
 });
 
-const initialState = {
-    CountReducer: {count: 123, wish_value: 12}
-};
-
-let store = createStore(reducer, initialState);
+export default reducers;

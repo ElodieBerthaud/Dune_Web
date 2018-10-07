@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
@@ -73,9 +73,9 @@ class AddItemForm extends React.Component {
 
     handleClickOpen(){
         if (this.state.email === '' || this.state.surname === '' || this.state.surname === '') {
-            this.state.lastname === '' ? this.setState({requiredText1 : 'Champs Obligatoire.'}) : false;
-            this.state.surname === '' ? this.setState({requiredText2 : 'Champs Obligatoire.'}) : false;
-            this.state.email === '' ? this.setState({requiredText3 : 'Champs Obligatoire.'}) : false;
+            this.state.lastname === '' ? this.setState({requiredText1 : 'Champs Obligatoire.'}) : this.setState({requiredText1 : ''});
+            this.state.surname === '' ? this.setState({requiredText2 : 'Champs Obligatoire.'}) : this.setState({requiredText2 : ''});
+            this.state.email === '' ? this.setState({requiredText3 : 'Champs Obligatoire.'}) : this.setState({requiredText3 : ''});
         }
         else if (!emailRegex({exact: true}).test(this.state.email)){
             this.setState({requiredText3 : 'Votre Email n\'est pas valide.'});
@@ -96,9 +96,9 @@ class AddItemForm extends React.Component {
 
     handleChange(evt){
         this.setState({[evt.target.name]: evt.target.value});
-        this.state.lastname !== '' ? this.setState({requiredText1 : ''}) : false;
-        this.state.surname !== '' ? this.setState({requiredText2 : ''}) : false;
-        this.state.email !== '' ? this.setState({requiredText3 : ''}) : false;
+        this.state.lastname !== '' ? this.setState({requiredText1 : ''}) : this.setState({requiredText1 : 'Champs Obligatoire.'});
+        this.state.surname !== '' ? this.setState({requiredText2 : ''}) : this.setState({requiredText2 : 'Champs Obligatoire.'});
+        this.state.email !== '' ? this.setState({requiredText3 : ''}) : this.setState({requiredText3 : 'Votre Email n\'est pas valide.'});
     }
 
     render() {
