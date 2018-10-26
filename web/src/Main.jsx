@@ -1,30 +1,38 @@
 import React, {Component} from "react";
-import Home from "./components/Home";
-import Test from "./components/test";
 import Login from './containers/LoginContainer';
 import { Switch, Route } from 'react-router-dom';
+import 'typeface-roboto';
+import { Redirect } from 'react-router';
 import Professor from "./components/Professor";
 import Follow from "./components/Follow";
 import Students from "./components/Students";
 import ManageProfessor from "./components/ManageProfessor";
-
+import {connect} from "react-redux";
+import {withRouter} from "react-router";
+import PrivateRoute from "./components/PrivateRoute";
+import P_404 from './components/P_404';
 
 class Main extends Component{
 
-    constructor(props) {
-        super(props);
-    }
-
     render(){
+
+        const log = this.props;
+
         return(
             <main>
                 <Switch>
-                    <Route exact path='/' component={Home}/>
-                    <Route path='/login' component={Login}/>
-                    <Route path='/professor' component={Professor}/>
-                    <Route path='/follow' component={Follow}/>
-                    <Route path='/students' component={Students}/>
-                    <Route path='/add-professor' component={ManageProfessor}/>
+                    <Route exact path='/' render={() => (
+                        log.logged ? (
+                            <Redirect to="/professor"/>
+                        ) : (
+                                <Login/>
+                            )
+                    )}/>
+                    <PrivateRoute exact path='/professor' component={Professor} authed={log.logged}/>
+                    <PrivateRoute exact path='/follow' component={Follow} authed={log.logged}/>
+                    <PrivateRoute exact path='/students' component={Students} authed={log.logged}/>
+                    <PrivateRoute exact path='/add-professor' component={ManageProfessor} authed={log.logged}/>
+                    <Route path="*" component={P_404} />
                 </Switch>
             </main>
         );
@@ -32,4 +40,10 @@ class Main extends Component{
 
 }
 
-export default Main;
+const mapStateToProps = state => {
+    return {
+        logged: state.login.logged
+    };
+};
+
+export default withRouter(connect(mapStateToProps)(Main));

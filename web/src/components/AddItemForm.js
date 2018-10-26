@@ -11,6 +11,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import loader from '../images/loaders/bars-loader.gif';
+import {connect} from "react-redux";
+import { Redirect } from 'react-router';
+
 const emailRegex = require('email-regex');
 
 const styles = theme => ({
@@ -46,18 +49,20 @@ class AddItemForm extends React.Component {
             lastname: '',
             surname: '',
             email: '',
-            requiredText1: '',
-            requiredText2: '',
-            requiredText3: ''
+            validateemail: false,
+            emptysurname: false,
+            emptylastname: false,
+            mandatory: 'Ce champs est obligatoire.',
+            validemail: 'Votre Email n\'est pas valide.',
+            error: false
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleClickOpen = this.handleClickOpen.bind(this);
+        this.handleValidForm = this.handleValidForm.bind(this);
         this.handleLoader = this.handleLoader.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
         this.handlePopoverClose = this.handlePopoverClose.bind(this);
-
     }
 
 
@@ -71,14 +76,12 @@ class AddItemForm extends React.Component {
     };
 
 
-    handleClickOpen(){
-        if (this.state.email === '' || this.state.surname === '' || this.state.surname === '') {
-            this.state.lastname === '' ? this.setState({requiredText1 : 'Champs Obligatoire.'}) : this.setState({requiredText1 : ''});
-            this.state.surname === '' ? this.setState({requiredText2 : 'Champs Obligatoire.'}) : this.setState({requiredText2 : ''});
-            this.state.email === '' ? this.setState({requiredText3 : 'Champs Obligatoire.'}) : this.setState({requiredText3 : ''});
-        }
-        else if (!emailRegex({exact: true}).test(this.state.email)){
-            this.setState({requiredText3 : 'Votre Email n\'est pas valide.'});
+    handleValidForm(){
+        if (this.state.surname === '' || this.state.lastsurname === '' || !emailRegex({exact: true}).test(this.state.email)) {
+
+            this.state.lastname === '' ? this.setState({emptylastname : true}) : this.setState({emptylastname : false});
+            this.state.surname === '' ? this.setState({emptysurname : true}) : this.setState({emptysurname : false});
+            !emailRegex({exact: true}).test(this.state.email) ? this.setState({validateemail : true}) : this.setState({validateemail : false});
         }
         else {
             this.setState({open: true});
@@ -86,19 +89,29 @@ class AddItemForm extends React.Component {
     };
 
     handleClose(){
+        if (this.props.error == true){
+            return <Redirect to="/add-professor"/>;
+        }
         this.setState({ open: false });
-        this.setState({loader: false});
+        this.setState({ loader: false });
     };
 
     handleLoader(){
+
+        console.log("ADD PROFESSOR !!!!!");
+
+        const { addProfessor } = this.props;
+
         this.setState({ loader: true });
+
+        addProfessor(this.state.surname, this.state.name, this.state.email, this.props.token);
     }
 
     handleChange(evt){
         this.setState({[evt.target.name]: evt.target.value});
-        this.state.lastname !== '' ? this.setState({requiredText1 : ''}) : this.setState({requiredText1 : 'Champs Obligatoire.'});
-        this.state.surname !== '' ? this.setState({requiredText2 : ''}) : this.setState({requiredText2 : 'Champs Obligatoire.'});
-        this.state.email !== '' ? this.setState({requiredText3 : ''}) : this.setState({requiredText3 : 'Votre Email n\'est pas valide.'});
+        this.state.lastname === '' ? this.setState({emptylastname : true}) : this.setState({emptylastname : false});
+        this.state.surname === '' ? this.setState({emptysurname : true}) : this.setState({emptysurname : false});
+        emailRegex({exact: true}).test(this.state.email) === false ? this.setState({validateemail : false}) : this.setState({validateemail : true});
     }
 
     render() {
@@ -106,6 +119,23 @@ class AddItemForm extends React.Component {
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
+        if (this.props.addSuccess != null){
+            console.log("ADD SUCCESS 1");
+            if (this.props.error != null){
+                console.log("ADD SUCCESS 2");
+                this.state.loader = false;
+                this.state.open = false;
+                this.state.error = true;
+            }
+        }
+        else{
+            if (this.props.error != null) {
+                console.log("ADD SUCCESS 3");
+                this.state.loader = false;
+                this.state.open = false;
+                this.state.error = true;
+            }
+        }
 
         return (
             <div className={classes.container}>
@@ -114,31 +144,34 @@ class AddItemForm extends React.Component {
                         required
                         name="lastname"
                         style={{width:'90%'}}
-                        hintText="Nom"
-                        floatingLabelText="Nom"
+                        label="Nom"
+                        placeholder="Nom"
                         value={this.state.lastname}
                         onChange={this.handleChange}
-                        errorText={this.state.requiredText1}
+                        error={this.state.emptylastname}
+                        helperText={this.state.emptylastname ? this.state.mandatory : ''}
                     /><br />
                     <TextField
                         required
                         name="surname"
                         style={{width:'90%'}}
-                        hintText="Prénom"
-                        floatingLabelText="Prénom"
+                        label="Prénom"
+                        placeholder="Prénom"
                         value={this.state.surname}
                         onChange={this.handleChange}
-                        errorText={this.state.requiredText2}
+                        error={this.state.emptysurname}
+                        helperText={this.state.emptysurname ? this.state.mandatory : ''}
                     /><br />
                     <TextField
                         required
                         name="email"
                         style={{width:'90%'}}
-                        hintText="Adresse Email"
-                        floatingLabelText="Adresse Email"
+                        label="Adresse Email"
+                        placeholder="Adresse Email"
                         value={this.state.email}
                         onChange={this.handleChange}
-                        errorText={this.state.requiredText3}
+                        error={this.state.validateemail}
+                        helperText={emailRegex({exact: true}).test(this.state.email) ? '' : 'Email invalide.'}
                 /><br />
                     <div style={{margin: 0 + ' auto', marginTop: 5 + '%'}}>
                         <Typography
@@ -147,7 +180,7 @@ class AddItemForm extends React.Component {
                             onMouseEnter={this.handlePopoverOpen}
                             onMouseLeave={this.handlePopoverClose}
                         >
-                             <Button onClick={this.handleClickOpen}  size="large" variant="contained" style={{backgroundColor: '#00bcd4', color:'white'}}>
+                             <Button onClick={this.handleValidForm}  size="large" variant="contained" style={{backgroundColor: '#00bcd4', color:'white'}}>
                                 Valider
                             </Button>
                         </Typography>
@@ -178,14 +211,27 @@ class AddItemForm extends React.Component {
                 </form>
 
                 <Dialog
-                    open={this.state.open}
+                    open={this.state.loader}
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >
                     <div style={this.state.loader ? {textAlign:'center', margin: '10%'} : {display:'none'}}>
-                        <img src={loader} style={{display: 'inherit', margin: '0 auto'}} />
-                        Veulliez patienter, l'utilisateur est en cours de création...
+
                     </div>
+                    <div style={this.state.loader ? {display:"none"} : {display:''}}>
+                        <DialogTitle id="form-dialog-title">Ajout d'un professeur</DialogTitle>
+                        <DialogContent>
+                            <img alt='chargement' src={loader} style={{display: 'inherit', margin: '0 auto'}} />
+                            Veulliez patienter, l'utilisateur est en cours de création...
+                        </DialogContent>
+                    </div>
+                </Dialog>
+
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="form-dialog-title"
+                >
                     <div style={this.state.loader ? {display:"none"} : {display:''}}>
                         <DialogTitle id="form-dialog-title">Ajout d'un professeur</DialogTitle>
                         <DialogContent>
@@ -204,6 +250,27 @@ class AddItemForm extends React.Component {
                     </div>
                 </Dialog>
 
+                <Dialog
+                    open={this.state.error}
+                    onClose={this.handleClose}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <div style={this.state.loader ? {display:"none"} : {display:''}}>
+                        <DialogTitle id="form-dialog-title">Erreur Lors de l'ajout d'un professeur</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                {this.props.error === 501 ? 'Un compte existe déja avec cette adresse email. veuillez en entrer une autre.' : ''}
+                                {this.props.error === 401 ? 'Votre session a expirée.' : ''}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                                Ok
+                            </Button>
+                        </DialogActions>
+                    </div>
+                </Dialog>
+
             </div>
 
         );
@@ -211,8 +278,23 @@ class AddItemForm extends React.Component {
 }
 
 
+const mapStateToProps = state => {
+    return {
+        token: state.login.token,
+        addSuccess: state.manageProfessor.success,
+        error: state.manageProfessor.error
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addProfessor: (surname, name, email, token) => dispatch({ type: "ADD_PROFESSOR_REQUEST" , surname: surname, name: name, email: email, token: token})
+    };
+};
+
+
 AddItemForm.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AddItemForm);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddItemForm));

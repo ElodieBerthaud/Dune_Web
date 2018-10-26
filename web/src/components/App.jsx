@@ -3,9 +3,10 @@ import Header from './Header';
 import "../css/Login.css";
 import Footer from './Footer';
 import Main from '../Main';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import Theme from './colors';
-
+import "../css/index.css";
+import {connect} from "react-redux";
 
 class App extends Component {
 
@@ -14,9 +15,12 @@ class App extends Component {
     }
 
     render() {
+
+
+
         return (
             <MuiThemeProvider theme={Theme}>
-                <div>
+                <div style={{fontFamily: 'Roboto'}}>
                     <Header/>
                     <Main/>
                     <Footer/>

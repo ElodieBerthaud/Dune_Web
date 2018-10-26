@@ -1,17 +1,17 @@
 import {connect} from 'react-redux';
 import React, { Component } from 'react';
+import { withRouter } from "react-router";
 
 class Professor extends Component{
     constructor(props){
         super(props);
 
         this.handleGetProf = this.handleGetProf.bind(this);
-        //this.props.professorActions.get_professor();
     }
 
     handleGetProf(){
         this.props.professorActions.get_professor();
-    }s
+    }
 
     render(){
         const { fetching, nomProf, prenomProf, emailProf, onRequestProf, error } = this.props;
@@ -50,7 +50,6 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
-    mapDispatchToProps
-)(Professor);
+    mapDispatchToProps)(Professor));

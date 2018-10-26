@@ -8,6 +8,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import loader from '../images/loaders/bars-loader.gif';
+import {connect} from "react-redux";
+import { withRouter } from "react-router";
 const emailRegex = require('email-regex');
 
 class Login extends Component{
@@ -56,17 +58,24 @@ class Login extends Component{
     }
 
     handleCheckFormConnect(){
-        if (this.state.email === '' || this.state.password === '') {
-            this.state.email === '' ? this.setState({emptyemail : true}) : this.setState({emptyemail : false});
-            this.state.password === '' ? this.setState({emptypassword : true}) : this.setState({emptypassword : false});
+
+        const { onClickConnect } = this.props;
+        if (!this.state.email || !this.state.password) {
+            !this.state.email ? this.setState({emptyemail : true}) : this.setState({emptyemail : false});
+            !this.state.password ? this.setState({emptypassword : true}) : this.setState({emptypassword : false});
+        }else{
+
+            onClickConnect(this.state.email, this.state.password);
         }
     }
 
     handleChangeLogin(evt){
         this.setState({[evt.target.name]: evt.target.value});
-        this.state.email !== '' ? this.setState({emptyemail : false}) : this.setState({emptyemail : true});
-        this.state.password !== '' ? this.setState({emptypassword : false}) : this.setState({emptypassword : true});
-        console.log(evt.target.name);
+        if (evt.target.name === 'email') {
+            this.state.email !== '' ? this.setState({emptyemail: false}) : this.setState({emptyemail: true});
+        }
+        else
+            this.state.password !== '' ? this.setState({emptypassword : false}) : this.setState({emptypassword : true});
     }
 
     handleChangeForgot(evt){
@@ -76,7 +85,6 @@ class Login extends Component{
     }
 
     checkEmailForgot(){
-        console.log("coiucoucocuc");
         return (emailRegex({exact: true}).test(this.state.emailforgot));
     }
 
@@ -84,38 +92,40 @@ class Login extends Component{
         return (
             <div className="WrapLogin">
                 <div style={{margin:'5%'}}>
-                <div className="text-center title">Connexion</div>
-                <form>
-                    <TextField
-                        style={{width: '90%'}}
-                        label="Votre identifiant"
-                        placeholder="Identifiant"
-                        name="email"
-                        value={this.state.email}
-                        onChange={this.handleChangeLogin}
-                        error={this.state.emptyemail}
-                        helperText={this.state.emptyemail ? this.state.mandatory : ''}
-                    /><br/>
-                    <TextField
-                        style={{width: '90%'}}
-                        label="Votre mot de passe"
-                        placeholder="Mot de passe"
-                        name="password"
-                        type='password'
-                        error={this.state.emptypassword}
-                        value={this.state.password}
-                        onChange={this.handleChangeLogin}
-                        helperText={this.state.emptypassword ? this.state.mandatory : ''}
-                    /><br/>
-                    <div className="button">
-                        <Button onClick={this.handleCheckFormConnect} variant="contained" color="primary">
-                            Se connecter
-                        </Button>
-                    </div>
-                    <a onClick={this.handleClickOpen} style={{cursor:'pointer'}}>
-                        <div style={{float: 'right', fontSize: '0.8' + 'em', margin: '2%'}}> Mot de passe oublié ?</div>
-                    </a>
-                </form>
+                    <div className="text-center title">Connexion</div>
+                    <form>
+                        <TextField
+                            required
+                            style={{width: '90%'}}
+                            label="Votre identifiant"
+                            placeholder="Identifiant"
+                            name="email"
+                            value={this.state.email}
+                            onChange={this.handleChangeLogin}
+                            error={this.state.emptyemail}
+                            helperText={this.state.emptyemail ? this.state.mandatory : ''}
+                        /><br/>
+                        <TextField
+                            required
+                            style={{width: '90%'}}
+                            label="Votre mot de passe"
+                            placeholder="Mot de passe"
+                            name="password"
+                            type='password'
+                            error={this.state.emptypassword}
+                            value={this.state.password}
+                            onChange={this.handleChangeLogin}
+                            helperText={this.state.emptypassword ? this.state.mandatory : ''}
+                        /><br/>
+                        <div className="button">
+                            <Button onClick={this.handleCheckFormConnect} variant="contained" color="primary">
+                                Se connecter
+                            </Button>
+                        </div>
+                        <a onClick={this.handleClickOpen} style={{cursor:'pointer'}}>
+                            <div style={{float: 'right', fontSize: '0.8' + 'em', margin: '2%'}}> Mot de passe oublié ?</div>
+                        </a>
+                    </form>
                 </div>
 
                 <Dialog
@@ -128,33 +138,33 @@ class Login extends Component{
                         Veulliez patienter, votre mail est en cours d'envoi...
                     </div>
                     <div style={this.state.loader ? {display:"none"} : {display:''}}>
-                    <DialogTitle id="form-dialog-title">Mot de passe oublié</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Vous avez égaré votre mot de passe. Pour en recevoir un nouveau, veuillez renseignez votre adresse Email.
-                        </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            name="emailforgot"
-                            id="name"
-                            label="Email Address"
-                            type="email"
-                            value={this.state.emailForgot}
-                            fullWidth
-                            error={this.state.emptyforgotemail}
-                            onChange={this.handleChangeForgot}
-                            helperText={!this.checkEmailForgot() ? 'Email invalide.' : ''}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                            Annuler
-                        </Button>
-                        <Button onClick={this.handleCheckFormForgot} color="primary">
-                            Recevoir mon nouveau mot de passe
-                        </Button>
-                    </DialogActions>
+                        <DialogTitle id="form-dialog-title">Mot de passe oublié</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Vous avez égaré votre mot de passe. Pour en recevoir un nouveau, veuillez renseignez votre adresse Email.
+                            </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                name="emailforgot"
+                                id="name"
+                                label="Email Address"
+                                type="email"
+                                value={this.state.emailForgot}
+                                fullWidth
+                                error={this.state.emptyforgotemail}
+                                onChange={this.handleChangeForgot}
+                                helperText={!this.checkEmailForgot() ? 'Email invalide.' : ''}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                                Annuler
+                            </Button>
+                            <Button onClick={this.handleCheckFormForgot} color="primary">
+                                Recevoir mon nouveau mot de passe
+                            </Button>
+                        </DialogActions>
                     </div>
                 </Dialog>
             </div>
@@ -162,4 +172,17 @@ class Login extends Component{
     };
 }
 
-export default Login;
+const mapStateToProps = state => {
+    return {
+        logged: state.login.logged,
+        id_user: state.login.id_user
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onClickConnect: (email, pass) => dispatch({ type: "LOGIN_REQUEST", email: email, pass: pass})
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

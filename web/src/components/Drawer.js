@@ -4,12 +4,12 @@ import { withStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import { mailFolderListItems, otherMailFolderListItems } from './menuDrawer';
+import { mainListItem, secondaryListItem } from './menuDrawer';
 import {connect} from "react-redux";
 
 const styles = {
     list: {
-        width: 250,
+        width: 250
     },
     fullList: {
         width: 'auto',
@@ -49,21 +49,11 @@ class Drawer extends React.Component {
 
         const { classes, opened, closeDrawer, onOpenDrawer} = this.props;
 
-        console.log("OPENED ==== " + opened);
-
         const sideList = (
             <div className={classes.list}>
-                <List>{mailFolderListItems}</List>
+                <List>{mainListItem}</List>
                 <Divider />
-                <List>{otherMailFolderListItems}</List>
-            </div>
-        );
-
-        const fullList = (
-            <div className={classes.fullList}>
-                <List>{mailFolderListItems}</List>
-                <Divider />
-                <List>{otherMailFolderListItems}</List>
+                <List>{secondaryListItem}</List>
             </div>
         );
 

@@ -81,7 +81,9 @@ class Header extends React.Component {
         const { classes } = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-        const { isOpened, onOpenDrawer } = this.props;
+        const { onOpenDrawer } = this.props;
+        const { handleLogout } = this.props;
+        const log = this.props;
 
         const renderMenu = (
             <Menu
@@ -91,8 +93,8 @@ class Header extends React.Component {
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
-                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                <MenuItem onClick={this.handleClose}>Mon compte</MenuItem>
+                <MenuItem onClick={handleLogout}>Se deconnecter</MenuItem>
             </Menu>
         );
 
@@ -131,7 +133,7 @@ class Header extends React.Component {
 
         return (
             <div className={classes.root}>
-                <AppBar position="static">
+                <AppBar position="static" color={"primary"}>
                     <Toolbar>
                         <IconButton onClick={onOpenDrawer} className={classes.menuButton} color="inherit" aria-label="Open drawer">
                             <MenuIcon />
@@ -184,13 +186,15 @@ Header.propTypes = {
 
 const mapStateToProps = state => {
     return {
-        opened: state.drawer.opened
+        opened: state.drawer.opened,
+        logged: state.login.logged
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOpenDrawer: () => dispatch({ type: "OPEN_DRAWER_REQUEST" })
+        onOpenDrawer: () => dispatch({ type: "OPEN_DRAWER_REQUEST" }),
+        handleLogout: () => dispatch({type: "LOGOUT_REQUEST"})
     };
 };
 

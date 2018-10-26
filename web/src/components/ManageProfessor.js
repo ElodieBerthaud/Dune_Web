@@ -37,7 +37,7 @@ class ManageProfessor extends Component{
 
         return(
             <div className={styles.container}>
-                <h2 className="text-center">Ajouter un professeur</h2>
+                <h2 style={{textAlign: 'center'}}>Ajouter un professeur</h2>
                 <Paper className={styles.paper} style={{padding: 20, margin: 0 + " auto", width: 70+"%", backgroundColor: '#E0F7FA'}} elevation={1}>
                     <p className="text-center"> En tant que directeur, vous avez la possibilité d'ajouter un professeur dans la base de donnée de votre établissement.
                         <br />

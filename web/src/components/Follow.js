@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "../css/Login.css";
+import Loader from './Loader';
 
 class Follow extends Component{
 
@@ -9,7 +10,7 @@ class Follow extends Component{
 
     render(){
         return(
-            'Follow'
+            < Loader/>
         );
     }
 
