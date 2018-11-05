@@ -12,7 +12,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import loader from '../images/loaders/bars-loader.gif';
 import {connect} from "react-redux";
-import { Redirect } from 'react-router';
+import check from './../images/loaders/icons8-approval-100.png';
+import error from './../images/loaders/error.png';
 
 const emailRegex = require('email-regex');
 
@@ -47,7 +48,7 @@ class AddItemForm extends React.Component {
             open: false,
             loader: false,
             lastname: '',
-            surname: '',
+            name: '',
             email: '',
             validateemail: false,
             emptysurname: false,
@@ -89,52 +90,47 @@ class AddItemForm extends React.Component {
     };
 
     handleClose(){
-        if (this.props.error == true){
-            return <Redirect to="/add-professor"/>;
-        }
         this.setState({ open: false });
         this.setState({ loader: false });
     };
 
-    handleLoader(){
+    handleClose_error(){
+        window.location.reload();
+    };
 
-        console.log("ADD PROFESSOR !!!!!");
+    handleLoader(){
 
         const { addProfessor } = this.props;
 
         this.setState({ loader: true });
 
-        addProfessor(this.state.surname, this.state.name, this.state.email, this.props.token);
+        addProfessor(this.state.lastname, this.state.name, this.state.email, this.props.token);
     }
 
     handleChange(evt){
         this.setState({[evt.target.name]: evt.target.value});
         this.state.lastname === '' ? this.setState({emptylastname : true}) : this.setState({emptylastname : false});
-        this.state.surname === '' ? this.setState({emptysurname : true}) : this.setState({emptysurname : false});
+        this.state.name === '' ? this.setState({emptysurname : true}) : this.setState({emptysurname : false});
         emailRegex({exact: true}).test(this.state.email) === false ? this.setState({validateemail : false}) : this.setState({validateemail : true});
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, addSuccess } = this.props;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
-        if (this.props.addSuccess != null){
-            console.log("ADD SUCCESS 1");
-            if (this.props.error != null){
-                console.log("ADD SUCCESS 2");
+        if (this.props.addSuccess != null && this.props.addSuccess){
                 this.state.loader = false;
                 this.state.open = false;
-                this.state.error = true;
-            }
+                this.state.error = false;
         }
-        else{
-            if (this.props.error != null) {
-                console.log("ADD SUCCESS 3");
+        else if (this.props.addSuccess != null && !this.props.addSuccess){
                 this.state.loader = false;
                 this.state.open = false;
                 this.state.error = true;
-            }
+        }
+        else if (this.props.addSuccess === null){
+            this.state.error = false;
         }
 
         return (
@@ -153,11 +149,11 @@ class AddItemForm extends React.Component {
                     /><br />
                     <TextField
                         required
-                        name="surname"
+                        name="name"
                         style={{width:'90%'}}
                         label="Prénom"
                         placeholder="Prénom"
-                        value={this.state.surname}
+                        value={this.state.name}
                         onChange={this.handleChange}
                         error={this.state.emptysurname}
                         helperText={this.state.emptysurname ? this.state.mandatory : ''}
@@ -212,7 +208,6 @@ class AddItemForm extends React.Component {
 
                 <Dialog
                     open={this.state.loader}
-                    onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >
                     <div style={this.state.loader ? {textAlign:'center', margin: '10%'} : {display:'none'}}>
@@ -252,19 +247,36 @@ class AddItemForm extends React.Component {
 
                 <Dialog
                     open={this.state.error}
-                    onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >
                     <div style={this.state.loader ? {display:"none"} : {display:''}}>
                         <DialogTitle id="form-dialog-title">Erreur Lors de l'ajout d'un professeur</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
+                                <img alt='chargement' src={error} style={{display: 'inherit', margin: '0 auto'}} />
                                 {this.props.error === 501 ? 'Un compte existe déja avec cette adresse email. veuillez en entrer une autre.' : ''}
                                 {this.props.error === 401 ? 'Votre session a expirée.' : ''}
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
+                            <Button onClick={this.handleClose_error} color="primary">
+                                Ok
+                            </Button>
+                        </DialogActions>
+                    </div>
+                </Dialog>
+
+                <Dialog
+                    open={addSuccess === null ? false : addSuccess === true ? true : false}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <div style={this.state.loader ? {display:"none"} : {display:''}}>
+                        <DialogTitle id="form-dialog-title">L'ajout a bien été effectué !</DialogTitle>
+                        <DialogContent>
+                            <img alt='chargement' src={check} style={{display: 'inherit', margin: '0 auto'}} />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose_error} color="primary">
                                 Ok
                             </Button>
                         </DialogActions>

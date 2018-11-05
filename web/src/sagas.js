@@ -1,25 +1,37 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import axios from "axios";
-import {ADD_PROFESSOR_ERROR, ADD_PROFESSOR_SUCCESS} from "./actions/actionTypes";
+import {
+    ADD_PROFESSOR_ERROR,
+    ADD_PROFESSOR_SUCCESS,
+    GET_USER_INFOS,
+    CHANGE_PASSWORD_SUCCESS,
+    CHANGE_PASSWORD_ERROR
+} from "./actions/actionTypes";
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
 export function* watcherSaga() {
-    yield takeEvery("API_CALL_REQUEST", getProf);
     yield takeEvery("OPEN_DRAWER_REQUEST", openDrawer);
     yield takeEvery("CLOSE_DRAWER_REQUEST", closeDrawer);
     yield takeEvery("LOGIN_REQUEST", login);
     yield takeEvery('LOGOUT_REQUEST', logout);
     yield takeEvery('ADD_PROFESSOR_REQUEST', add_professor);
+    yield takeEvery('CHANGE_PASSWORD_REQUEST', change_password);
 }
 
 //GET PROFESSOR INFOS
 // function that makes the api request and returns a Promise for response
-function fetchProf() {
-    console.log("HERE");
+function fetchProf(datas) {
 
-    return axios({
-        method: "get",
-        url: "http://176.31.252.134:9001/api/v1/profs/1",
+    console.log(datas.token);
+
+    const url = "http://176.31.252.134:9001/api/v1/users/" + datas.id;
+
+    return axios.get(url, {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            token: datas.token
+        }
     });
 }
 
@@ -54,27 +66,23 @@ function add_professor_api(add){
 
     return axios({
         method: 'post',
-        url: 'http://176.31.252.134:9001/api/v1/profs/add',
+        url: 'http://176.31.252.134:9001/api/v1/users/add',
         data: datas
     })
 
 }
 
-// worker saga: makes the api call when watcher saga sees the action
-function* getProf() {
-    try {
-        const response = yield call(fetchProf);
-        const nomProf = response.data.response[0].nomProf;
-        const prenomProf = response.data.response[0].prenomProf;
-        const emailProf = response.data.response[0].emailProf;
+function change_password_api(datas){
 
-        // dispatch a success action to the store with the new dog
-        yield put({ type: "API_CALL_SUCCESS", nomProf, prenomProf, emailProf });
+    const datasTosend = new URLSearchParams();
+    datasTosend.append('email', datas.email);
 
-    } catch (error) {
-        // dispatch a failure action to the store with the error
-        yield put({ type: "API_CALL_FAILURE", error });
-    }
+
+    return axios({
+        method: 'post',
+        url: 'http://176.31.252.134:9001/api/v1/login/reset',
+        data: datasTosend
+    })
 }
 
 //DRAWER
@@ -96,18 +104,34 @@ function* login(logs){
         'password': logs.pass
     };
 
-    console.log(logs.pass);
-
     try{
 
         const response = yield call(login_in, datas);
-        if (response.data.success == true) {
+        if (response.data.success === true) {
             const token = response.data.token;
             const user_id = response.data.currUser;
-            yield put({ type: "LOGIN_SUCCESS", token: token, user_id: user_id});
+            const director = response.data.typeUser === 1 ? false : true;
+            yield put({ type: "LOGIN_SUCCESS", token: token, user_id: user_id, director: director});
+
+            var datas_2 = {
+                token: token,
+                id: user_id
+            };
+
+            const response_2 = yield call(fetchProf, datas_2);
+            if (response_2.data.status === 200) {
+
+                const lastname = response_2.data.response[0].nomUser;
+                const name = response_2.data.response[0].prenomUser;
+                const email = response_2.data.response[0].emailUser;
+
+                yield  put({ type: 'GET_USER_INFOS', lastname: lastname, name: name, email: email});
+
+            }
         }
 
     }catch (e) {
+
         yield put({ type: "LOGIN_ERROR", e});
 
     }
@@ -115,8 +139,6 @@ function* login(logs){
 }
 
 function* logout(){
-
-    console.log('LOGOUT');
 
     try{
         yield put({type: 'LOGOUT_SUCCESS'});
@@ -128,15 +150,9 @@ function* logout(){
 
 function* add_professor(datas){
 
-    console.log('ADD PROFESSOR');
-
-    console.log(datas);
-
-
     try{
 
         const response = yield call(add_professor_api, datas);
-        console.log(response);
 
         if (response.data.status === 200){
             yield put({type: ADD_PROFESSOR_SUCCESS});
@@ -152,4 +168,22 @@ function* add_professor(datas){
 
     }
 
+}
+
+function* change_password(datas){
+
+    try{
+
+        const response = yield call(change_password_api, datas);
+
+        if (response.data.status === 200){
+            yield put({type: CHANGE_PASSWORD_SUCCESS});
+        }else{
+            yield put({type: CHANGE_PASSWORD_ERROR});
+        }
+
+    }catch (e) {
+
+
+    }
 }

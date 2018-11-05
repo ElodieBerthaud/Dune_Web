@@ -4,8 +4,12 @@ import { withStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
-import { mainListItem, secondaryListItem } from './menuDrawer';
+import { mainListItem, SecondaryListItem } from './menuDrawer';
 import {connect} from "react-redux";
+import Avatar from '@material-ui/core/Avatar';
+import classNames from 'classnames';
+import avatar from "../images/avatar.png";
+import dune from '../images/travel-857086_1920-1600x600.jpg';
 
 const styles = {
     list: {
@@ -14,6 +18,9 @@ const styles = {
     fullList: {
         width: 'auto',
     },
+    paper:{
+        backgroundColor: '#fee599'
+    }
 };
 
 class Drawer extends React.Component {
@@ -53,17 +60,34 @@ class Drawer extends React.Component {
             <div className={classes.list}>
                 <List>{mainListItem}</List>
                 <Divider />
-                <List>{secondaryListItem}</List>
+                <SecondaryListItem director={this.props.director} />
             </div>
         );
 
         return (
             <div>
+
                 <SwipeableDrawer
                     open={opened}
                     onClose={closeDrawer}
                     onOpen={onOpenDrawer}
+                    classes={{
+                        paper: classes.paper
+                    }}
                 >
+                    <div className={classes.row}>
+                        <Avatar
+                            alt="Adelle Charles"
+                            src={avatar}
+                            className={classNames(classes.avatar, classes.bigAvatar)}
+                            style={{margin: '0 auto', width: '40%', height: '40%', marginTop: '10%'}}
+                        />
+                    </div>
+
+                    <div style={{textAlign: 'center', marginTop: '5%'}}> {this.props.userName} {this.props.userLastname} </div>
+
+                    <div style={{borderBottom: '1px solid grey', width: '70%', margin: '0 auto', marginTop: '5%'}}> </div>
+
                     <div
                         tabIndex={0}
                         role="button"
@@ -83,9 +107,11 @@ Drawer.propTypes = {
 };
 
 const mapStateToProps = state => {
-    console.log(state.drawer.opened);
     return {
-        opened: state.drawer.opened
+        opened: state.drawer.opened,
+        director: state.login.director,
+        userName: state.user.name,
+        userLastname: state.user.lastname
     };
 };
 

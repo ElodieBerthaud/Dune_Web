@@ -2,7 +2,6 @@ import initialState from './initialState';
 import { OPEN_DRAWER_SUCCESS, CLOSE_DRAWER_SUCCESS } from '../actions/actionTypes';
 
 export default function drawer(state = initialState.drawer, action) {
-    console.log(state);
     switch (action.type) {
         case OPEN_DRAWER_SUCCESS:
         return { ...state,  opened: true};

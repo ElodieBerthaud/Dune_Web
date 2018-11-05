@@ -23,7 +23,7 @@ const persistConfig = {
     key: 'root',
     storage: storage,
     stateReconciler: autoMergeLevel2,
-    whitelist: ['login']
+    whitelist: ['login', 'user']
 };
 
 const pReducer = persistReducer(persistConfig, reducers);
@@ -32,14 +32,12 @@ const pReducer = persistReducer(persistConfig, reducers);
 const sagaMiddleware = createSagaMiddleware();
 
 // dev tools middleware
-const reduxDevTools =
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
 // create a redux store with our reducer above and middleware
 let store = createStore(
     pReducer,
-    compose(applyMiddleware(sagaMiddleware), reduxDevTools)
-);
+    compose(applyMiddleware(sagaMiddleware), reduxDevTools));
 
 const persistor = persistStore(store);
 

@@ -131,52 +131,72 @@ class Header extends React.Component {
             </Menu>
         );
 
-        return (
-            <div className={classes.root}>
-                <AppBar position="static" color={"primary"}>
-                    <Toolbar>
-                        <IconButton onClick={onOpenDrawer} className={classes.menuButton} color="inherit" aria-label="Open drawer">
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography className={classes.title} variant="title" color="inherit" noWrap>
-                           Dune
-                        </Typography>
-                        <div className={classes.grow} />
-                        <div className={classes.sectionDesktop}>
-                            <IconButton color="inherit">
-                                <Badge className={classes.margin} badgeContent={4} color="secondary">
-                                    <MailIcon />
-                                </Badge>
+        if (this.props.logged){
+            return (
+                <div className={classes.root}>
+                    <AppBar position="static" color={"primary"}>
+                        <Toolbar>
+                            <IconButton onClick={onOpenDrawer} className={classes.menuButton} color="inherit" aria-label="Open drawer">
+                                <MenuIcon />
                             </IconButton>
-                            <IconButton color="inherit">
-                                <Badge className={classes.margin} badgeContent={17} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton
-                                aria-owns={isMenuOpen ? 'material-appbar' : null}
-                                aria-haspopup="true"
-                                onClick={this.handleProfileMenuOpen}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                        </div>
-                        <div className={classes.sectionMobile}>
-                            <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
-                                <MoreIcon />
-                            </IconButton>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-                {renderMenu}
-                {renderMobileMenu}
+                            <Typography className={classes.title} variant="title" color="inherit" noWrap>
+                                Dune
+                            </Typography>
+                            <div className={classes.grow} />
+                            <div className={classes.sectionDesktop}>
+                                <IconButton color="inherit">
+                                    <Badge className={classes.margin} badgeContent={4} color="secondary">
+                                        <MailIcon />
+                                    </Badge>
+                                </IconButton>
+                                <IconButton color="inherit">
+                                    <Badge className={classes.margin} badgeContent={17} color="secondary">
+                                        <NotificationsIcon />
+                                    </Badge>
+                                </IconButton>
+                                <IconButton
+                                    aria-owns={isMenuOpen ? 'material-appbar' : null}
+                                    aria-haspopup="true"
+                                    onClick={this.handleProfileMenuOpen}
+                                    color="inherit"
+                                >
+                                    <AccountCircle />
+                                </IconButton>
+                            </div>
+                            <div className={classes.sectionMobile}>
+                                <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
+                                    <MoreIcon />
+                                </IconButton>
+                            </div>
+                        </Toolbar>
+                    </AppBar>
+                    {renderMenu}
+                    {renderMobileMenu}
 
-                <Drawer open={this.state.open}/>
-            </div>
+                    <Drawer open={this.state.open}/>
+                </div>
+            );
+        }
+
+        else {
+            return (
+                <div className={classes.root}>
+                    <AppBar position="static" color={"primary"}>
+                        <Toolbar>
+                            <Typography className={classes.title} variant="title" color="inherit" noWrap>
+                                Dune
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    {renderMenu}
+                    {renderMobileMenu}
+
+                    <Drawer open={this.state.open}/>
+                </div>
 
 
-        );
+            );
+        }
     }
 }
 

@@ -10,7 +10,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import loader from '../images/loaders/bars-loader.gif';
 import {connect} from "react-redux";
 import { withRouter } from "react-router";
+import {withStyles} from "@material-ui/core/styles/index";
+import PropTypes from 'prop-types';
+
 const emailRegex = require('email-regex');
+
+const styles2 = theme => ({
+    margin: {
+        margin: theme.spacing.unit,
+    },
+});
 
 class Login extends Component{
 
@@ -49,11 +58,13 @@ class Login extends Component{
     };
 
     handleCheckFormForgot(){
+        const { onClickChangePass, token } = this.props;
         if (!emailRegex({exact: true}).test(this.state.emailforgot)){
             this.setState({emptyforgotemail : true});
         }
         else{
             this.setState({ loader: true });
+            onClickChangePass(this.state.emailforgot);
         }
     }
 
@@ -89,7 +100,12 @@ class Login extends Component{
     }
 
     render() {
+
+        const { passpending, passsuccess } = this.props;
+
         return (
+
+
             <div className="WrapLogin">
                 <div style={{margin:'5%'}}>
                     <div className="text-center title">Connexion</div>
@@ -133,11 +149,11 @@ class Login extends Component{
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >
-                    <div style={this.state.loader ? {textAlign:'center', margin: '10%'} : {display:'none'}}>
+                    <div style={passpending ? {textAlign:'center', margin: '10%'} : {display:'none'}}>
                         <img src={loader} style={{display: 'inherit', margin: '0 auto'}} />
                         Veulliez patienter, votre mail est en cours d'envoi...
                     </div>
-                    <div style={this.state.loader ? {display:"none"} : {display:''}}>
+                    <div style={passsuccess || passpending ? {display:"none"} : {display:''}}>
                         <DialogTitle id="form-dialog-title">Mot de passe oublié</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
@@ -172,17 +188,25 @@ class Login extends Component{
     };
 }
 
+Login.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
 const mapStateToProps = state => {
     return {
         logged: state.login.logged,
-        id_user: state.login.id_user
+        id_user: state.login.id_user,
+        passpending: state.password.asking,
+        passsuccess: state.password.success,
+        passerroor: state.password.error
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onClickConnect: (email, pass) => dispatch({ type: "LOGIN_REQUEST", email: email, pass: pass})
+        onClickConnect: (email, pass) => dispatch({ type: "LOGIN_REQUEST", email: email, pass: pass}),
+        onClickChangePass: (email) => dispatch({type: "CHANGE_PASSWORD_REQUEST", email: email})
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles2)(Login)));
