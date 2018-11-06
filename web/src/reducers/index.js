@@ -5,6 +5,8 @@ import login from './LoginReducer';
 import manageProfessor from './manageProfReducer';
 import user from './UserReducer';
 import password from './PasswordReducer';
+import students from './StudentsReducer';
+import uploadimg from './UploadImgReducer';
 
 
 const reducers =  combineReducers({
@@ -13,7 +15,9 @@ const reducers =  combineReducers({
     login,
     manageProfessor,
     user,
-    password
+    password,
+    students,
+    uploadimg
 });
 
 export default reducers;

@@ -9,7 +9,6 @@ import {connect} from "react-redux";
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
 import avatar from "../images/avatar.png";
-import dune from '../images/travel-857086_1920-1600x600.jpg';
 
 const styles = {
     list: {
@@ -19,7 +18,7 @@ const styles = {
         width: 'auto',
     },
     paper:{
-        backgroundColor: '#fee599'
+        backgroundColor: '#ffeec3'
     }
 };
 

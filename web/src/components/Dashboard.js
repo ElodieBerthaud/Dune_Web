@@ -125,7 +125,7 @@ class Dashboard extends React.Component {
         return (
             <div>
                 <div style={{marginBottom: '2%'}}>
-                    <h1 style={{textAlign: 'center', color: 'grey'}}>Bonjour {this.props.name} {this.props.lastname}, que voulez-vous faire aujourd'hui ?</h1>
+                    <h2 style={{textAlign: 'center', color: 'grey'}}>Bonjour {this.props.name} {this.props.lastname}, que voulez-vous faire aujourd'hui ?</h2>
                 </div>
                 <div>
                     <GridContainer>

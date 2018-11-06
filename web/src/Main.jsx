@@ -7,6 +7,7 @@ import Professor from "./components/Dashboard";
 import Follow from "./components/Follow";
 import Students from "./components/Students";
 import ManageProfessor from "./components/ManageProfessor";
+import Account from "./components/Account";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import PrivateRoute from "./components/PrivateRoute";
@@ -27,13 +28,23 @@ class Main extends Component{
     }
 
     handleClose(){
-        console.log("CLOSSSSE");
+
         this.setState({open: false});
+
+        if (this.props.passSuccess){
+            window.location = '/';
+        }
+    }
+
+    componentWillUpdate(){
+        this.state.open = true;
     }
 
     render(){
 
         const log = this.props;
+
+        document.body.style.backgroundColor = '#FFFFF6';
 
         return(
             <main>
@@ -49,6 +60,7 @@ class Main extends Component{
                     <PrivateRoute exact path='/follow' component={Follow} authed={log.logged}/>
                     <PrivateRoute exact path='/students' component={Students} authed={log.logged}/>
                     <PrivateRoute exact path='/add-professor' component={ManageProfessor} authed={log.director}/>
+                    <PrivateRoute exact path='/account' component={Account} authed={log.logged}/>
                     <Route path="*" component={P_404} />
                 </Switch>
 
@@ -57,8 +69,8 @@ class Main extends Component{
                     vertical: 'top',
                     horizontal: 'right',
                 }}
-                open={log.passSuccess && this.state.open}
-                autoHideDuration={6000}
+                open={this.props.passSuccess && this.state.open}
+                autoHideDuration={4000}
                 onClose={this.handleClose}
             >
                 <MySnackbarContent
@@ -71,13 +83,14 @@ class Main extends Component{
                         vertical: 'top',
                         horizontal: 'right',
                     }}
-                    open={log.passError}
+                    open={this.props.passError && this.state.open}
                     autoHideDuration={4000}
                     onClose={this.handleClose}
                 >
                     <MySnackbarContent
                         variant="error"
-                        message="ERREEEEUR."
+                        message={this.props.errorCode === 502 ? "Erreur: Aucun compte n'est associé à cet email." : ''}
+
                     />
                 </Snackbar>
             </main>
@@ -91,7 +104,8 @@ const mapStateToProps = state => {
         logged: state.login.logged,
         director: state.login.director,
         passSuccess: state.password.success,
-        passError: state.password.error
+        passError: state.password.error,
+        errorCode: state.password.errorCode
     };
 };
 

@@ -12,6 +12,8 @@ import {connect} from "react-redux";
 import { withRouter } from "react-router";
 import {withStyles} from "@material-ui/core/styles/index";
 import PropTypes from 'prop-types';
+import Student from './Student';
+
 
 const emailRegex = require('email-regex');
 
@@ -34,7 +36,7 @@ class Login extends Component{
             emailforgot: '',
             emptyemail: false,
             emptypassword: false,
-            emptyforgotemail: true,
+            emptyforgotemail: false,
             mandatory: 'Ce champs est obligatoire.'
         };
 
@@ -102,6 +104,9 @@ class Login extends Component{
     render() {
 
         const { passpending, passsuccess } = this.props;
+
+        console.log(this.state.emptyforgotemail);
+        console.log(this.state.emptypassword);
 
         return (
 
@@ -183,6 +188,8 @@ class Login extends Component{
                         </DialogActions>
                     </div>
                 </Dialog>
+
+
             </div>
         );
     };

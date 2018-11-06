@@ -46,7 +46,7 @@ sagaMiddleware.run(watcherSaga);
 
 ReactDOM.render((
     <Provider store={store}>
-        <PersistGate loading={<Loader />} persistor={persistor}>
+        <PersistGate loading={<Loader/>} persistor={persistor}>
             <BrowserRouter>
                     <App />
             </BrowserRouter>

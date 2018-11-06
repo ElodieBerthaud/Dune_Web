@@ -33,10 +33,7 @@ class Footer extends Component{
     render(){
         return(
             <div>
-                <div style={styles.phantomStyle}> </div>
-                <div style={styles.footerStyle}></div>
             </div>
-
         );
     }
 

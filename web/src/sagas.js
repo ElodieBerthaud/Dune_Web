@@ -5,7 +5,7 @@ import {
     ADD_PROFESSOR_SUCCESS,
     GET_USER_INFOS,
     CHANGE_PASSWORD_SUCCESS,
-    CHANGE_PASSWORD_ERROR
+    CHANGE_PASSWORD_ERROR, GET_STUDENTS_SUCCESS, GET_STUDENTS_ERROR, GET_IMG_RESPONSE
 } from "./actions/actionTypes";
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -16,13 +16,13 @@ export function* watcherSaga() {
     yield takeEvery('LOGOUT_REQUEST', logout);
     yield takeEvery('ADD_PROFESSOR_REQUEST', add_professor);
     yield takeEvery('CHANGE_PASSWORD_REQUEST', change_password);
+    yield takeEvery('GET_STUDENTS_REQUEST', get_all_students);
+    yield takeEvery('GET_IMG_REQUEST', show_image);
 }
 
 //GET PROFESSOR INFOS
 // function that makes the api request and returns a Promise for response
 function fetchProf(datas) {
-
-    console.log(datas.token);
 
     const url = "http://176.31.252.134:9001/api/v1/users/" + datas.id;
 
@@ -82,6 +82,23 @@ function change_password_api(datas){
         method: 'post',
         url: 'http://176.31.252.134:9001/api/v1/login/reset',
         data: datasTosend
+    })
+}
+
+function get_all_students_api(datas){
+
+    const datasTosend = new URLSearchParams();
+    datasTosend.append('token', datas.token);
+
+
+    return axios({
+        method: 'get',
+        url: 'http://176.31.252.134:9001/api/v1/eleves',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            token: datas.token
+        }
     })
 }
 
@@ -176,14 +193,53 @@ function* change_password(datas){
 
         const response = yield call(change_password_api, datas);
 
+        console.log(response);
+
         if (response.data.status === 200){
             yield put({type: CHANGE_PASSWORD_SUCCESS});
         }else{
-            yield put({type: CHANGE_PASSWORD_ERROR});
+
+            const error = response.data.status;
+
+            yield put({type: CHANGE_PASSWORD_ERROR, errorCode: error});
+        }
+
+    }catch (e) {
+
+        yield put({type: CHANGE_PASSWORD_ERROR});
+
+    }
+}
+
+function* get_all_students(datas){
+
+
+    try{
+
+        const response = yield call(get_all_students_api, datas);
+
+        const content = JSON.stringify(response.data.response);
+
+        if (response.data.status === 200){
+            yield put({type: GET_STUDENTS_SUCCESS, content: content});
+        }else{
+            yield put({type: GET_STUDENTS_ERROR});
         }
 
     }catch (e) {
 
 
     }
+}
+
+function*   show_image(file){
+
+    try{
+
+        yield put({type: GET_IMG_RESPONSE, file: file.file});
+
+    }catch(e){
+
+    }
+
 }

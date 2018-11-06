@@ -6,6 +6,7 @@ import Main from '../Main';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import Theme from './colors';
 import "../css/index.css";
+import Student from './Student';
 import {connect} from "react-redux";
 
 class App extends Component {
