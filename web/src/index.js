@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { Provider } from "react-redux";
 
-import reducers from "./reducers/index.js";
+import rootReducer from "./reducers/index.js";
 import { watcherSaga } from "./sagas";
 
 import {BrowserRouter} from 'react-router-dom';
@@ -26,7 +26,7 @@ const persistConfig = {
     whitelist: ['login', 'user']
 };
 
-const pReducer = persistReducer(persistConfig, reducers);
+const pReducer = persistReducer(persistConfig, rootReducer);
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware();

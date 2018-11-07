@@ -51,6 +51,10 @@ class Drawer extends React.Component {
         });
     };
 
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps.userName);
+    }
+
     render() {
 
         const { classes, opened, closeDrawer, onOpenDrawer} = this.props;

@@ -7,7 +7,8 @@ import user from './UserReducer';
 import password from './PasswordReducer';
 import students from './StudentsReducer';
 import uploadimg from './UploadImgReducer';
-
+import snackContent from './SnackReducer';
+import updateProf from './UpdateProf';
 
 const reducers =  combineReducers({
     drawer,
@@ -17,7 +18,18 @@ const reducers =  combineReducers({
     user,
     password,
     students,
-    uploadimg
+    uploadimg,
+    snackContent,
+    updateProf
 });
 
-export default reducers;
+const rootReducer = (state, action) => {
+
+    if (action.type === 'USER_LOGOUT') {
+        state = undefined
+    }
+
+    return reducers(state, action)
+}
+
+export default rootReducer;

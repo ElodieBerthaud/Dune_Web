@@ -29,6 +29,8 @@ class Main extends Component{
 
     handleClose(){
 
+        console.log("HANDLE CLOSE");
+
         this.setState({open: false});
 
         if (this.props.passSuccess){
@@ -69,13 +71,13 @@ class Main extends Component{
                     vertical: 'top',
                     horizontal: 'right',
                 }}
-                open={this.props.passSuccess && this.state.open}
+                open={this.props.success && this.state.open}
                 autoHideDuration={4000}
                 onClose={this.handleClose}
             >
                 <MySnackbarContent
                     variant="success"
-                    message="Votre mot de passe a bien été changé ! un email vient de vous etre Envoyé."
+                    message={this.props.message}
                 />
             </Snackbar>
                 <Snackbar
@@ -83,13 +85,13 @@ class Main extends Component{
                         vertical: 'top',
                         horizontal: 'right',
                     }}
-                    open={this.props.passError && this.state.open}
+                    open={this.props.error && this.state.open}
                     autoHideDuration={4000}
                     onClose={this.handleClose}
                 >
                     <MySnackbarContent
                         variant="error"
-                        message={this.props.errorCode === 502 ? "Erreur: Aucun compte n'est associé à cet email." : ''}
+                        message={this.props.message}
 
                     />
                 </Snackbar>
@@ -105,7 +107,10 @@ const mapStateToProps = state => {
         director: state.login.director,
         passSuccess: state.password.success,
         passError: state.password.error,
-        errorCode: state.password.errorCode
+        errorCode: state.password.errorCode,
+        error: state.snackContent.error,
+        success: state.snackContent.success,
+        message: state.snackContent.message
     };
 };
 

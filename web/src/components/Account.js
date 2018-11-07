@@ -33,10 +33,19 @@ class Account extends Component{
         super(props);
 
         this.state = {
-            file: null
+            file: null,
+            name: null,
+            lastName: null,
+            email: null
         }
 
         this.changeImage = this.changeImage.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
+        this.handleChangeValues = this.handleChangeValues.bind(this);
+
+        this.state.name = this.props.userName;
+        this.state.lastName = this.props.userLastname;
+        this.state.email = this.props.email;
     }
 
     changeImage(event){
@@ -46,6 +55,25 @@ class Account extends Component{
         const file = URL.createObjectURL(event.target.files[0]);
 
         onPickImage(file);
+    }
+
+    handleUpdate(){
+
+        console.log("HANDLE UPDATE");
+
+        const { token, idProf, ChangeUserInfos } = this.props;
+
+        console.log("ID ===== " + idProf);
+
+
+        ChangeUserInfos(this.state.name, this.state.lastName, this.state.email, idProf, token);
+    }
+
+    handleChangeValues(evt){
+        this.setState({[evt.target.name]: evt.target.value});
+
+        console.log(this.state.lastName);
+        console.log(evt.target.value);
     }
 
     render(){
@@ -82,23 +110,28 @@ class Account extends Component{
                     </CardContent>
                 <div style={{borderBottom: '1px solid grey', width: '40%', margin:'0 auto'}}>
                 </div>
-                <CardContent style={{padding: '0', margin: '1%'}}>
+                <CardContent style={{padding: '0', margin: '1%', textAlign: 'center'}}>
+                    <h2> Vos données personnelles </h2>
                     <div style={{textAlign: 'center'}}>
                         <TextField
                             id="outlined-name"
                             label="Nom"
                             margin="normal"
                             variant="outlined"
-                            value={this.props.userLastname}
+                            name='lastName'
+                            value={this.state.lastName}
                             style={{margin: '1%'}}
+                            onChange={this.handleChangeValues}
                         />
                         <TextField
                             id="outlined-name"
                             label="Prenom"
                             margin="normal"
                             variant="outlined"
-                            value={this.props.userName}
+                            name='name'
+                            value={this.state.name}
                             style={{margin: '1%'}}
+                            onChange={this.handleChangeValues}
                         />
                     </div>
                     <div style={{textAlign: 'center'}}>
@@ -107,10 +140,16 @@ class Account extends Component{
                             label="Email"
                             margin="normal"
                             variant="outlined"
-                            value={this.props.email}
+                            name='email'
+                            value={this.state.email}
                             style={{margin: '1%', width: '30%'}}
+                            onChange={this.handleChangeValues}
                         />
                     </div>
+                    <Button  variant="contained" color="primary" // <-- Just add me!
+                             label='My Label' className={classes.button} onClick={this.handleUpdate}>
+                        Modifier mes informations
+                    </Button>
                 </CardContent>
                 </Card>
                 <ViewImage/>
@@ -126,7 +165,9 @@ const mapStateToProps = state => {
         userLastname: state.user.lastname,
         email: state.user.email,
         canceled: state.uploadimg.canceled,
-        director: state.login.director
+        director: state.login.director,
+        idProf: state.login.id_user,
+        token: state.login.token
     };
 };
 
@@ -136,7 +177,8 @@ Account.propTypes = {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onPickImage: (file) => dispatch({ type: "GET_IMG_REQUEST", file })
+        onPickImage: (file) => dispatch({ type: "GET_IMG_REQUEST", file }),
+        ChangeUserInfos: (prenomProf, nomProf, emailProf, idProf, token) => dispatch({type: 'UPDATE_PROF_REQUEST', prenomProf, nomProf, emailProf, idProf, token})
     };
 };
 

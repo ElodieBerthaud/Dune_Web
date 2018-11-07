@@ -76,10 +76,6 @@ class Header extends React.Component {
         this.setState({ mobileMoreAnchorEl: null });
     };
 
-    handleAccount = () => {
-        window.location = '/account';
-    }
-
     render() {
         const { anchorEl, mobileMoreAnchorEl } = this.state;
         const { classes } = this.props;
@@ -97,7 +93,7 @@ class Header extends React.Component {
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
-                <MenuItem onClick={this.handleAccount}>Mon compte</MenuItem>
+                <MenuItem onClick={this.handleClose}>Mon compte</MenuItem>
                 <MenuItem onClick={handleLogout}>Se deconnecter</MenuItem>
             </Menu>
         );

@@ -34,7 +34,7 @@ function Student(props){
 
     for (var i = 0 ; i < nbEleve ; i++){
         eleve.push(
-            <div style={{width: '20%', display: 'inline-block', margin: '1%'}} key={1}>
+            <div style={{width: '20%', display: 'inline-block', margin: '1%'}} key={i}>
                 <Card className={classes.card} classes={{root: classes.card}}>
                     <CardActionArea>
                         <Avatar

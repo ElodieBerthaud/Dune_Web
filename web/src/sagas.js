@@ -5,7 +5,8 @@ import {
     ADD_PROFESSOR_SUCCESS,
     GET_USER_INFOS,
     CHANGE_PASSWORD_SUCCESS,
-    CHANGE_PASSWORD_ERROR, GET_STUDENTS_SUCCESS, GET_STUDENTS_ERROR, GET_IMG_RESPONSE
+    CHANGE_PASSWORD_ERROR, GET_STUDENTS_SUCCESS, GET_STUDENTS_ERROR, GET_IMG_RESPONSE,
+    SNACK_PUT_SUCCESS, SNACK_PUT_ERROR, UPDATE_PROF_SUCCESS, UPDATE_PROF_ERROR
 } from "./actions/actionTypes";
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -18,6 +19,8 @@ export function* watcherSaga() {
     yield takeEvery('CHANGE_PASSWORD_REQUEST', change_password);
     yield takeEvery('GET_STUDENTS_REQUEST', get_all_students);
     yield takeEvery('GET_IMG_REQUEST', show_image);
+    yield takeEvery('SNACK_PUT_REQUEST', snack_req);
+    yield takeEvery('UPDATE_PROF_REQUEST', update_prof);
 }
 
 //GET PROFESSOR INFOS
@@ -41,8 +44,6 @@ function login_in(logs){
     const datas = new URLSearchParams();
     datas.append('email', logs.email);
     datas.append('password', logs.password);
-
-    console.log(datas);
 
     return axios({
         method: 'post',
@@ -90,7 +91,6 @@ function get_all_students_api(datas){
     const datasTosend = new URLSearchParams();
     datasTosend.append('token', datas.token);
 
-
     return axios({
         method: 'get',
         url: 'http://176.31.252.134:9001/api/v1/eleves',
@@ -99,7 +99,27 @@ function get_all_students_api(datas){
             'Content-Type': 'application/json',
             token: datas.token
         }
+    });
+}
+
+function update_prof_api(datas){
+
+
+    const datasTosend = new URLSearchParams();
+    datasTosend.append('idUser', datas.idProf);
+    datasTosend.append('nomUser', datas.nomProf);
+    datasTosend.append('prenomUser', datas.prenomProf);
+    datasTosend.append('emailUser', datas.emailProf);
+    datasTosend.append('token', datas.token);
+
+    console.log(datas);
+
+    return axios({
+        method: 'post',
+        url: 'http://176.31.252.134:9001/api/v1/users/update',
+        data: datasTosend
     })
+
 }
 
 //DRAWER
@@ -124,6 +144,8 @@ function* login(logs){
     try{
 
         const response = yield call(login_in, datas);
+
+        console.log(response);
         if (response.data.success === true) {
             const token = response.data.token;
             const user_id = response.data.currUser;
@@ -197,11 +219,18 @@ function* change_password(datas){
 
         if (response.data.status === 200){
             yield put({type: CHANGE_PASSWORD_SUCCESS});
+
+            yield put({type: SNACK_PUT_SUCCESS, message: 'Votre mot de passe vient de vous etre envoye par mail.'});
         }else{
 
             const error = response.data.status;
 
             yield put({type: CHANGE_PASSWORD_ERROR, errorCode: error});
+
+            if (error === 502){
+                yield put({type: SNACK_PUT_ERROR, message: 'Erreur. Aucun compte n\'est lie a cette Email.'});
+            }
+
         }
 
     }catch (e) {
@@ -242,4 +271,58 @@ function*   show_image(file){
 
     }
 
+}
+
+function* snack_req(req){
+
+    try{
+
+        if (req.type === 'error'){
+            yield put({type: SNACK_PUT_ERROR, message: req.message});
+        }else{
+            yield put({type: SNACK_PUT_SUCCESS, message: req.message});
+        }
+
+    }catch(e){
+
+    }
+
+}
+
+function* update_prof(datas){
+
+    console.log(datas);
+    
+    try{
+
+    const response = yield call(update_prof_api, datas);
+
+    console.log(response);
+
+    if (response.data.status === 200) {
+        yield put({type: UPDATE_PROF_SUCCESS});
+        yield put({type: SNACK_PUT_SUCCESS, message: 'Vos informations ont bien ete mises a jour.'});
+
+
+        var datas_2 = {
+            token: datas.token,
+            id: datas.idProf
+        };
+        const response_2 = yield call(fetchProf, datas_2);
+        if (response_2.data.status === 200) {
+
+            const lastname = response_2.data.response[0].nomUser;
+            const name = response_2.data.response[0].prenomUser;
+            const email = response_2.data.response[0].emailUser;
+
+            yield  put({type: 'GET_USER_INFOS', lastname: lastname, name: name, email: email});
+
+        }
+    }else {
+        yield put({type: UPDATE_PROF_ERROR})
+    }
+    }catch (e) {
+        
+    }
+    
 }

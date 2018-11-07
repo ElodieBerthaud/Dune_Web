@@ -6,7 +6,9 @@ const initialState = {
     user: {lastname: null, name: null, email: null},
     password: {asking: false, success: false, error: false, errorCode: null},
     students: {asking: false, success: false, error: false, content: null},
-    uploadimg: {file: null, canceled: false}
+    uploadimg: {file: null, canceled: false},
+    snackContent: { success: false, error: false, message: null },
+    updateProf: {pending: false, datas: null, success: false, error: false}
 }
 
 export default initialState;
