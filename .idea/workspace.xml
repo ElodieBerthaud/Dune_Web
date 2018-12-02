@@ -2,45 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="524719f7-f942-4b74-9cda-3a9d93487144" name="Default" comment="Account page: Upload image system + Print">
-      <change afterPath="$PROJECT_DIR$/web/src/components/AskedApps.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/components/AvailableApps.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/components/StoreApp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/electron-starter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/electron-wait-react.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/web/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/Main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/Main.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/actions/actionTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/actions/actionTypes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Account.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/AddItemForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/AddItemForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Drawer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Drawer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Follow.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Follow.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Footer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Footer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/FullTest.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Loader.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Loader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/ManageProfessor.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/ManageProfessor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/MySnackbarContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/MySnackbarContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/P_404.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/P_404.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Student.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Student.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/Students.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/Students.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/ViewImage.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/ViewImage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/menuDrawer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/menuDrawer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/LoginContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/LoginContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/css/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/reducers/LoginReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/reducers/LoginReducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/reducers/LogoutReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/AppsRegistered.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/reducers/ProfessorReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/reducers/ProfessorReducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/reducers/SnackReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/reducers/SnackReducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/reducers/UploadImgReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/reducers/UploadImgReducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/reducers/initialState.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/reducers/initialState.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/sagas.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/sagas.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -58,7 +20,7 @@
         <entry file="file://$PROJECT_DIR$/web/src/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="583">
-              <caret line="39" column="61" lean-forward="true" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
+              <caret line="39" column="61" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -87,15 +49,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sagas.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="sagas.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/src/sagas.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
-              <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
+              <caret line="58" selection-start-line="58" selection-end-line="58" />
               <folding>
                 <element signature="e#0#70#0" expanded="true" />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sources" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/sources">
+          <provider selected="true" editor-type-id="LargeFileEditor">
+            <state relative-caret-position="-2041" />
           </provider>
         </entry>
       </file>
@@ -199,9 +168,6 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/web/node_modules" />
-  </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths>
       <path value="$PROJECT_DIR$/web/package.json" />
@@ -223,52 +189,6 @@
             <path>
               <item name="Dune_Web" type="b2602c69:ProjectViewProjectNode" />
               <item name="Dune_Web" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Dune_Web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Dune_Web" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Dune_Web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Dune_Web" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Dune_Web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Dune_Web" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="actions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Dune_Web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Dune_Web" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Dune_Web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Dune_Web" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="containers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Dune_Web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Dune_Web" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Dune_Web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Dune_Web" type="462c0819:PsiDirectoryNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="reducers" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -451,7 +371,7 @@
       <workItem from="1543415966816" duration="382000" />
       <workItem from="1543598695282" duration="234000" />
       <workItem from="1543598934008" duration="3510000" />
-      <workItem from="1543764204260" duration="1982000" />
+      <workItem from="1543764204260" duration="2258000" />
     </task>
     <task id="LOCAL-00001" summary="New views for web app : Add professor, choose on witch type of account to connect, forgot password modal.&#10;Other little modifications and optimisation of code">
       <created>1538318959202</created>
@@ -520,7 +440,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="212055000" />
+    <option name="totallyTimeSpent" value="212331000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -537,7 +457,7 @@
     <layout>
       <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.4993895" weight="0.32923076" />
       <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.53540903" side_tool="true" weight="0.20512821" />
-      <window_info anchor="bottom" id="File Transfer" order="0" sideWeight="0.46459097" weight="0.32923076" />
+      <window_info anchor="bottom" id="File Transfer" order="0" sideWeight="0.46459097" visible="true" weight="0.32923076" />
       <window_info anchor="bottom" id="Run" order="3" sideWeight="0.4957265" weight="0.32923076" />
       <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.498779" weight="0.32923076" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.4908425" weight="0.43076923" />
@@ -607,13 +527,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/PasswordReducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="103" selection-start-line="10" selection-start-column="103" selection-end-line="10" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/reducers/UserReducer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -968,7 +881,7 @@
     <entry file="file://$PROJECT_DIR$/web/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="583">
-          <caret line="39" column="61" lean-forward="true" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
+          <caret line="39" column="61" selection-start-line="39" selection-start-column="61" selection-end-line="39" selection-end-column="61" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
@@ -995,11 +908,16 @@
     <entry file="file://$PROJECT_DIR$/web/src/sagas.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
           <folding>
             <element signature="e#0#70#0" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sources">
+      <provider selected="true" editor-type-id="LargeFileEditor">
+        <state relative-caret-position="-2041" />
       </provider>
     </entry>
   </component>
