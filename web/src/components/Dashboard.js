@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import React, { Component } from 'react';
+import React  from 'react';
 import { withRouter } from "react-router";
 
 import PropTypes from "prop-types";
@@ -7,12 +7,8 @@ import PropTypes from "prop-types";
 import ChartistGraph from "react-chartist";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
-import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
-import Store from "@material-ui/icons/Store";
-import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import AccessTime from "@material-ui/icons/AccessTime";
@@ -28,7 +24,6 @@ import GridContainer from "./Dashboard/GridContainer.jsx";
 import Table from "./Dashboard/Table.jsx";
 import Tasks from "./Dashboard/Tasks.jsx";
 import CustomTabs from "./Dashboard/CustomTabs.jsx";
-import Danger from "./Dashboard/Danger.jsx";
 import Card from "./Dashboard/Card.jsx";
 import CardHeader from "./Dashboard/CardHeader.jsx";
 import CardIcon from "./Dashboard/CardIcon.jsx";
@@ -39,9 +34,7 @@ import CardFooter from "./Dashboard/CardFooter.jsx";
 import { bugs, website, server } from "./variables/general.jsx";
 
 import {
-    dailySalesChart,
-    emailsSubscriptionChart,
-    completedTasksChart
+    dailySalesChart
 } from "./variables/charts.jsx";
 
 import dashboardStyle from "./Dashboard/styles/dashboardStyle.jsx";
@@ -61,14 +54,12 @@ class Dashboard extends React.Component {
         this.director_report = this.director_report.bind(this);
     }
 
+    componentWillMount(){
+        const { getStudents, token } = this.props;
 
-    handleChange = (event, value) => {
-        this.setState({ value });
-    };
+        getStudents(token);
 
-    handleChangeIndex = index => {
-        this.setState({ value: index });
-    };
+    }
 
     director_report(isDirector){
         if (isDirector){
@@ -120,7 +111,15 @@ class Dashboard extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const { name, lastname, isDirector } = this.props;
+        const { students } = this.props;
+
+        const studentsObj = JSON.parse(students);
+
+        var nbstudent = 0;
+
+        if (studentsObj !== null){
+            nbstudent = studentsObj.length;
+        }
 
         return (
             <div>
@@ -136,7 +135,7 @@ class Dashboard extends React.Component {
                                         <Accessibility />
                                     </CardIcon>
                                     <p className={classes.cardCategory}>Nombres d'éleves</p>
-                                    <h3 className={classes.cardTitle}>34</h3>
+                                    <h3 className={classes.cardTitle}>{nbstudent}</h3>
                                 </CardHeader>
                                 <CardFooter stats>
                                     <div className={classes.stats}>
@@ -160,7 +159,7 @@ class Dashboard extends React.Component {
                                 <CardFooter stats>
                                     <div className={classes.stats}>
                                         <DateRange />
-                                        <a href="#pablo" onClick={e => e.preventDefault()}>
+                                        <a href="/store" >
                                             Voir votre bibliothèque
                                         </a>
                                     </div>
@@ -253,13 +252,16 @@ const mapStateToProps = state => {
     return {
         name: state.user.name,
         lastname: state.user.lastname,
-        isDirector: state.login.director
+        isDirector: state.login.director,
+        token: state.login.token,
+        students: state.students.content
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onRequestProf: () => dispatch({ type: "API_CALL_REQUEST" })
+        onRequestProf: () => dispatch({ type: "API_CALL_REQUEST" }),
+        getStudents: (token) => dispatch({ type: "GET_STUDENTS_REQUEST", token})
     };
 };
 

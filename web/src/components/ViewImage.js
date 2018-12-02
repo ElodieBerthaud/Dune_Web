@@ -21,16 +21,18 @@ class ViewImage extends Component{
         this.handleSelect = this.handleSelect.bind(this);
 
         this.state = {
-            open: false
+            open: false,
+            image: null
         }
 
     }
 
     handleSelect(){
 
-        this.setState({ open: true });
+        const {SelectImage, email, idUser, token, image} = this.props;
 
-    }
+        SelectImage(email, idUser, token, image);
+        }
 
     handleCancel(){
 
@@ -44,16 +46,10 @@ class ViewImage extends Component{
 
     render() {
 
-
-        this.state.open = this.props.image !== null ? true : false;
-
-        console.log(this.state.open);
-
-
         return (
 
             <Dialog
-                open={this.state.open}
+                open={this.props.prevImage}
                 aria-labelledby="scroll-dialog-title">
                 <DialogTitle id="scroll-dialog-title" style={{textAlign: 'center'}}>Votre photo</DialogTitle>
                 <DialogContent>
@@ -77,13 +73,18 @@ class ViewImage extends Component{
 
 const mapStateToProps = state => {
     return {
-        image: state.uploadimg.file
+        image: state.uploadimg.file,
+        prevImage: state.uploadimg.prevImage,
+        email: state.professor.emailProf,
+        idUser: state.login.id_user,
+        token: state.login.token
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        CancelImage: () => dispatch({ type: "EMPTY_IMG_REQUEST" })
+        CancelImage: () => dispatch({ type: "EMPTY_IMG_REQUEST" }),
+        SelectImage: (idUser, email, token, pic, image) => dispatch({ type: "UPLOAD_IMG_REQUEST" })
     };
 };
 

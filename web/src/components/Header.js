@@ -76,13 +76,26 @@ class Header extends React.Component {
         this.setState({ mobileMoreAnchorEl: null });
     };
 
+    handleAccount = () => {
+        window.location = '/account';
+    }
+
+    handleLogout = () =>{
+
+        const { handleLogoutRedux } = this.props;
+
+        handleLogoutRedux();
+
+        window.location = '/';
+
+    }
+
     render() {
         const { anchorEl, mobileMoreAnchorEl } = this.state;
         const { classes } = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
         const { onOpenDrawer } = this.props;
-        const { handleLogout } = this.props;
         const log = this.props;
 
         const renderMenu = (
@@ -93,8 +106,8 @@ class Header extends React.Component {
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
-                <MenuItem onClick={this.handleClose}>Mon compte</MenuItem>
-                <MenuItem onClick={handleLogout}>Se deconnecter</MenuItem>
+                <MenuItem onClick={this.handleAccount}>Mon compte</MenuItem>
+                <MenuItem onClick={this.handleLogout}>Se deconnecter</MenuItem>
             </Menu>
         );
 
@@ -214,7 +227,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onOpenDrawer: () => dispatch({ type: "OPEN_DRAWER_REQUEST" }),
-        handleLogout: () => dispatch({type: "LOGOUT_REQUEST"})
+        handleLogoutRedux: () => dispatch({type: "LOGOUT_REQUEST"})
     };
 };
 

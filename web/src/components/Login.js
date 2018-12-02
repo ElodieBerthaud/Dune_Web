@@ -12,7 +12,6 @@ import {connect} from "react-redux";
 import { withRouter } from "react-router";
 import {withStyles} from "@material-ui/core/styles/index";
 import PropTypes from 'prop-types';
-import Student from './Student';
 
 
 const emailRegex = require('email-regex');
@@ -60,7 +59,7 @@ class Login extends Component{
     };
 
     handleCheckFormForgot(){
-        const { onClickChangePass, token } = this.props;
+        const { onClickChangePass } = this.props;
         if (!emailRegex({exact: true}).test(this.state.emailforgot)){
             this.setState({emptyforgotemail : true});
         }
@@ -94,7 +93,6 @@ class Login extends Component{
     handleChangeForgot(evt){
         this.setState({[evt.target.name]: evt.target.value});
         !emailRegex({exact: true}).test(this.state.emailforgot) ? this.setState({emptyforgotemail : true}) : this.setState({emptyforgotemail : false});
-        console.log(this.state.emptyforgotemail);
     }
 
     checkEmailForgot(){
@@ -104,9 +102,6 @@ class Login extends Component{
     render() {
 
         const { passpending, passsuccess } = this.props;
-
-        console.log(this.state.emptyforgotemail);
-        console.log(this.state.emptypassword);
 
         return (
 
@@ -155,7 +150,7 @@ class Login extends Component{
                     aria-labelledby="form-dialog-title"
                 >
                     <div style={passpending ? {textAlign:'center', margin: '10%'} : {display:'none'}}>
-                        <img src={loader} style={{display: 'inherit', margin: '0 auto'}} />
+                        <img src={loader} style={{display: 'inherit', margin: '0 auto'}} alt={'loader'}/>
                         Veulliez patienter, votre mail est en cours d'envoi...
                     </div>
                     <div style={passsuccess || passpending ? {display:"none"} : {display:''}}>

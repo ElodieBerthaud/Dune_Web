@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 
 const P_404 = () =>
     <div style={{textAlign: 'center'}}>

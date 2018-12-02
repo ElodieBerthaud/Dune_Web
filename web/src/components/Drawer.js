@@ -51,10 +51,6 @@ class Drawer extends React.Component {
         });
     };
 
-    componentWillReceiveProps(nextProps){
-        console.log(nextProps.userName);
-    }
-
     render() {
 
         const { classes, opened, closeDrawer, onOpenDrawer} = this.props;
@@ -94,7 +90,7 @@ class Drawer extends React.Component {
                     <div
                         tabIndex={0}
                         role="button"
-                        onClick={this.toggleDrawer(!this.props.open)}
+                        onClick={closeDrawer}
                         onKeyDown={this.toggleDrawer(!this.props.open)}
                     >
                         {sideList}

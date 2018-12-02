@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import Student from './Student';
 import "../css/Login.css";
-import {withStyles} from "@material-ui/core/styles/index";
 import {connect} from "react-redux";
-import Loader from './Loader';
-import Button from '@material-ui/core/Button';
 
 class Students extends Component {
 
@@ -24,16 +21,10 @@ class Students extends Component {
     }
 
     test(){
-        console.log("HAHAHHAHAAH");
-
         return <Student students={this.props.students}/>;
     }
 
     render() {
-
-        const {asking} = this.props;
-
-        console.log(this.props.asking);
 
         if (this.props.asking){
             return <div></div>;

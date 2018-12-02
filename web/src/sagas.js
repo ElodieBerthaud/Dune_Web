@@ -1,12 +1,11 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 import {
     ADD_PROFESSOR_ERROR,
     ADD_PROFESSOR_SUCCESS,
-    GET_USER_INFOS,
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_ERROR, GET_STUDENTS_SUCCESS, GET_STUDENTS_ERROR, GET_IMG_RESPONSE,
-    SNACK_PUT_SUCCESS, SNACK_PUT_ERROR, UPDATE_PROF_SUCCESS, UPDATE_PROF_ERROR
+    SNACK_PUT_SUCCESS, SNACK_PUT_ERROR, UPDATE_PROF_SUCCESS, UPDATE_PROF_ERROR, TOKEN_UNVALID
 } from "./actions/actionTypes";
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -21,6 +20,8 @@ export function* watcherSaga() {
     yield takeEvery('GET_IMG_REQUEST', show_image);
     yield takeEvery('SNACK_PUT_REQUEST', snack_req);
     yield takeEvery('UPDATE_PROF_REQUEST', update_prof);
+    yield takeEvery('UPLOAD_IMG_REQUEST', uploadImage);
+    yield takeLatest('VERIFY_TOKEN_REQUEST', verifyToken)
 }
 
 //GET PROFESSOR INFOS
@@ -62,8 +63,6 @@ function add_professor_api(add){
     datas.append('email', add.email)
     datas.append('token', add.token);
     datas.append('directorId', 1);
-
-    console.log(datas);
 
     return axios({
         method: 'post',
@@ -112,11 +111,42 @@ function update_prof_api(datas){
     datasTosend.append('emailUser', datas.emailProf);
     datasTosend.append('token', datas.token);
 
-    console.log(datas);
-
     return axios({
         method: 'post',
         url: 'http://176.31.252.134:9001/api/v1/users/update',
+        data: datasTosend
+    })
+
+}
+
+function upload_img_api(datas){
+
+    const datasTosend = new URLSearchParams();
+    datasTosend.append('pic', datas.file);
+    datasTosend.append('idUser', datas.idProf);
+    datasTosend.append('emailUser', datas.email);
+
+    return axios({
+        method: 'post',
+        url: 'http://176.31.252.134:7001/api/v1/users/picProf',
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        },
+        data: datasTosend
+    })
+
+}
+
+function verify_token_api(datas){
+
+
+    const datasTosend = new URLSearchParams();
+    datasTosend.append('token', datas.token);
+
+    return axios({
+        method: 'post',
+        url: 'http://176.31.252.134:9001/api/v1/tokens/verifyToken',
         data: datasTosend
     })
 
@@ -145,7 +175,6 @@ function* login(logs){
 
         const response = yield call(login_in, datas);
 
-        console.log(response);
         if (response.data.success === true) {
             const token = response.data.token;
             const user_id = response.data.currUser;
@@ -201,8 +230,6 @@ function* add_professor(datas){
 
     }catch (e) {
 
-        console.log("ERROR !!!" + e.response.status);
-
         yield put({type: ADD_PROFESSOR_ERROR, error: e.response.status});
 
     }
@@ -214,8 +241,6 @@ function* change_password(datas){
     try{
 
         const response = yield call(change_password_api, datas);
-
-        console.log(response);
 
         if (response.data.status === 200){
             yield put({type: CHANGE_PASSWORD_SUCCESS});
@@ -265,7 +290,7 @@ function*   show_image(file){
 
     try{
 
-        yield put({type: GET_IMG_RESPONSE, file: file.file});
+        yield put({type: GET_IMG_RESPONSE, file: file.file, prevImage: true});
 
     }catch(e){
 
@@ -291,13 +316,9 @@ function* snack_req(req){
 
 function* update_prof(datas){
 
-    console.log(datas);
-    
     try{
 
     const response = yield call(update_prof_api, datas);
-
-    console.log(response);
 
     if (response.data.status === 200) {
         yield put({type: UPDATE_PROF_SUCCESS});
@@ -308,6 +329,7 @@ function* update_prof(datas){
             token: datas.token,
             id: datas.idProf
         };
+
         const response_2 = yield call(fetchProf, datas_2);
         if (response_2.data.status === 200) {
 
@@ -325,4 +347,34 @@ function* update_prof(datas){
         
     }
     
+}
+
+function* uploadImage(datas){
+
+    try{
+
+        const response = yield call(upload_img_api, datas);
+
+    }catch (e) {
+
+    }
+
+}
+
+function* verifyToken(datas){
+
+    try{
+
+        const response = yield call(verify_token_api, datas);
+
+        if (response.data.name === 'JsonWebTokenError'){
+            yield put({type: TOKEN_UNVALID});
+        }
+
+
+
+    }catch (e) {
+
+    }
+
 }

@@ -282,7 +282,6 @@ class AddItemForm extends React.Component {
                         </DialogActions>
                     </div>
                 </Dialog>
-                </Card>
             </div>
 
         );

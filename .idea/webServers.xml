@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="6205eb9d-a8ee-430d-bd26-99a54bf08a29" name="Dune" url="http://176.31.252.134:7000">
+        <fileTransfer host="176.31.252.134" port="22" rootFolder="/home/e_berthaud/ftp/dev" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

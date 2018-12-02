@@ -3,7 +3,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import GroupAdd from '@material-ui/icons/GroupAdd';
-import MailIcon from '@material-ui/icons/Mail';
 import Dashboard from '@material-ui/icons/Dashboard';
 import BarChart from '@material-ui/icons/BarChart';
 import ViewModule from '@material-ui/icons/ViewModule';
@@ -37,7 +36,7 @@ export const mainListItem = (
                 <ListItemText primary="Trombinoscope" />
             </ListItem>
         </Link>
-        <Link to='' style={{textDecoration: 'none'}}>
+        <Link to='/store' style={{textDecoration: 'none'}}>
             <ListItem button>
                 <ListItemIcon>
                     <Shop />

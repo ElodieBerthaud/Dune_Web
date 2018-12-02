@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import "../css/Login.css";
-import Loader from './Loader';
+import VideoPlayer from 'react-simple-video-player';
 
 class Follow extends Component{
 
-    constructor(props) {
-        super(props);
-    }
-
     render(){
         return(
-            < Loader/>
+            <div>
+                <VideoPlayer
+                    url="https://www.youtube.com/watch?v=KUf5RSRPxS8"
+                    poster="/myPoster.png"
+                    width='100'
+                    height='100'
+                    autoplay
+                />
+            </div>
         );
     }
 

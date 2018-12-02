@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import "../css/Login.css";
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import avatar from "../images/avatar.png";
 import Avatar from '@material-ui/core/Avatar';
@@ -50,21 +49,18 @@ class Account extends Component{
 
     changeImage(event){
 
-        const { onPickImage } = this.props;
+        const { onPickImage, email, token, idProf } = this.props;
 
-        const file = URL.createObjectURL(event.target.files[0]);
+        //const file = URL.createObjectURL(event.target.files[0]);
 
-        onPickImage(file);
+        const file = event.target.files[0];
+
+        onPickImage(file, idProf, email, token);
     }
 
     handleUpdate(){
 
-        console.log("HANDLE UPDATE");
-
         const { token, idProf, ChangeUserInfos } = this.props;
-
-        console.log("ID ===== " + idProf);
-
 
         ChangeUserInfos(this.state.name, this.state.lastName, this.state.email, idProf, token);
     }
@@ -72,8 +68,6 @@ class Account extends Component{
     handleChangeValues(evt){
         this.setState({[evt.target.name]: evt.target.value});
 
-        console.log(this.state.lastName);
-        console.log(evt.target.value);
     }
 
     render(){
@@ -86,7 +80,7 @@ class Account extends Component{
                     <div>
                         <Avatar
                             alt="Adelle Charles"
-                            src={avatar}
+                            src={this.props.selected ? this.props.image : avatar}
                             className={classNames(classes.avatar, classes.bigAvatar)}
                             style={{margin: '2% auto', width: '15%', height: '15%', marginBottom: '0'}}
                             type='file'
@@ -97,7 +91,7 @@ class Account extends Component{
                         <div style={{textAlign: 'center'}}>
                             <Button  variant="contained" color="primary" // <-- Just add me!
                                     label='My Label' className={classes.button}>
-                                <input type="file" style={{position: 'absolute', opacity: '0'}} onChange={this.changeImage}/>
+                                <input type="file" name='pic' style={{position: 'absolute', opacity: '0'}} onChange={this.changeImage}/>
                                 changer ma photo
                             </Button>
                         </div>
@@ -167,7 +161,9 @@ const mapStateToProps = state => {
         canceled: state.uploadimg.canceled,
         director: state.login.director,
         idProf: state.login.id_user,
-        token: state.login.token
+        token: state.login.token,
+        selected: state.uploadimg.selected,
+        image: state.uploadimg.file
     };
 };
 
@@ -177,7 +173,7 @@ Account.propTypes = {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onPickImage: (file) => dispatch({ type: "GET_IMG_REQUEST", file }),
+        onPickImage: (file, idProf, email, token) => dispatch({ type: "UPLOAD_IMG_REQUEST", file, idProf, email, token }),
         ChangeUserInfos: (prenomProf, nomProf, emailProf, idProf, token) => dispatch({type: 'UPDATE_PROF_REQUEST', prenomProf, nomProf, emailProf, idProf, token})
     };
 };
