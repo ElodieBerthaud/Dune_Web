@@ -8,7 +8,8 @@ const initialState = {
     students: {asking: false, success: false, error: false, content: null},
     uploadimg: {file: null, canceled: false, selected: false, prevImage: false},
     snackContent: { success: false, error: false, message: null },
-    updateProf: {pending: false, datas: null, success: false, error: false}
+    updateProf: {pending: false, datas: null, success: false, error: false},
+    studentProfile: {pending: false, nomEleve: null, prenomEleve: null, NoEleve: null, success: null, error: null, errorCode: null}
 }
 
 export default initialState;

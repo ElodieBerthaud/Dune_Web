@@ -5,9 +5,10 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import avatar from "../images/avatar.png";
+import student from "../images/student.png";
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
+import { Component } from 'react';
 
 
 const styles = {
@@ -18,50 +19,78 @@ const styles = {
     },
 };
 
-function Student(props){
+class Student extends Component {
 
-    const { classes } = props;
+    constructor(props) {
+        super(props);
 
-    let eleve = [];
-
-    let obj = JSON.parse(props.students);
-    if (obj != null){
-
-    const nbEleve = obj.length;
-
-    for (var i = 0 ; i < nbEleve ; i++){
-        eleve.push(
-            <div style={{width: '20%', display: 'inline-block', margin: '1%'}} key={i}>
-                <Card className={classes.card} classes={{root: classes.card}}>
-                    <CardActionArea>
-                        <Avatar
-                            alt="Adelle Charles"
-                            src={avatar}
-                            className={classNames(classes.avatar, classes.bigAvatar)}
-                            style={{margin: '0 auto', width: '40%', height: '40%', marginTop: '10%'}}
-                        />
-                        <CardContent>
-
-                            <Typography gutterBottom style={{textAlign: 'center'}}>
-                                {obj[i].nomEleve} {obj[i].prenomEleve}
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </div>
-        )
+        this.goToProfile = this.goToProfile.bind(this);
     }
-}
-
-        return(
-
-            <div style={{textAlign: 'center'}}>
-                { eleve }
-            </div>
 
 
-        );
+    goToProfile(id){
 
+        var id_ = id;
+
+        console.log(id_);
+
+        window.location = '/student-profile/' + id_;
+    }
+
+    renderStudents() {
+
+        const {classes} = this.props;
+
+        let eleve = [];
+
+        let obj = JSON.parse(this.props.students);
+        console.log(this.props.students);
+        if (obj != null) {
+
+            const nbEleve = obj.length;
+
+            var id = null
+
+            for (var i = 0; i < nbEleve; i++) {
+                id = obj[i].idEleve;
+                console.log(id);
+                eleve.push(
+                    <div style={{width: '20%', display: 'inline-block', margin: '1%'}} key={i}>
+                        <Card className={classes.card} classes={{root: classes.card}} onClick={this.goToProfile.bind(this, id)}>
+                            <CardActionArea>
+                                <Avatar
+                                    alt="Adelle Charles"
+                                    src={student}
+                                    className={classNames(classes.avatar, classes.bigAvatar)}
+                                    style={{margin: '0 auto', width: '40%', height: '40%', marginTop: '10%'}}
+                                />
+                                <CardContent>
+
+                                    <Typography gutterBottom style={{textAlign: 'center'}}>
+                                        {obj[i].nomEleve} {obj[i].prenomEleve}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </div>
+                )
+            }
+
+        }
+
+        return eleve;
+    }
+
+        render(){
+
+        console.log(this.props);
+
+            return (
+                <div style={{textAlign: 'center'}}>
+                    {this.renderStudents()}
+                </div>
+            );
+        }
 }
 
 Student.propTypes = {

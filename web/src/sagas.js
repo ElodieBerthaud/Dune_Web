@@ -21,7 +21,8 @@ export function* watcherSaga() {
     yield takeEvery('SNACK_PUT_REQUEST', snack_req);
     yield takeEvery('UPDATE_PROF_REQUEST', update_prof);
     yield takeEvery('UPLOAD_IMG_REQUEST', uploadImage);
-    yield takeLatest('VERIFY_TOKEN_REQUEST', verifyToken)
+    yield takeEvery('VERIFY_TOKEN_REQUEST', verifyToken);
+    yield takeEvery('STUDENT_PROFILE_REQUEST', student_profile);
 }
 
 //GET PROFESSOR INFOS
@@ -140,6 +141,7 @@ function upload_img_api(datas){
 
 function verify_token_api(datas){
 
+    console.log("WTFFFFF     " + datas.token);
 
     const datasTosend = new URLSearchParams();
     datasTosend.append('token', datas.token);
@@ -148,7 +150,20 @@ function verify_token_api(datas){
         method: 'post',
         url: 'http://176.31.252.134:9001/api/v1/tokens/verifyToken',
         data: datasTosend
-    })
+    });
+
+}
+
+function student_profile_api(datas){
+
+    return axios({
+        method: 'get',
+        url: 'http://176.31.252.134:9001/api/v1/eleves/' + datas.id,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        },
+    });
 
 }
 
@@ -372,6 +387,33 @@ function* verifyToken(datas){
         }
 
 
+
+    }catch (e) {
+
+        console.log('UNOTHORIZED');
+
+    }
+
+}
+
+function* student_profile(datas){
+
+    console.log("REQUEST STUDENT PROFILE");
+
+    try{
+
+        const response = yield call(student_profile_api, datas);
+
+        console.log(response);
+
+        if (response.data.status === 200){
+            const nomEleve = response.data.response[0].nomEleve;
+            const prenomEleve = response.data.response[0].prenomEleve;
+            const noEleve = response.data.response[0].BAE;
+
+            yield put({type: 'STUDENT_PROFILE_SUCCESS', nomEleve: nomEleve, prenomEleve: prenomEleve, noEleve: noEleve})
+
+        }
 
     }catch (e) {
 

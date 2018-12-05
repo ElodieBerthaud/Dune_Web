@@ -9,6 +9,7 @@ import students from './StudentsReducer';
 import uploadimg from './UploadImgReducer';
 import snackContent from './SnackReducer';
 import updateProf from './UpdateProf';
+import studentProfile from './StudentProfileReducer';
 
 const reducers =  combineReducers({
     drawer,
@@ -20,7 +21,8 @@ const reducers =  combineReducers({
     students,
     uploadimg,
     snackContent,
-    updateProf
+    updateProf,
+    studentProfile
 });
 
 const rootReducer = (state, action) => {
