@@ -51,11 +51,11 @@ class Account extends Component{
 
         const { onPickImage, email, token, idProf } = this.props;
 
-        //const file = URL.createObjectURL(event.target.files[0]);
+        const file = URL.createObjectURL(event.target.files[0]);
 
-        const file = event.target.files[0];
+        const file_obj = event.target.files[0];
 
-        onPickImage(file, idProf, email, token);
+        onPickImage(file, idProf, email, token, file_obj);
     }
 
     handleUpdate(){
@@ -79,8 +79,7 @@ class Account extends Component{
                 <Card className={classes.card} classes={{root: classes.card}}>
                     <div>
                         <Avatar
-                            alt="Adelle Charles"
-                            src={this.props.selected ? this.props.image : avatar}
+                            src={ this.props.image === null ? avatar : 'http://176.31.252.134:7001/files/profs/' + this.props.image }
                             className={classNames(classes.avatar, classes.bigAvatar)}
                             style={{margin: '2% auto', width: '15%', height: '15%', marginBottom: '0'}}
                             type='file'
@@ -130,6 +129,7 @@ class Account extends Component{
                     </div>
                     <div style={{textAlign: 'center'}}>
                         <TextField
+                            disabled
                             id="outlined-name"
                             label="Email"
                             margin="normal"
@@ -163,7 +163,7 @@ const mapStateToProps = state => {
         idProf: state.login.id_user,
         token: state.login.token,
         selected: state.uploadimg.selected,
-        image: state.uploadimg.file
+        image: state.user.pic
     };
 };
 
@@ -173,7 +173,7 @@ Account.propTypes = {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onPickImage: (file, idProf, email, token) => dispatch({ type: "UPLOAD_IMG_REQUEST", file, idProf, email, token }),
+        onPickImage: (file, idProf, email, token, file_obj) => dispatch({ type: "GET_IMG_REQUEST", file, idProf, email, token, file_obj }),
         ChangeUserInfos: (prenomProf, nomProf, emailProf, idProf, token) => dispatch({type: 'UPDATE_PROF_REQUEST', prenomProf, nomProf, emailProf, idProf, token})
     };
 };

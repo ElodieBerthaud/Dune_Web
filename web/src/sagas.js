@@ -1,11 +1,11 @@
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import axios from "axios";
 import {
     ADD_PROFESSOR_ERROR,
     ADD_PROFESSOR_SUCCESS,
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_ERROR, GET_STUDENTS_SUCCESS, GET_STUDENTS_ERROR, GET_IMG_RESPONSE,
-    SNACK_PUT_SUCCESS, SNACK_PUT_ERROR, UPDATE_PROF_SUCCESS, UPDATE_PROF_ERROR, TOKEN_UNVALID
+    SNACK_PUT_SUCCESS, SNACK_PUT_ERROR, UPDATE_PROF_SUCCESS, UPDATE_PROF_ERROR, TOKEN_UNVALID, EMPTY_IMG_REQUEST
 } from "./actions/actionTypes";
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -23,6 +23,7 @@ export function* watcherSaga() {
     yield takeEvery('UPLOAD_IMG_REQUEST', uploadImage);
     yield takeEvery('VERIFY_TOKEN_REQUEST', verifyToken);
     yield takeEvery('STUDENT_PROFILE_REQUEST', student_profile);
+    yield takeEvery('GET_CLASSES_REQUEST', getUserClasses);
 }
 
 //GET PROFESSOR INFOS
@@ -88,17 +89,22 @@ function change_password_api(datas){
 
 function get_all_students_api(datas){
 
-    const datasTosend = new URLSearchParams();
-    datasTosend.append('token', datas.token);
+    const datasTosend = new FormData();
+    datasTosend.append('typeUser', datas.typeUser);
+    datasTosend.append('idUser', datas.idUser);
+    datasTosend.append('idClasse', datas.idClasse);
+
+    var url = datas.idClasse == 0 ? 'http://176.31.252.134:7001/api/v1/trombi' : 'http://176.31.252.134:7001/api/v1/trombi/byClasse';
 
     return axios({
-        method: 'get',
-        url: 'http://176.31.252.134:9001/api/v1/eleves',
+        method: 'post',
+        url: url,
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             token: datas.token
-        }
+        },
+        data: datasTosend
     });
 }
 
@@ -122,8 +128,8 @@ function update_prof_api(datas){
 
 function upload_img_api(datas){
 
-    const datasTosend = new URLSearchParams();
-    datasTosend.append('pic', datas.file);
+    const datasTosend = new FormData();
+    datasTosend.append('picProf', datas.file);
     datasTosend.append('idUser', datas.idProf);
     datasTosend.append('emailUser', datas.email);
 
@@ -131,17 +137,14 @@ function upload_img_api(datas){
         method: 'post',
         url: 'http://176.31.252.134:7001/api/v1/users/picProf',
         headers: {
-            'Content-Type': 'multipart/form-data',
             token: datas.token
         },
         data: datasTosend
-    })
+    });
 
 }
 
 function verify_token_api(datas){
-
-    console.log("WTFFFFF     " + datas.token);
 
     const datasTosend = new URLSearchParams();
     datasTosend.append('token', datas.token);
@@ -163,6 +166,25 @@ function student_profile_api(datas){
             'Content-Type': 'multipart/form-data',
             token: datas.token
         },
+    });
+
+}
+
+function get_user_classes_api(datas){
+
+    const datasTosend = new FormData();
+    datasTosend.append('typeUser', datas.typeUser);
+    datasTosend.append('idUser', datas.idUser);
+
+    return axios({
+        method: 'post',
+        url: 'http://176.31.252.134:7001/api/v1/trombi/classes',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            token: datas.token
+        },
+        data: datasTosend
     });
 
 }
@@ -194,7 +216,8 @@ function* login(logs){
             const token = response.data.token;
             const user_id = response.data.currUser;
             const director = response.data.typeUser === 1 ? false : true;
-            yield put({ type: "LOGIN_SUCCESS", token: token, user_id: user_id, director: director});
+            const typeUser = response.data.typeUser;
+            yield put({ type: "LOGIN_SUCCESS", token: token, user_id: user_id, director: director, typeUser: typeUser});
 
             var datas_2 = {
                 token: token,
@@ -202,13 +225,15 @@ function* login(logs){
             };
 
             const response_2 = yield call(fetchProf, datas_2);
+
             if (response_2.data.status === 200) {
 
                 const lastname = response_2.data.response[0].nomUser;
                 const name = response_2.data.response[0].prenomUser;
                 const email = response_2.data.response[0].emailUser;
+                const pic = response_2.data.response[0].picPath;
 
-                yield  put({ type: 'GET_USER_INFOS', lastname: lastname, name: name, email: email});
+                yield  put({ type: 'GET_USER_INFOS', lastname: lastname, name: name, email: email, pic: pic});
 
             }
         }
@@ -282,7 +307,6 @@ function* change_password(datas){
 
 function* get_all_students(datas){
 
-
     try{
 
         const response = yield call(get_all_students_api, datas);
@@ -305,7 +329,7 @@ function*   show_image(file){
 
     try{
 
-        yield put({type: GET_IMG_RESPONSE, file: file.file, prevImage: true});
+        yield put({type: GET_IMG_RESPONSE, file_preview: file.file, prevImage: true, file_upload: file.file_obj});
 
     }catch(e){
 
@@ -351,9 +375,9 @@ function* update_prof(datas){
             const lastname = response_2.data.response[0].nomUser;
             const name = response_2.data.response[0].prenomUser;
             const email = response_2.data.response[0].emailUser;
+            const pic = response_2.data.response[0].picPath;
 
-            yield  put({type: 'GET_USER_INFOS', lastname: lastname, name: name, email: email});
-
+            yield  put({type: 'GET_USER_INFOS', lastname: lastname, name: name, email: email, pic: pic});
         }
     }else {
         yield put({type: UPDATE_PROF_ERROR})
@@ -369,6 +393,26 @@ function* uploadImage(datas){
     try{
 
         const response = yield call(upload_img_api, datas);
+
+        if (response.data.status === 200){
+
+            var datas_2 = {
+                token: datas.token,
+                id: datas.idProf
+            };
+            const response_2 = yield call(fetchProf, datas_2);
+
+            if (response_2.data.status === 200) {
+                const lastname = response_2.data.response[0].nomUser;
+                const name = response_2.data.response[0].prenomUser;
+                const email = response_2.data.response[0].emailUser;
+                const pic = response_2.data.response[0].picPath;
+
+                yield  put({type: 'GET_USER_INFOS', lastname: lastname, name: name, email: email, pic: pic});
+                yield put({type: EMPTY_IMG_REQUEST});
+                yield put({type: SNACK_PUT_SUCCESS, message: 'Votre photo a bien éte mise a jour.'});
+            }
+        }
 
     }catch (e) {
 
@@ -390,21 +434,15 @@ function* verifyToken(datas){
 
     }catch (e) {
 
-        console.log('UNOTHORIZED');
-
     }
 
 }
 
 function* student_profile(datas){
 
-    console.log("REQUEST STUDENT PROFILE");
-
     try{
 
         const response = yield call(student_profile_api, datas);
-
-        console.log(response);
 
         if (response.data.status === 200){
             const nomEleve = response.data.response[0].nomEleve;
@@ -412,6 +450,26 @@ function* student_profile(datas){
             const noEleve = response.data.response[0].BAE;
 
             yield put({type: 'STUDENT_PROFILE_SUCCESS', nomEleve: nomEleve, prenomEleve: prenomEleve, noEleve: noEleve})
+
+        }
+
+    }catch (e) {
+
+    }
+
+}
+
+function* getUserClasses(datas){
+
+    try{
+
+        const response = yield call(get_user_classes_api, datas);
+
+        if (response.data.status === 200){
+
+            const classes = response.data.response;
+
+            yield put({type: "GET_CLASSES_SUCCESS", classes: classes });
 
         }
 

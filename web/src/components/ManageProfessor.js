@@ -30,10 +30,6 @@ const styles = theme => ({
 
 class ManageProfessor extends Component{
 
-    constructor(props) {
-        super(props);
-    }
-
     render(){
 
         return(

@@ -29,18 +29,19 @@ class ViewImage extends Component{
 
     handleSelect(){
 
-        const {SelectImage, email, idUser, token, image} = this.props;
-
-        SelectImage(email, idUser, token, image);
-        }
-
-    handleCancel(){
-
-        const {CancelImage} = this.props;
+        const {email, idUser, token, file_upload} = this.props;
 
         this.setState({ open: false });
 
-        CancelImage();
+        this.props.SelectImage(file_upload, idUser, email, token);
+
+    }
+
+    handleCancel(){
+
+        this.setState({ open: false });
+
+        this.props.CancelImage();
 
     }
 
@@ -73,18 +74,19 @@ class ViewImage extends Component{
 
 const mapStateToProps = state => {
     return {
-        image: state.uploadimg.file,
+        image: state.uploadimg.file_preview,
         prevImage: state.uploadimg.prevImage,
         email: state.professor.emailProf,
         idUser: state.login.id_user,
-        token: state.login.token
+        token: state.login.token,
+        file_upload: state.uploadimg.file_upload
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         CancelImage: () => dispatch({ type: "EMPTY_IMG_REQUEST" }),
-        SelectImage: (idUser, email, token, pic, image) => dispatch({ type: "UPLOAD_IMG_REQUEST" })
+        SelectImage: (file, idProf, email, token) => dispatch({ type: "UPLOAD_IMG_REQUEST", file, idProf, email, token })
     };
 };
 

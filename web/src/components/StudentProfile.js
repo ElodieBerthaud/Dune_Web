@@ -2,115 +2,77 @@ import React, { Component } from 'react';
 import "../css/Login.css";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import student from "../images/student.png";
-import Avatar from '@material-ui/core/Avatar';
-import classNames from 'classnames';
 import {withStyles} from "@material-ui/core/styles/index";
 import PropTypes from 'prop-types';
-import {connect} from "react-redux";
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import {connect} from 'react-redux';
+import One_profile from './One_profile';
 
-const styles = theme => ({
-    card: {
-        margin: 0,
-        backgroundColor: ''
+const styles = {
+    root: {
+        flexGrow: 1,
     },
-    media: {
-        height: 50,
-    },
-    button: {
-        margin: theme.spacing.unit,
-    }
-});
+};
+
+function TabContainer(props) {
+    return (
+        <Typography component="div" style={{ padding: 8 * 3 }}>
+            {props.children}
+        </Typography>
+    );
+}
 
 class StudentProfile extends Component{
 
     constructor (props){
         super(props);
 
-        this.state = {
-            idStudent: null,
-            nomEleve: null,
-            prenomEleve: null
+        this.state={
+            value: 0
         }
     }
 
-    componentDidMount() {
-        const { match: { params }, getStudentInfo } = this.props;
 
-        this.setState({idStudent: params.id});
+        componentDidMount() {
+            const { match: { params }, getStudentInfo } = this.props;
 
-        getStudentInfo(params.id, this.props.token);
+            this.setState({idStudent: params.id});
+
+            getStudentInfo(params.id, this.props.token);
 
 
     }
 
     render(){
 
-        const { classes, nomEleve, prenomEleve } = this.props;
-
-        this.state.nomEleve = this.props.nomEleve;
-        this.state.prenomEleve = this.props.prenomEleve;
+        const { classes } = this.props;
 
         return(
             <div>
                 <Card className={classes.card} classes={{root: classes.card}}>
-                    <div>
-                        <Avatar
-                            alt="Adelle Charles"
-                            src={this.props.selected ? this.props.image : student}
-                            className={classNames(classes.avatar, classes.bigAvatar)}
-                            style={{margin: '2% auto', width: '15%', height: '15%', marginBottom: '0'}}
-                            type='file'
-                        />
-
-                    </div>
+                    <h1 style={{textAlign: 'center'}}>Profil de l'eleve</h1>
                     <CardContent style={{padding: '0', margin:'1%'}}>
-                        <div style={{textAlign: 'center'}}>
-                            <Button  variant="contained" color="primary" // <-- Just add me!
-                                     label='My Label' className={classes.button}>
-                                <input type="file" name='pic' style={{position: 'absolute', opacity: '0'}}/>
-                                changer la photo
-                            </Button>
-                        </div>
-                        <h2 style={{textAlign: 'center'}}>
-                            {this.props.nomEleve} {this.props.prenomEleve}
-                        </h2>
-                        <div style={{textAlign: 'center'}}>
-                            <h3> Eleve </h3>
-                        </div>
-                    </CardContent>
-                    <div style={{borderBottom: '1px solid grey', width: '40%', margin:'0 auto'}}>
-                    </div>
-                    <CardContent style={{padding: '0', margin: '1%', textAlign: 'center'}}>
-                        <h2> Données personnelles </h2>
-                        <div style={{textAlign: 'center'}}>
-                            <TextField
-                                id="outlined-name"
-                                label="Nom"
-                                margin="normal"
-                                variant="outlined"
-                                name='lastName'
-                                value={this.state.nomEleve}
-                                style={{margin: '1%'}}
-                                onChange={this.handleChangeValues}
-                            />
-                            <TextField
-                                id="outlined-name"
-                                label="Prenom"
-                                margin="normal"
-                                variant="outlined"
-                                name='name'
-                                value={this.state.prenomEleve}
-                                style={{margin: '1%'}}
-                                onChange={this.handleChangeValues}
-                            />
-                        </div>
-                        <Button  variant="contained" color="primary" // <-- Just add me!
-                                 label='My Label' className={classes.button} onClick={this.handleUpdate}>
-                            Modifier les informations
-                        </Button>
+                        <Paper className={classes.root} style={{backgroundColor: 'rgb(255, 255, 246)'}}>
+                            <Tabs
+                                value={this.state.value}
+                                onChange={this.handleChange}
+                                indicatorColor="secondary"
+                                textColor="secondary"
+                                centered
+                            >
+                                <Tab label="Informations de l'éleve" />
+                                <Tab label="Statistiques" />
+                                <Tab label="Historique" />
+                            </Tabs>
+                        </Paper>
+
+                        {this.state.value === 0 && <TabContainer><One_profile id={this.state.idStudent}/></TabContainer>}
+                        {this.state.value === 1 && <TabContainer></TabContainer>}
+                        {this.state.value === 2 && <TabContainer></TabContainer>}
+
                     </CardContent>
                 </Card>
             </div>
@@ -121,9 +83,7 @@ class StudentProfile extends Component{
 
 const mapStateToProps = state => {
     return {
-        token: state.login.token,
-        nomEleve: state.studentProfile.nomEleve,
-        prenomEleve: state.studentProfile.prenomEleve,
+        token: state.login.token
     };
 };
 

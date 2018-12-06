@@ -57,7 +57,7 @@ class Dashboard extends React.Component {
     componentWillMount(){
         const { getStudents, token } = this.props;
 
-        getStudents(token);
+        getStudents(token, this.props.typeUser, this.props.idUser, 0);
 
     }
 
@@ -254,14 +254,16 @@ const mapStateToProps = state => {
         lastname: state.user.lastname,
         isDirector: state.login.director,
         token: state.login.token,
-        students: state.students.content
+        students: state.students.content,
+        typeUser: state.login.typeUser,
+        idUser: state.login.id_user
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         onRequestProf: () => dispatch({ type: "API_CALL_REQUEST" }),
-        getStudents: (token) => dispatch({ type: "GET_STUDENTS_REQUEST", token})
+        getStudents: (token, typeUser, idUser, idClasse) => dispatch({ type: "GET_STUDENTS_REQUEST", token, typeUser, idUser, idClasse})
     };
 };
 

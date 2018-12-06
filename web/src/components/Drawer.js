@@ -12,7 +12,7 @@ import avatar from "../images/avatar.png";
 
 const styles = {
     list: {
-        width: 250
+        //width: 250
     },
     fullList: {
         width: 'auto',
@@ -76,10 +76,9 @@ class Drawer extends React.Component {
                 >
                     <div className={classes.row}>
                         <Avatar
-                            alt="Adelle Charles"
-                            src={avatar}
+                            src={ this.props.image === null ? avatar : 'http://176.31.252.134:7001/files/profs/' + this.props.image }
                             className={classNames(classes.avatar, classes.bigAvatar)}
-                            style={{margin: '0 auto', width: '40%', height: '40%', marginTop: '10%'}}
+                            style={{margin: '2% auto', width: '40%', height: '40%', marginBottom: '0', maxWidth: '300px'}}
                         />
                     </div>
 
@@ -110,7 +109,8 @@ const mapStateToProps = state => {
         opened: state.drawer.opened,
         director: state.login.director,
         userName: state.user.name,
-        userLastname: state.user.lastname
+        userLastname: state.user.lastname,
+        image: state.user.pic
     };
 };
 

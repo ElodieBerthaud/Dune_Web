@@ -32,8 +32,6 @@ class Student extends Component {
 
         var id_ = id;
 
-        console.log(id_);
-
         window.location = '/student-profile/' + id_;
     }
 
@@ -44,7 +42,6 @@ class Student extends Component {
         let eleve = [];
 
         let obj = JSON.parse(this.props.students);
-        console.log(this.props.students);
         if (obj != null) {
 
             const nbEleve = obj.length;
@@ -53,7 +50,6 @@ class Student extends Component {
 
             for (var i = 0; i < nbEleve; i++) {
                 id = obj[i].idEleve;
-                console.log(id);
                 eleve.push(
                     <div style={{width: '20%', display: 'inline-block', margin: '1%'}} key={i}>
                         <Card className={classes.card} classes={{root: classes.card}} onClick={this.goToProfile.bind(this, id)}>
@@ -82,8 +78,6 @@ class Student extends Component {
     }
 
         render(){
-
-        console.log(this.props);
 
             return (
                 <div style={{textAlign: 'center'}}>

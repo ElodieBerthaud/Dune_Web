@@ -8,7 +8,6 @@ export default function updateprof(state = initialState.updateProf, action) {
 
     switch (action.type) {
         case UPDATE_PROF_SUCCESS:
-            console.log(action.message);
             return { ...state, error: false, success: true, datas: action.datas };
         case UPDATE_PROF_ERROR:
             return { ...state, success: false, error: true, datas: null };
