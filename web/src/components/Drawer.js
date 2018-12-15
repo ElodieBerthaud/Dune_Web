@@ -18,7 +18,8 @@ const styles = {
         width: 'auto',
     },
     paper:{
-        backgroundColor: '#ffeec3'
+        backgroundImage: 'url(http://t.wallpaperweb.org/wallpaper/nature/1440x1080/1733_desert_1440x1080.jpg)',
+        backgroundSize: 'cover'
     }
 };
 

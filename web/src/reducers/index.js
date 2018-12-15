@@ -11,6 +11,7 @@ import snackContent from './SnackReducer';
 import updateProf from './UpdateProf';
 import studentProfile from './StudentProfileReducer';
 import classes from './ClassesReducer';
+import storeBuy from './StoreBuyReducer';
 
 const reducers =  combineReducers({
     drawer,
@@ -24,7 +25,8 @@ const reducers =  combineReducers({
     snackContent,
     updateProf,
     studentProfile,
-    classes
+    classes,
+    storeBuy
 });
 
 const rootReducer = (state, action) => {

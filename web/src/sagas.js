@@ -4,8 +4,17 @@ import {
     ADD_PROFESSOR_ERROR,
     ADD_PROFESSOR_SUCCESS,
     CHANGE_PASSWORD_SUCCESS,
-    CHANGE_PASSWORD_ERROR, GET_STUDENTS_SUCCESS, GET_STUDENTS_ERROR, GET_IMG_RESPONSE,
-    SNACK_PUT_SUCCESS, SNACK_PUT_ERROR, UPDATE_PROF_SUCCESS, UPDATE_PROF_ERROR, TOKEN_UNVALID, EMPTY_IMG_REQUEST
+    CHANGE_PASSWORD_ERROR,
+    GET_STUDENTS_SUCCESS,
+    GET_STUDENTS_ERROR,
+    GET_IMG_RESPONSE,
+    SNACK_PUT_SUCCESS,
+    SNACK_PUT_ERROR,
+    UPDATE_PROF_SUCCESS,
+    UPDATE_PROF_ERROR,
+    TOKEN_UNVALID,
+    EMPTY_IMG_REQUEST,
+    GET_APPS_BUY_REQUEST
 } from "./actions/actionTypes";
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -24,6 +33,7 @@ export function* watcherSaga() {
     yield takeEvery('VERIFY_TOKEN_REQUEST', verifyToken);
     yield takeEvery('STUDENT_PROFILE_REQUEST', student_profile);
     yield takeEvery('GET_CLASSES_REQUEST', getUserClasses);
+    yield takeEvery('GET_APPS_BUY_REQUEST', getAppsBuy);
 }
 
 //GET PROFESSOR INFOS
@@ -50,7 +60,7 @@ function login_in(logs){
 
     return axios({
         method: 'post',
-        url: 'http://176.31.252.134:9001/api/v1/login',
+        url: 'http://176.31.252.134:7001/api/v1/login',
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
         data: datas
     })
@@ -177,7 +187,7 @@ function get_user_classes_api(datas){
     datasTosend.append('idUser', datas.idUser);
 
     return axios({
-        method: 'post',
+        method: 'get',
         url: 'http://176.31.252.134:7001/api/v1/trombi/classes',
         headers: {
             Accept: 'application/json',
@@ -187,6 +197,25 @@ function get_user_classes_api(datas){
         data: datasTosend
     });
 
+}
+
+function get_apps_buy(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/store";
+
+    const datasTosend = new FormData();
+    datasTosend.append('idType', '0');
+    datasTosend.append('token', datas.token);
+
+    return axios({
+        method: 'post',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        data: datasTosend
+    });
 }
 
 //DRAWER
@@ -212,12 +241,15 @@ function* login(logs){
 
         const response = yield call(login_in, datas);
 
+        console.log(response);
+
         if (response.data.success === true) {
             const token = response.data.token;
             const user_id = response.data.currUser;
             const director = response.data.typeUser === 1 ? false : true;
             const typeUser = response.data.typeUser;
-            yield put({ type: "LOGIN_SUCCESS", token: token, user_id: user_id, director: director, typeUser: typeUser});
+            const idEcole = response.data.idEcole;
+            yield put({ type: "LOGIN_SUCCESS", token: token, user_id: user_id, director: director, typeUser: typeUser, idEcole: idEcole});
 
             var datas_2 = {
                 token: token,
@@ -470,6 +502,28 @@ function* getUserClasses(datas){
             const classes = response.data.response;
 
             yield put({type: "GET_CLASSES_SUCCESS", classes: classes });
+
+        }
+
+    }catch (e) {
+
+    }
+
+}
+
+function* getAppsBuy(datas){
+
+    try{
+
+        const response = yield call(get_apps_buy, datas);
+
+        console.log(response);
+
+        if (response.data.status === 200){
+
+            const apps = JSON.stringify(response.data.response);
+
+            yield put({type: "GET_APPS_BUY_SUCCESS", apps: apps });
 
         }
 

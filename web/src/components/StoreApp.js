@@ -47,15 +47,15 @@ class StoreApp extends Component{
 
         return(
             <div>
-                <Card className={classes.card} classes={{root: classes.card}}>
+                <Card className={classes.card} classes={{root: classes.card}} style={{backgroundColor: '#f6ecf8'}}>
                     <h1 style={{textAlign: 'center'}}>Applications</h1>
                     <CardContent style={{padding: '0', margin:'1%'}}>
                         <Paper className={classes.root} style={{backgroundColor: 'rgb(255, 255, 246)'}}>
                             <Tabs
                                 value={this.state.value}
                                 onChange={this.handleChange}
-                                indicatorColor="secondary"
-                                textColor="secondary"
+                                indicatorColor="primary"
+                                textColor="primary"
                                 centered
                             >
                                 <Tab label="Applications enregistrées" />

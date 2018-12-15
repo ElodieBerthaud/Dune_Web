@@ -25,7 +25,7 @@ class AppsRegistered extends Component{
 
         for (var i = 0; i < 16; i++) {
             apps.push(
-                <div style={{width: '20%', display: 'inline-block', margin: '1%'}}>
+                <div style={{width: '20%', display: 'inline-block', margin: '1%'}} key={i}>
                     <Card className={classes.card} classes={{root: classes.card}}>
                         <CardActionArea>
                             <CardContent>

@@ -55,7 +55,8 @@ class Header extends React.Component {
 
         this.state = {
             anchorEl: null,
-            mobileMoreAnchorEl: null
+            mobileMoreAnchorEl: null,
+            colorbar: ''
         };
     }
 
@@ -91,6 +92,11 @@ class Header extends React.Component {
     }
 
     render() {
+
+        console.log(window.location.pathname);
+
+        this.state.colorbar = window.location.pathname === '/store' ? '#ab47bc' : '';
+
         const { anchorEl, mobileMoreAnchorEl } = this.state;
         const { classes } = this.props;
         const isMenuOpen = Boolean(anchorEl);
@@ -147,7 +153,7 @@ class Header extends React.Component {
         if (this.props.logged){
             return (
                 <div className={classes.root}>
-                    <AppBar position="static" color={"primary"}>
+                    <AppBar position="static" color={'primary'} style={{backgroundColor: this.state.colorbar}}>
                         <Toolbar>
                             <IconButton onClick={onOpenDrawer} className={classes.menuButton} color="inherit" aria-label="Open drawer">
                                 <MenuIcon />
@@ -185,7 +191,6 @@ class Header extends React.Component {
                     </AppBar>
                     {renderMenu}
                     {renderMobileMenu}
-
                     <Drawer open={this.state.open}/>
                 </div>
             );

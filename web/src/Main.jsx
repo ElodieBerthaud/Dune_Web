@@ -20,6 +20,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import StudentProfile from './components/StudentProfile';
+import AddStudent from './components/ManageStudent';
 
 class Main extends Component{
 
@@ -70,6 +71,7 @@ class Main extends Component{
         const log = this.props;
 
         document.body.style.backgroundColor = '#FFFFF6';
+        document.body.style.backgroundImage = '';
 
         if (this.props.logged){
             this.checkValidToken();
@@ -105,6 +107,7 @@ class Main extends Component{
                     <PrivateRoute exact path='/store' component={StoreApp} authed={log.logged}/>
                     <PrivateRoute exact path='/add-professor' component={ManageProfessor} authed={log.director}/>
                     <PrivateRoute exact path='/account' component={Account} authed={log.logged}/>
+                    <PrivateRoute exact path='/add-student' component={AddStudent} authed={log.logged}/>
                     <PrivateRoute exact path='/student-profile/:id' component={StudentProfile} authed={log.logged}/>
                     <Route path="*" component={P_404} />
                 </Switch>

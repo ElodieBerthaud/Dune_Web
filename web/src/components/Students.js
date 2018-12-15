@@ -13,6 +13,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
 import Loader from './Loader';
+import TextField from '@material-ui/core/TextField';
+
+const $ = window.$;
 
 const styles = theme => ({
     root: {
@@ -22,6 +25,7 @@ const styles = theme => ({
     formControl: {
         margin: theme.spacing.unit,
         minWidth: 120,
+        display: 'inline-block'
     },
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
@@ -31,7 +35,9 @@ const styles = theme => ({
 class Students extends Component {
 
     state = {
-        classeName: 0
+        classeName: 0,
+        Classe: '',
+        classesLabel: null
     }
 
     constructor(props) {
@@ -40,6 +46,22 @@ class Students extends Component {
 
         this.test = this.test.bind(this);
 
+
+        let classesLabel = {
+            1: 'Petite section',
+            2: 'Moyenne Section',
+            3: 'Grande section',
+            4: 'CP',
+            5: 'CE1',
+            6: 'CE2',
+            7: 'CM1',
+            8: 'CM2',
+            9: '6e',
+            10: '5e',
+            11: '4e',
+            12: '3e'};
+
+        this.state.classesLabel = classesLabel;
     }
 
     componentWillMount(){
@@ -64,12 +86,13 @@ class Students extends Component {
         var i = 0;
 
         classes.push(
-            <MenuItem key={i} value={0}>Toutes</MenuItem>
+            <MenuItem id={0} key={i} value={0}>Toutes</MenuItem>
         )
 
         for (var data in classesS){
+            console.log(classesS[data]);
             classes.push(
-                <MenuItem key={classesS[data].idClasse+'-'+i} value={classesS[data].idClasse}>{classesS[data].label}</MenuItem>
+                <MenuItem id={classesS[data].idClasse} key={classesS[data].idClasse+'-'+i} value={classesS[data].idClasse}>{this.state.classesLabel[classesS[data].level] + '-' + classesS[data].num}</MenuItem>
             );
             i++;
         }
@@ -79,6 +102,8 @@ class Students extends Component {
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
 
+        this.setState({Classe: document.getElementById(event.target.value).innerText});
+
         this.props.getStudents(this.props.token, this.props.typeUser, this.props.idUser, event.target.value);
     };
 
@@ -87,25 +112,35 @@ class Students extends Component {
         const { classes } = this.props;
 
         return <div>
+            <h1 style={{textAlign: 'center'}} >Trombinoscope</h1>
                 <Loader open={this.props.asking}/>
-                <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="age-simple">Classes</InputLabel>
-                    <Select
-                        value={this.state.classeName}
-                        onChange={this.handleChange}
-                        inputProps={{
-                            name: 'classeName',
-                            id: 'classe-simple',
-                        }}
-                    >
-                        {this.renderClasses()}
-                    </Select>
-                </FormControl>
-
+                    <div style={{textAlign: 'center', marginBottom: '2%'}}>
+                        <h2 style={{fontStyle: 'italic'}}> {this.state.classeName === 0 ? "Eleves de toutes vos classes confondues." : "Eleves de la classe " + this.state.Classe}</h2>
+                        <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="age-simple">Classes</InputLabel>
+                            <Select
+                                value={this.state.classeName}
+                                onChange={this.handleChange}
+                                inputProps={{
+                                    name: 'classeName',
+                                    id: 'classe-simple',
+                                }}
+                            >
+                                {this.renderClasses()}
+                            </Select>
+                            <TextField
+                                id="standard-name"
+                                label="Name"
+                                className="fwfew"
+                                value="fwfew"
+                                margin="normal"
+                            />
+                        </FormControl>
+                    </div>
                 <Student students={this.props.students}/>
             </div>;
         }
-
+        
 }
 
 Students.propTypes = {

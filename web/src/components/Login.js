@@ -103,6 +103,9 @@ class Login extends Component{
 
         const { passpending, passsuccess } = this.props;
 
+        document.body.style.backgroundImage = 'url(http://t.wallpaperweb.org/wallpaper/nature/1440x1080/1733_desert_1440x1080.jpg)';
+        document.body.style.backgroundSize = 'cover';
+
         return (
 
 

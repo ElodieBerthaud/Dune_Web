@@ -209,7 +209,7 @@ class Dashboard extends React.Component {
                         </GridItem>
                         <GridItem xs={12} sm={12} md={4}>
                             <Card chart>
-                                <CardHeader color="info">
+                                <CardHeader color="warning">
                                     <ChartistGraph
                                         className="ct-chart"
                                         data={dailySalesChart.data}

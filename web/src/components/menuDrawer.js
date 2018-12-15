@@ -2,6 +2,7 @@ import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import PersonAdd from '@material-ui/icons/PersonAdd';
 import GroupAdd from '@material-ui/icons/GroupAdd';
 import Dashboard from '@material-ui/icons/Dashboard';
 import BarChart from '@material-ui/icons/BarChart';
@@ -53,10 +54,18 @@ export const SecondaryListItem = (props) =>
         <Link  to='/add-professor' style={{textDecoration: 'none'}}>
             <ListItem button>
                 <ListItemIcon>
-                    <GroupAdd />
+                    <PersonAdd />
                 </ListItemIcon>
                 <ListItemText primary="Ajouter un professeur" />
             </ListItem>
         </Link>
             : ''}
+        <Link  to='/add-student' style={{textDecoration: 'none'}}>
+            <ListItem button>
+                <ListItemIcon>
+                    <GroupAdd />
+                </ListItemIcon>
+                <ListItemText primary="Ajouter des éleves" />
+            </ListItem>
+        </Link>
     </div>
