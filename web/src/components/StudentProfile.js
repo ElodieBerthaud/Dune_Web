@@ -31,7 +31,8 @@ class StudentProfile extends Component{
         super(props);
 
         this.state={
-            value: 0
+            value: 0,
+            idStudent: null
         }
     }
 
@@ -42,9 +43,8 @@ class StudentProfile extends Component{
             this.setState({idStudent: params.id});
 
             getStudentInfo(params.id, this.props.token);
-
-
     }
+
 
     render(){
 

@@ -6,10 +6,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {connect} from "react-redux";
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-import ReactDOM from "react-dom";
-
-import {withStyles} from "@material-ui/core/styles/index";
-
 
 class ViewImage extends Component{
 
@@ -33,7 +29,20 @@ class ViewImage extends Component{
 
         this.setState({ open: false });
 
-        this.props.SelectImage(file_upload, idUser, email, token);
+        if (this.props.student){
+
+            this.props.SelectImage(file_upload, idUser, email, token, true, this.props.idEleve);
+
+        }else if (this.props.addstudent){
+
+            this.setState({ open: false });
+
+        }else{
+
+            this.props.SelectImage(file_upload, idUser, email, token, false, null);
+
+        }
+
 
     }
 
@@ -79,14 +88,15 @@ const mapStateToProps = state => {
         email: state.professor.emailProf,
         idUser: state.login.id_user,
         token: state.login.token,
-        file_upload: state.uploadimg.file_upload
+        file_upload: state.uploadimg.file_upload,
+        idEleve: state.studentProfile.idEleve
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         CancelImage: () => dispatch({ type: "EMPTY_IMG_REQUEST" }),
-        SelectImage: (file, idProf, email, token) => dispatch({ type: "UPLOAD_IMG_REQUEST", file, idProf, email, token })
+        SelectImage: (file, idProf, email, token, picEleve, idEleve) => dispatch({ type: "UPLOAD_IMG_REQUEST", file, idProf, email, token, picEleve, idEleve })
     };
 };
 

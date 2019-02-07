@@ -4,11 +4,9 @@ import "../css/Login.css";
 import {connect} from "react-redux";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import dashboardStyle from "./Dashboard/styles/dashboardStyle";
 import Select from '@material-ui/core/Select';
-import Input from '@material-ui/core/Input';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from "react-router";
@@ -37,7 +35,8 @@ class Students extends Component {
     state = {
         classeName: 0,
         Classe: '',
-        classesLabel: null
+        classesLabel: null,
+        searchName: ''
     }
 
     constructor(props) {
@@ -67,7 +66,7 @@ class Students extends Component {
     componentWillMount(){
         const { getStudents, token } = this.props;
 
-         getStudents(token, this.props.typeUser, this.props.idUser, 0);
+         getStudents(token, this.props.typeUser, this.props.idUser, 0, '');
 
          this.props.getClasses(token, this.props.typeUser, this.props.idUser);
 
@@ -90,7 +89,6 @@ class Students extends Component {
         )
 
         for (var data in classesS){
-            console.log(classesS[data]);
             classes.push(
                 <MenuItem id={classesS[data].idClasse} key={classesS[data].idClasse+'-'+i} value={classesS[data].idClasse}>{this.state.classesLabel[classesS[data].level] + '-' + classesS[data].num}</MenuItem>
             );
@@ -106,6 +104,12 @@ class Students extends Component {
 
         this.props.getStudents(this.props.token, this.props.typeUser, this.props.idUser, event.target.value);
     };
+
+    searchName = event => {
+        this.setState({ [event.target.name]: event.target.value });
+
+        this.props.getStudents(this.props.token, this.props.typeUser, this.props.idUser, this.state.classeName, event.target.value);
+    }
 
     render() {
 
@@ -132,8 +136,11 @@ class Students extends Component {
                                 id="standard-name"
                                 label="Name"
                                 className="fwfew"
-                                value="fwfew"
+                                value={this.state.searchName}
                                 margin="normal"
+                                onChange={this.searchName}
+                                name='searchName'
+                                defaultValue=''
                             />
                         </FormControl>
                     </div>
@@ -161,7 +168,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getStudents: (token, typeUser, idUser, idClasse) => dispatch({ type: "GET_STUDENTS_REQUEST", token, typeUser, idUser, idClasse}),
+        getStudents: (token, typeUser, idUser, idClasse, search) => dispatch({ type: "GET_STUDENTS_REQUEST", token, typeUser, idUser, idClasse, search}),
         getClasses: (token, typeUser, idUser) => dispatch({ type: "GET_CLASSES_REQUEST", token, typeUser, idUser})
 
     };

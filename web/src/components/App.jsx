@@ -11,6 +11,8 @@ class App extends Component {
 
     render() {
 
+        document.title = 'Dune - mon espace utilisateur';
+
         return (
             <MuiThemeProvider theme={Theme}>
                 <div style={{fontFamily: 'Roboto'}}>

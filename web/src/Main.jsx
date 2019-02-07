@@ -21,6 +21,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import StudentProfile from './components/StudentProfile';
 import AddStudent from './components/ManageStudent';
+import loader from './images/loaders/bars-loader.gif';
+import DialogActions from '@material-ui/core/DialogActions';
+import AppPage from './components/AppPage';
 
 class Main extends Component{
 
@@ -38,6 +41,8 @@ class Main extends Component{
 
         this.setState({open: false});
 
+        this.props.resetSnack();
+
         if (this.props.passSuccess){
             window.location = '/';
         }
@@ -45,6 +50,14 @@ class Main extends Component{
 
     componentWillUpdate(){
         this.state.open = true;
+    }
+
+    componentDidUpdate(){
+
+        if (this.props.reload){
+            window.location.reload();
+        }
+
     }
 
     checkValidToken(){
@@ -109,6 +122,7 @@ class Main extends Component{
                     <PrivateRoute exact path='/account' component={Account} authed={log.logged}/>
                     <PrivateRoute exact path='/add-student' component={AddStudent} authed={log.logged}/>
                     <PrivateRoute exact path='/student-profile/:id' component={StudentProfile} authed={log.logged}/>
+                    <PrivateRoute exact path='/store/:id' component={AppPage} authed={log.logged}/>
                     <Route path="*" component={P_404} />
                 </Switch>
 
@@ -141,6 +155,20 @@ class Main extends Component{
 
                     />
                 </Snackbar>
+
+                <Dialog
+                    open={this.props.loading}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <div>
+                        <DialogContent>
+                            <img alt='chargement' src={loader} style={{display: 'inherit', margin: '0 auto'}} />
+                        </DialogContent>
+                        <DialogActions>
+                        </DialogActions>
+                    </div>
+                </Dialog>
+
             </main>
         );
     }
@@ -158,14 +186,19 @@ const mapStateToProps = state => {
         success: state.snackContent.success,
         message: state.snackContent.message,
         token: state.login.token,
-        tokenUnvalid: state.login.tokenUnValid
+        tokenUnvalid: state.login.tokenUnValid,
+        loading: state.loading.loading,
+        loadmessage: state.loading.loadmessage,
+        reload: state.reload.status
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         verifyToken: (token) => dispatch({ type: "VERIFY_TOKEN_REQUEST", token }),
-        logout_user: () => dispatch({ type: "USER_LOGOUT" })
+        logout_user: () => dispatch({ type: "USER_LOGOUT" }),
+        resetSnack: () => dispatch({type: 'SNACK_RESET'}),
+        stopReloadStatus: () => dispatch({type: 'STOP_RELOAD'})
     };
 };
 

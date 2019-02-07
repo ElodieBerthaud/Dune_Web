@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import ViewImage from './ViewImage';
 
 const styles = theme => ({
     card: {
@@ -31,19 +32,41 @@ class One_profile extends Component{
 
         this.state = {
             idStudent: null,
-            nomEleve: "",
-            prenomEleve: ""
+            nomEleve: null,
+            prenomEleve: null
         }
 
+        this.handleChangeValues = this.handleChangeValues.bind(this);
+
+    }
+
+    componentWillUpdate() {
+
         this.state.idStudent = this.props.id;
+        this.state.nomEleve = this.props.nomEleve;
+        this.state.prenomEleve = this.props.prenomEleve;
+
+    }
+
+    changeImage = (event) => {
+
+        const { onPickImage } = this.props;
+
+        const file = URL.createObjectURL(event.target.files[0]);
+
+        const file_obj = event.target.files[0];
+
+        onPickImage(file, file_obj);
+    }
+
+
+    handleChangeValues(evt){
+        this.setState({[evt.target.name]: evt.target.value});
     }
 
     render(){
 
         const { classes } = this.props;
-
-        this.state.nomEleve = this.props.nomEleve != null ? this.props.nomEleve : '';
-        this.state.prenomEleve = this.props.prenomEleve != null ? this.props.prenomEleve : '';
 
         return(
             <div>
@@ -51,7 +74,7 @@ class One_profile extends Component{
                     <div>
                         <Avatar
                             alt="Adelle Charles"
-                            src={this.props.selected ? this.props.image : student}
+                            src={this.props.picEleve ? 'http://176.31.252.134:7001/files/eleves/' + this.props.picEleve : student}
                             className={classNames(classes.avatar, classes.bigAvatar)}
                             style={{margin: '2% auto', width: '15%', height: '15%', marginBottom: '0'}}
                             type='file'
@@ -62,7 +85,7 @@ class One_profile extends Component{
                         <div style={{textAlign: 'center'}}>
                             <Button  variant="contained" color="primary" // <-- Just add me!
                                      label='My Label' className={classes.button}>
-                                <input type="file" name='pic' style={{position: 'absolute', opacity: '0'}}/>
+                                <input type="file" name='pic' style={{position: 'absolute', opacity: '0'}} onChange={this.changeImage}/>
                                 changer la photo
                             </Button>
                         </div>
@@ -83,7 +106,7 @@ class One_profile extends Component{
                                 label="Nom"
                                 margin="normal"
                                 variant="outlined"
-                                name='lastName'
+                                name='nomEleve'
                                 value={this.state.nomEleve}
                                 style={{margin: '1%'}}
                                 onChange={this.handleChangeValues}
@@ -93,7 +116,7 @@ class One_profile extends Component{
                                 label="Prenom"
                                 margin="normal"
                                 variant="outlined"
-                                name='name'
+                                name='prenomEleve'
                                 value={this.state.prenomEleve}
                                 style={{margin: '1%'}}
                                 onChange={this.handleChangeValues}
@@ -105,6 +128,7 @@ class One_profile extends Component{
                         </Button>
                     </CardContent>
                 </Card>
+                <ViewImage student={true}/>
             </div>
         );
     }
@@ -117,12 +141,15 @@ const mapStateToProps = state => {
         token: state.login.token,
         nomEleve: state.studentProfile.nomEleve,
         prenomEleve: state.studentProfile.prenomEleve,
+        idEleve: state.studentProfile.idEleve,
+        picEleve: state.studentProfile.picEleve
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getStudentInfo: (id, token) => dispatch({ type: "STUDENT_PROFILE_REQUEST", id, token })
+        getStudentInfo: (id, token) => dispatch({ type: "STUDENT_PROFILE_REQUEST", id, token }),
+        onPickImage: (file, file_obj) => dispatch({ type: "GET_IMG_REQUEST", file, file_obj })
     };
 };
 

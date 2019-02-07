@@ -14,7 +14,7 @@ import {
     UPDATE_PROF_ERROR,
     TOKEN_UNVALID,
     EMPTY_IMG_REQUEST,
-    GET_APPS_BUY_REQUEST
+    GET_APPS_BUY_REQUEST, GET_APP_REGISTRED_SUCCESS, GET_NOTIFS_SUCCESS, GET_STUDENTNBR
 } from "./actions/actionTypes";
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -26,6 +26,7 @@ export function* watcherSaga() {
     yield takeEvery('ADD_PROFESSOR_REQUEST', add_professor);
     yield takeEvery('CHANGE_PASSWORD_REQUEST', change_password);
     yield takeEvery('GET_STUDENTS_REQUEST', get_all_students);
+    yield takeEvery('GET_STUDENTSNBR_REQUEST', get_students_nbr);
     yield takeEvery('GET_IMG_REQUEST', show_image);
     yield takeEvery('SNACK_PUT_REQUEST', snack_req);
     yield takeEvery('UPDATE_PROF_REQUEST', update_prof);
@@ -34,13 +35,37 @@ export function* watcherSaga() {
     yield takeEvery('STUDENT_PROFILE_REQUEST', student_profile);
     yield takeEvery('GET_CLASSES_REQUEST', getUserClasses);
     yield takeEvery('GET_APPS_BUY_REQUEST', getAppsBuy);
+    yield takeEvery('CHANGE_IDENTI_REQUEST', changeIdentifiant);
+    yield takeEvery('CHANGE_PASS_REQUEST', changePass);
+    yield takeEvery('ADD_ELEVE_REQUEST', addStudent);
+    yield takeEvery('GET_APP_REQUEST', getApp);
+    yield takeEvery('GET_APPS_REGISTRED_REQUEST', getAppRegistred);
+    yield takeEvery('GET_APPNBR_REQUEST', getAppRegistredNbr);
+    yield takeEvery('ASK_APP_REQUEST', askApp);
+    yield takeEvery('GET_NOTIFS_REQUEST', getNotifs);
+    yield takeEvery('SHOW_NOTIF_REQUEST', showNotif);
+    yield takeEvery('VALIDATE_APP_REQUEST', validateApp);
+    yield takeEvery('READ_NOTIF_REQUEST', readNotif);
 }
 
 //GET PROFESSOR INFOS
 // function that makes the api request and returns a Promise for response
 function fetchProf(datas) {
 
-    const url = "http://176.31.252.134:9001/api/v1/users/" + datas.id;
+    const url = "http://176.31.252.134:7001/api/v1/users/infos";
+
+    return axios.get(url, {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            token: datas.token
+        }
+    });
+}
+
+function fetchProfNotif(datas) {
+
+    const url = "http://176.31.252.134:7001/api/v1/users/infos/" + datas.id;
 
     return axios.get(url, {
         headers: {
@@ -100,11 +125,13 @@ function change_password_api(datas){
 function get_all_students_api(datas){
 
     const datasTosend = new FormData();
-    datasTosend.append('typeUser', datas.typeUser);
-    datasTosend.append('idUser', datas.idUser);
     datasTosend.append('idClasse', datas.idClasse);
 
-    var url = datas.idClasse == 0 ? 'http://176.31.252.134:7001/api/v1/trombi' : 'http://176.31.252.134:7001/api/v1/trombi/byClasse';
+    datas.search = datas.search == undefined ? '' : datas.search;
+
+    datasTosend.append('search', datas.search);
+
+    var url = datas.idClasse == 0 ? 'http://176.31.252.134:7001/api/v1/trombi/' : 'http://176.31.252.134:7001/api/v1/trombi/byClasse';
 
     return axios({
         method: 'post',
@@ -118,20 +145,37 @@ function get_all_students_api(datas){
     });
 }
 
+function get_nbr_students_api(datas){
+
+    var url = 'http://176.31.252.134:7001/api/v1/eleves/nbEleves';
+
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            token: datas.token
+        }
+    });
+}
+
+
 function update_prof_api(datas){
 
 
-    const datasTosend = new URLSearchParams();
-    datasTosend.append('idUser', datas.idProf);
+    const datasTosend = new FormData();
     datasTosend.append('nomUser', datas.nomProf);
     datasTosend.append('prenomUser', datas.prenomProf);
-    datasTosend.append('emailUser', datas.emailProf);
-    datasTosend.append('token', datas.token);
 
     return axios({
-        method: 'post',
-        url: 'http://176.31.252.134:9001/api/v1/users/update',
-        data: datasTosend
+        method: 'put',
+        url: 'http://176.31.252.134:7001/api/v1/users/update',
+        data: datasTosend,
+        headers: {
+        Accept: 'application/json',
+            token: datas.token
+    }
     })
 
 }
@@ -139,13 +183,27 @@ function update_prof_api(datas){
 function upload_img_api(datas){
 
     const datasTosend = new FormData();
-    datasTosend.append('picProf', datas.file);
-    datasTosend.append('idUser', datas.idProf);
-    datasTosend.append('emailUser', datas.email);
+
+    var url = '';
+
+    if (datas.picEleve){
+
+        datasTosend.append('picEleve', datas.file);
+        datasTosend.append('idEleve', datas.idEleve);
+
+        url = '/eleves/picEleve';
+    }else{
+
+        datasTosend.append('picProf', datas.file);
+        datasTosend.append('idUser', datas.idProf);
+        datasTosend.append('emailUser', datas.email);
+
+        url = '/users/picProf';
+    }
 
     return axios({
-        method: 'post',
-        url: 'http://176.31.252.134:7001/api/v1/users/picProf',
+        method: 'put',
+        url: 'http://176.31.252.134:7001/api/v1' + url,
         headers: {
             token: datas.token
         },
@@ -183,8 +241,6 @@ function student_profile_api(datas){
 function get_user_classes_api(datas){
 
     const datasTosend = new FormData();
-    datasTosend.append('typeUser', datas.typeUser);
-    datasTosend.append('idUser', datas.idUser);
 
     return axios({
         method: 'get',
@@ -193,8 +249,7 @@ function get_user_classes_api(datas){
             Accept: 'application/json',
             'Content-Type': 'application/json',
             token: datas.token
-        },
-        data: datasTosend
+        }
     });
 
 }
@@ -215,6 +270,237 @@ function get_apps_buy(datas){
             'Content-Type': 'multipart/form-data'
         },
         data: datasTosend
+    });
+}
+
+function change_ident_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/users/changeEmail";
+
+    const datasTosend = new FormData();
+    datasTosend.append('idUser', datas.idUser);
+    datasTosend.append('password', datas.password);
+    datasTosend.append('newEmail', datas.newEmail);
+    datasTosend.append('token', datas.token);
+
+    return axios({
+        method: 'put',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        data: datasTosend
+    });
+
+}
+
+function change_pass_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/users/changePassword";
+
+    const datasTosend = new FormData();
+    datasTosend.append('idUser', datas.idUser);
+    datasTosend.append('oldPassword', datas.oldPassword);
+    datasTosend.append('newPassword', datas.newPassword);
+    datasTosend.append('token', datas.token);
+
+    return axios({
+        method: 'put',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        data: datasTosend
+    });
+
+}
+
+function add_student_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/eleves/add";
+
+    const datasTosend = new FormData();
+    datasTosend.append('directorId', datas.directorId);
+    datasTosend.append('nom', datas.nom);
+    datasTosend.append('prenom', datas.prenom);
+    datasTosend.append('picEleve', datas.picEleve);
+    datasTosend.append('idClasse', datas.idClasse);
+    datasTosend.append('token', datas.token);
+
+    return axios({
+        method: 'post',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        data: datasTosend
+    });
+
+}
+
+function get_app_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/store/getApp";
+
+    const datasTosend = new FormData();
+    datasTosend.append('idApp', datas.idApp);
+    datasTosend.append('token', datas.token);
+
+    return axios({
+        method: 'post',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        data: datasTosend
+    });
+
+}
+
+function get_appstatus_api(datas) {
+
+    const url = "http://176.31.252.134:7001/api/v1/store/getAppStatus/" + datas.idApp;
+
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        }
+    });
+
+}
+
+function get_app_registred_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/store/getAppsEcole";
+
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        }
+    });
+}
+
+function get_app_registrednbr_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/games/nbGames";
+
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        }
+    });
+}
+
+function ask_app_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/store/buyApp";
+
+    const datasTosend = new FormData();
+    datasTosend.append('idApp', datas.idApp);
+    datasTosend.append('commentaire', datas.commentaire);
+    datasTosend.append('token', datas.token);
+
+    return axios({
+        method: 'post',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        },
+        data: datasTosend
+    });
+}
+
+function get_nb_notifs_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/notifs/getNbNotifs";
+
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        }
+    });
+}
+
+function get_all_notifs_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/notifs/popUpMenu";
+
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        }
+    });
+}
+
+function get_a_notif_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/notifs/getNotif/" + datas.idNotif;
+
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        }
+    });
+}
+
+function validate_app_api(datas){
+
+    const datasTosend = new FormData();
+    datasTosend.append('typeUser', datas.typeUser);
+    datasTosend.append('idDemande', datas.idDemande);
+    datasTosend.append('validate', datas.validate);
+
+    const url = "http://176.31.252.134:7001/api/v1/store/validating";
+
+    return axios({
+        method: 'post',
+        url: url,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        },
+        data: datasTosend
+    });
+}
+
+function read_notif_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/notifs/read/" + datas.idNotif;
+
+    return axios({
+        method: 'put',
+        url: url,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        }
     });
 }
 
@@ -241,15 +527,15 @@ function* login(logs){
 
         const response = yield call(login_in, datas);
 
-        console.log(response);
-
         if (response.data.success === true) {
             const token = response.data.token;
             const user_id = response.data.currUser;
             const director = response.data.typeUser === 1 ? false : true;
             const typeUser = response.data.typeUser;
             const idEcole = response.data.idEcole;
-            yield put({ type: "LOGIN_SUCCESS", token: token, user_id: user_id, director: director, typeUser: typeUser, idEcole: idEcole});
+            yield put({ type: "LOGIN_SUCCESS", token: token, director: director, typeUser: typeUser});
+
+            yield put({ type: "GET_NOTIFS_REQUEST", idUser: user_id, token: token});
 
             var datas_2 = {
                 token: token,
@@ -347,6 +633,26 @@ function* get_all_students(datas){
 
         if (response.data.status === 200){
             yield put({type: GET_STUDENTS_SUCCESS, content: content});
+        }else{
+            yield put({type: GET_STUDENTS_ERROR});
+        }
+
+    }catch (e) {
+
+
+    }
+}
+
+function* get_students_nbr(datas){
+
+    try{
+
+        const response = yield call(get_nbr_students_api, datas);
+
+        const nbStu = response.data.response[0].nbEleves;
+
+        if (response.data.status === 200){
+            yield put({type: GET_STUDENTNBR, nbStudents: nbStu});
         }else{
             yield put({type: GET_STUDENTS_ERROR});
         }
@@ -480,8 +786,10 @@ function* student_profile(datas){
             const nomEleve = response.data.response[0].nomEleve;
             const prenomEleve = response.data.response[0].prenomEleve;
             const noEleve = response.data.response[0].BAE;
+            const idEleve = datas.id;
+            const picEleve = response.data.response[0].picPath;
 
-            yield put({type: 'STUDENT_PROFILE_SUCCESS', nomEleve: nomEleve, prenomEleve: prenomEleve, noEleve: noEleve})
+            yield put({type: 'STUDENT_PROFILE_SUCCESS', nomEleve: nomEleve, prenomEleve: prenomEleve, noEleve: noEleve, idEleve: idEleve, picEleve: picEleve})
 
         }
 
@@ -517,8 +825,6 @@ function* getAppsBuy(datas){
 
         const response = yield call(get_apps_buy, datas);
 
-        console.log(response);
-
         if (response.data.status === 200){
 
             const apps = JSON.stringify(response.data.response);
@@ -529,6 +835,351 @@ function* getAppsBuy(datas){
 
     }catch (e) {
 
+    }
+
+}
+
+function *changeIdentifiant(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(change_ident_api, datas);
+
+        if (response.data.status === 200){
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_SUCCESS", message: "Votre identifiant a bien ete change a " + datas.newEmail });
+
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else if (response.data.status === 500){
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Erreur. Mot de passe invalide." });
+
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        }
+
+    }catch (e) {
+
+    }
+
+}
+
+function* changePass(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(change_pass_api, datas);
+
+        if (response.data.status === 200){
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_SUCCESS", message: "Votre mot de passe a bien ete change. Vous allez etre deconnecte"});
+            yield put({type: "RELOAD_REQUEST"});
+
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Une erreur s'est produite." });
+        }
+
+    }catch (e) {
+
+    }
+}
+
+function* addStudent(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(add_student_api, datas);
+
+        if (response.data.status === 200){
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_SUCCESS", message: "Le nouvel eleve a bien ete ajoute."});
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Une erreur s'est produite." });
+        }
+
+    }catch (e) {
+
+    }
+
+}
+
+function* getApp(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(get_app_api, datas);
+
+        const responseStatus = yield call(get_appstatus_api, datas);
+
+
+        if (response.data.status === 200){
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "GET_APP_SUCCESS", appContent: response.data.response[0], status: responseStatus.data.appStatus });
+
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Une erreur s'est produite." });
+        }
+
+    }catch (e) {
+    }
+
+}
+
+function* getAppRegistred(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(get_app_registred_api, datas);
+
+        if (response.data.status === 200){
+
+            const apps = JSON.stringify(response.data.response);
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "GET_APP_REGISTRED_SUCCESS", apps: apps });
+
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Une erreur s'est produite." });
+        }
+
+    }catch (e) {
+
+    }
+
+}
+
+function* getAppRegistredNbr(datas){
+
+    try{
+
+        const response = yield call(get_app_registrednbr_api, datas);
+
+        if (response.data.status === 200){
+
+            const appsNbr = response.data.response[0].nbGames;
+
+            yield put({type: "GET_APPNBR", appsNbr: appsNbr });
+
+
+        }
+        else{
+        }
+
+    }catch (e) {
+
+    }
+
+}
+
+function* askApp(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(ask_app_api, datas);
+
+        if (response.data.status === 200){
+
+            const apps = JSON.stringify(response.data.response);
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "GET_APP_REGISTRED_SUCCESS", apps: apps });
+
+            yield put({type: "SNACK_PUT_SUCCESS", message: "La demande a bien ete effectuee." });
+
+            yield put({type: "RELOAD_REQUEST"});
+
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Une erreur s'est produite." });
+        }
+
+    }catch (e) {
+    }
+
+}
+
+function* getNotifs(datas){
+
+    try{
+
+        const response = yield call(get_nb_notifs_api, datas);
+
+        const response2 = yield call(get_all_notifs_api, datas);
+
+        if (response.data.status === 200 && response2.data.status === 200){
+
+            const nbNotif = response.data.nb;
+            const content = response2.data.response;
+
+            yield put({type: "GET_NOTIFS_SUCCESS", nbNotif: nbNotif, content: content });
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+        }
+
+    }catch (e) {
+    }
+
+}
+
+function* showNotif(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+
+    try{
+
+        const responseNotif = yield call(get_a_notif_api, datas);
+
+        if (responseNotif.data.status === 200){
+
+            const datasProf = {id: responseNotif.data.response[0].idProf, token: datas.token};
+
+            const typeNotif = responseNotif.data.response[0].typeNotif;
+
+            const idNotif = responseNotif.data.response[0].idNotif;
+
+            const idDemande = responseNotif.data.response[0].idDemande;
+
+            const isAccepted = responseNotif.data.response[0].isAccepted;
+
+            const responseProf = yield call(fetchProfNotif, datasProf);
+
+            if (responseProf.data.status === 200){
+
+                const nomProf = responseProf.data.response[0].nomUser;
+
+                const prenomProf = responseProf.data.response[0].prenomUser;
+
+                const datasApp = {token: datas.token, idApp: responseNotif.data.response[0].idGame};
+
+                const responseApp = yield call(get_app_api, datasApp);
+
+                if (responseApp.data.status === 200) {
+
+                    const nomApp = responseApp.data.response[0].nomApp;
+
+                    const idApp = responseApp.data.response[0].id;
+
+                    yield put({type: "SHOW_NOTIF_SUCCESS", nomProf: nomProf, prenomProf: prenomProf, nomApp: nomApp, idApp: idApp, typeNotif: typeNotif, idNotif: idNotif, idDemande: idDemande, isAccepted: isAccepted});
+                    yield put({type: "END_LOADING"});
+
+                }
+
+
+            }
+
+        }
+
+    }catch (e) {
+        yield put({type: "END_LOADING"});
+
+    }
+
+}
+
+function* validateApp(datas){
+
+    try{
+
+        const response = yield call(validate_app_api, datas);
+
+        if (response.data.status === 200){
+
+            yield put({type: "SNACK_PUT_SUCCESS", message: "Votre reponse a bien ete prise en compte." });
+
+            const responseRead = yield call(read_notif_api, datas);
+
+            yield put({type: "RELOAD_REQUEST"});
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+            yield put({type: "SNACK_PUT_ERROR", message: "Une erreur est survenue." });
+
+        }
+
+    }catch (e) {
+        yield put({type: "SNACK_PUT_ERROR", message: "Une erreur est survenue." });
+    }
+
+}
+
+function* readNotif(datas){
+
+    try{
+
+        const response = yield call(read_notif_api, datas);
+
+        if (response.data.status === 200){
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+
+        }
+
+    }catch (e) {
     }
 
 }

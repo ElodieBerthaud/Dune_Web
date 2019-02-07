@@ -46,7 +46,21 @@ class Student extends Component {
 
             const nbEleve = obj.length;
 
-            var id = null
+            var id = null;
+
+            let classesLabel = {
+                1: 'Petite section',
+                2: 'Moyenne Section',
+                3: 'Grande section',
+                4: 'CP',
+                5: 'CE1',
+                6: 'CE2',
+                7: 'CM1',
+                8: 'CM2',
+                9: '6e',
+                10: '5e',
+                11: '4e',
+                12: '3e'};
 
             for (var i = 0; i < nbEleve; i++) {
                 id = obj[i].idEleve;
@@ -56,7 +70,7 @@ class Student extends Component {
                             <CardActionArea>
                                 <Avatar
                                     alt="Adelle Charles"
-                                    src={student}
+                                    src={obj[i].picPath ? 'http://176.31.252.134:7001/files/eleves/' + obj[i].picPath : student}
                                     className={classNames(classes.avatar, classes.bigAvatar)}
                                     style={{margin: '0 auto', width: '40%', height: '40%', marginTop: '10%'}}
                                 />
@@ -65,6 +79,11 @@ class Student extends Component {
                                     <Typography gutterBottom style={{textAlign: 'center'}}>
                                         {obj[i].nomEleve} {obj[i].prenomEleve}
                                     </Typography>
+
+                                    <Typography gutterBottom style={{textAlign: 'center', fontWeight: 'bold'}}>
+                                        {classesLabel[obj[i].level]} {obj[i].num}
+                                    </Typography>
+
                                 </CardContent>
                             </CardActionArea>
                         </Card>
@@ -74,7 +93,11 @@ class Student extends Component {
 
         }
 
-        return eleve;
+        if (eleve.length === 0){
+            return <div>Aucun resultat trouve pour votre recherche.</div>
+        }
+        else
+            return eleve;
     }
 
         render(){

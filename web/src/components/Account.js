@@ -11,6 +11,7 @@ import {connect} from "react-redux";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import ViewImage from './ViewImage';
+import ChangePassword from './changePassword';
 
 const styles = theme => ({
     card: {
@@ -35,12 +36,14 @@ class Account extends Component{
             file: null,
             name: null,
             lastName: null,
-            email: null
+            email: null,
+            openChangeModal: false
         }
 
         this.changeImage = this.changeImage.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleChangeValues = this.handleChangeValues.bind(this);
+        this.changeIdent = this.changeIdent.bind(this);
 
         this.state.name = this.props.userName;
         this.state.lastName = this.props.userLastname;
@@ -67,7 +70,11 @@ class Account extends Component{
 
     handleChangeValues(evt){
         this.setState({[evt.target.name]: evt.target.value});
+    }
 
+    changeIdent(){
+
+        this.setState({openChangeModal: true});
     }
 
     render(){
@@ -89,7 +96,7 @@ class Account extends Component{
                     <CardContent style={{padding: '0', margin:'1%'}}>
                         <div style={{textAlign: 'center'}}>
                             <Button  variant="contained" color="primary" // <-- Just add me!
-                                    label='My Label' className={classes.button}>
+                                     label='My Label' className={classes.button}>
                                 <input type="file" name='pic' style={{position: 'absolute', opacity: '0'}} onChange={this.changeImage}/>
                                 changer ma photo
                             </Button>
@@ -101,50 +108,47 @@ class Account extends Component{
                             <h3> {this.props.director === true ? 'Directeur d\'établissement' : 'Professeur' } </h3>
                         </div>
                     </CardContent>
-                <div style={{borderBottom: '1px solid grey', width: '40%', margin:'0 auto'}}>
-                </div>
-                <CardContent style={{padding: '0', margin: '1%', textAlign: 'center'}}>
-                    <h2> Vos données personnelles </h2>
-                    <div style={{textAlign: 'center'}}>
-                        <TextField
-                            id="outlined-name"
-                            label="Nom"
-                            margin="normal"
-                            variant="outlined"
-                            name='lastName'
-                            value={this.state.lastName}
-                            style={{margin: '1%'}}
-                            onChange={this.handleChangeValues}
-                        />
-                        <TextField
-                            id="outlined-name"
-                            label="Prenom"
-                            margin="normal"
-                            variant="outlined"
-                            name='name'
-                            value={this.state.name}
-                            style={{margin: '1%'}}
-                            onChange={this.handleChangeValues}
-                        />
+                    <div style={{borderBottom: '1px solid grey', width: '40%', margin:'0 auto'}}>
                     </div>
-                    <div style={{textAlign: 'center'}}>
-                        <TextField
-                            disabled
-                            id="outlined-name"
-                            label="Email"
-                            margin="normal"
-                            variant="outlined"
-                            name='email'
-                            value={this.state.email}
-                            style={{margin: '1%', width: '30%'}}
-                            onChange={this.handleChangeValues}
-                        />
-                    </div>
-                    <Button  variant="contained" color="primary" // <-- Just add me!
-                             label='My Label' className={classes.button} onClick={this.handleUpdate}>
-                        Modifier mes informations
-                    </Button>
-                </CardContent>
+                    <CardContent style={{padding: '0', margin: '1%', textAlign: 'center'}}>
+                        <h2> Vos données personnelles </h2>
+                        <div style={{textAlign: 'center'}}>
+                            <TextField
+                                id="outlined-name"
+                                label="Nom"
+                                margin="normal"
+                                variant="outlined"
+                                name='lastName'
+                                value={this.state.lastName}
+                                style={{margin: '1%'}}
+                                onChange={this.handleChangeValues}
+                            />
+                            <TextField
+                                id="outlined-name"
+                                label="Prenom"
+                                margin="normal"
+                                variant="outlined"
+                                name='name'
+                                value={this.state.name}
+                                style={{margin: '1%'}}
+                                onChange={this.handleChangeValues}
+                            />
+                        </div>
+                        <Button  variant="contained" color="primary" // <-- Just add me!
+                                 label='My Label' className={classes.button} onClick={this.handleUpdate}>
+                            Modifier mes informations
+                        </Button>
+                        <br/>
+                        <Button
+                            onClick={this.changeIdent}
+                            variant="contained" color="primary"// <-- Just add me!
+                            // label='My Label' className={classes.button}
+                            style={{backgroundColor:'#ffa726'}}
+                            >
+                            Modifier identifiant/mot de passe
+                        </Button>
+                        <ChangePassword open={this.state.openChangeModal}/>
+                    </CardContent>
                 </Card>
                 <ViewImage/>
             </div>

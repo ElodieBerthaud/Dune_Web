@@ -15,17 +15,8 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import MenuStore from './BuyStoreMenu';
 import Paper from '@material-ui/core/Paper';
-
-const styles = theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    paper: {
-        padding: theme.spacing.unit * 2,
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    },
-});
+import Rater from 'react-rater';
+import 'react-rater/lib/react-rater.css';
 
 class AvailableApps extends Component{
 
@@ -36,6 +27,12 @@ class AvailableApps extends Component{
 
     }
 
+    gotToApp(id){
+
+        window.location = '/store/' + id;
+
+    }
+
     printApps() {
         let apps = [];
 
@@ -43,23 +40,23 @@ class AvailableApps extends Component{
 
         let obj = JSON.parse(this.props.apps);
 
-        //var tmp = 0;
-
         if (obj != null) {
 
-            for (var i = 0; i < 20; i++) {
+            for (var i = 0; i < obj.length; i++) {
                 apps.push(
-                    <Grid  item md={4} lg={4} style={{display: 'inline-block'}} key={i}>
+                    <Grid  item md={3} lg={3} style={{display: 'inline-block'}} key={i}>
                         <Card className={classes.card} classes={{root: classes.card}}>
-                            <CardActionArea>
+                            <CardActionArea
+                                onClick={this.gotToApp.bind(this, obj[i].id)}>
                                 <Avatar
-                                    src={"http://176.31.252.134:7001/files/apps/1-app.png"}
+                                    src={"http://176.31.252.134:7001/files/apps/" + obj[i].picPath}
                                     className={classNames(classes.avatar, classes.bigAvatar)}
                                     style={{margin: '0 auto', width: '40%', height: '40%', marginTop: '10%'}}
                                 />
                                 <CardContent style={{textAlign: 'center'}}>
+                                    <Rater total={5} rating={4} interactive={true} />
                                     <Typography>
-                                        coucou
+                                        { obj[i].nomApp }
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>

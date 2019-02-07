@@ -1,6 +1,5 @@
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Star from '@material-ui/icons/Star';
@@ -9,7 +8,7 @@ import NewReleases from '@material-ui/icons/NewReleases';
 import Category from '@material-ui/icons/Category';
 import Update from '@material-ui/icons/Update';
 import Medias from '@material-ui/icons/PermMedia';
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 

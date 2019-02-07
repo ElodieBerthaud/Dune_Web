@@ -10,11 +10,14 @@ import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 // @material-ui/icons
-import Edit from "@material-ui/icons/Edit";
+import Edit from "@material-ui/icons/Done";
 import Close from "@material-ui/icons/Close";
 import Check from "@material-ui/icons/Check";
 // core components
 import tasksStyle from "./styles/tasksStyle.jsx";
+import {connect} from "react-redux";
+import dashboardStyle from "./styles/dashboardStyle";
+import {withRouter} from "react-router";
 
 class Tasks extends React.Component {
   state = {
@@ -35,67 +38,104 @@ class Tasks extends React.Component {
       checked: newChecked
     });
   };
+
+    acceptAppRequest = (idDemandeNotif, idNotif) => {
+
+        this.props.validateApp(this.props.typeUser, this.props.token, idDemandeNotif, 1, idNotif)
+
+    }
+
+    declineAppRequest = (idDemandeNotif, idNotif) => {
+
+        this.props.validateApp(this.props.typeUser, this.props.token, idDemandeNotif, 0, idNotif)
+
+    }
+
+    renderNotifications = () => {
+
+      const classes = this.props;
+
+        let obj = this.props.content;
+
+    if (obj !== null) {
+
+        if (obj.length > 0) {
+
+            const notifs = obj.map((obj) =>
+
+                <TableRow key={obj.idNotif} className={classes.tableRow}>
+                    <TableCell className={classes.tableCell} style={{padding: '0'}}>
+                        {obj.nomProf} vous a requete l'application <a target="_blank"
+                                                                      href={'/store/' + obj.idApp}>{obj.nomApp}.</a>
+                    </TableCell>
+                  <TableCell className={classes.tableActions}>
+                        <Tooltip
+                            id="tooltip-top"
+                            title="Approuver"
+                            placement="top"
+                            classes={{tooltip: classes.tooltip}}
+                        >
+                            <IconButton
+                                aria-label="Edit"
+                                className={classes.tableActionButton}
+                                onClick={() => this.acceptAppRequest(obj.idToNotify, obj.idNotif)}
+                            >
+                                <Edit
+                                    className={
+                                        classes.tableActionButtonIcon + " " + classes.edit
+                                    }
+                                />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip
+                            id="tooltip-top-start"
+                            title="Decliner"
+                            placement="top"
+                            classes={{tooltip: classes.tooltip}}
+                            onClick={() => this.declineAppRequest(obj.idToNotify, obj.idNotif)}
+                        >
+                            <IconButton
+                                aria-label="Close"
+                                className={classes.tableActionButton}
+
+                            >
+                                <Close
+                                    className={
+                                        classes.tableActionButtonIcon + " " + classes.close
+                                    }
+                                />
+                            </IconButton>
+                        </Tooltip>
+                    </TableCell>
+                </TableRow>
+            )
+            return notifs;
+        }else{
+
+            var notifs = [];
+
+            notifs.push(
+                <TableRow key={0} className={classes.tableRow}>
+                    <TableCell className={classes.tableCell} style={{textAlign: 'center'}}>
+                        Aucune demande d'achat d'application.
+                    </TableCell>
+                </TableRow>
+            )
+
+            return notifs;
+        }
+    }
+  }
+
   render() {
-    const { classes, tasksIndexes, tasks } = this.props;
+
+    const { classes } = this.props;
+
     return (
       <Table className={classes.table}>
         <TableBody>
-          {tasksIndexes.map(value => (
-            <TableRow key={value} className={classes.tableRow}>
-              <TableCell className={classes.tableCell}>
-                <Checkbox
-                  checked={this.state.checked.indexOf(value) !== -1}
-                  tabIndex={-1}
-                  onClick={this.handleToggle(value)}
-                  checkedIcon={<Check className={classes.checkedIcon} />}
-                  icon={<Check className={classes.uncheckedIcon} />}
-                  classes={{
-                    checked: classes.checked,
-                    root: classes.root
-                  }}
-                />
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                {tasks[value]}
-              </TableCell>
-              <TableCell className={classes.tableActions}>
-                <Tooltip
-                  id="tooltip-top"
-                  title="Edit Task"
-                  placement="top"
-                  classes={{ tooltip: classes.tooltip }}
-                >
-                  <IconButton
-                    aria-label="Edit"
-                    className={classes.tableActionButton}
-                  >
-                    <Edit
-                      className={
-                        classes.tableActionButtonIcon + " " + classes.edit
-                      }
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip
-                  id="tooltip-top-start"
-                  title="Remove"
-                  placement="top"
-                  classes={{ tooltip: classes.tooltip }}
-                >
-                  <IconButton
-                    aria-label="Close"
-                    className={classes.tableActionButton}
-                  >
-                    <Close
-                      className={
-                        classes.tableActionButtonIcon + " " + classes.close
-                      }
-                    />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-          ))}
+            <TableRow style={{width: '0', height: '0'}}/>
+            { this.renderNotifications() }
         </TableBody>
       </Table>
     );
@@ -103,9 +143,29 @@ class Tasks extends React.Component {
 }
 
 Tasks.propTypes = {
-  classes: PropTypes.object.isRequired,
-  tasksIndexes: PropTypes.arrayOf(PropTypes.number),
-  tasks: PropTypes.arrayOf(PropTypes.node)
+  classes: PropTypes.object.isRequired
 };
 
-export default withStyles(tasksStyle)(Tasks);
+const mapStateToProps = state => {
+    return {
+        typeUser: state.login.typeUser,
+        typeNotif: state.showNotif.typeNotif,
+        nbNotifs: state.notification.nbNotif,
+        content: state.notification.content,
+        token: state.login.token
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        validateApp: (typeUser, token, idDemande, validate, idNotif) => dispatch({type: "VALIDATE_APP_REQUEST", typeUser, token, idDemande, validate, idNotif}),
+        readNotif: (idNotif, token)=> dispatch({type: "READ_NOTIF_REQUEST", idNotif, token })
+
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(tasksStyle)(Tasks)));
+
+
+
+

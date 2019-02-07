@@ -10,11 +10,17 @@ import Menu from '@material-ui/core/Menu';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Drawer from './Drawer';
 import {connect} from 'react-redux';
+import Fade from '@material-ui/core/Fade';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
     root: {
@@ -44,7 +50,7 @@ const styles = theme => ({
         [theme.breakpoints.up('md')]: {
             display: 'none',
         },
-    },
+    }
 });
 
 class Header extends React.Component {
@@ -56,11 +62,19 @@ class Header extends React.Component {
         this.state = {
             anchorEl: null,
             mobileMoreAnchorEl: null,
-            colorbar: ''
+            colorbar: '',
+            open: false,
+            anchorEl2: null,
+            openNotif: false
         };
     }
 
+    componentWillMount () {
+        this.props.getNotifs(this.props.idUser, this.props.token);
+    }
+
     handleProfileMenuOpen = event => {
+
         this.setState({ anchorEl: event.currentTarget });
     };
 
@@ -70,6 +84,7 @@ class Header extends React.Component {
     };
 
     handleMobileMenuOpen = event => {
+
         this.setState({ mobileMoreAnchorEl: event.currentTarget });
     };
 
@@ -91,18 +106,113 @@ class Header extends React.Component {
 
     }
 
+    handleClick = event => {
+        this.setState({ anchorEl2: event.currentTarget, open: true});
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: null, open: false, openNotif: false });
+    };
+
+    showNotif(idNotif) {
+
+        this.setState({ openNotif: true });
+        this.setState({ open: false });
+
+        this.props.showNotif(idNotif, this.props.token);
+
+    }
+
+    generateAllNotif = () => {
+
+        let obj = this.props.content;
+
+        let notifs = [];
+
+        var id = null;
+
+        if (obj != null){
+
+            for (var i = 0; i < this.props.nbNotifs; i++) {
+
+                id = obj[i].idNotif;
+
+                if (obj[i].isRead === 0) {
+
+
+                    notifs.push(
+                        <MenuItem key={i} onClick={this.showNotif.bind(this, id)}>{obj[i].textNotif}</MenuItem>
+                    );
+
+            }
+        }
+            if (this.props.nbNotifs === 0){
+                notifs.push(
+                    <MenuItem key={0}>Pas de notifications.</MenuItem>
+                );
+            }
+        }
+        return notifs;
+
+    }
+
+    renderNotification = () => {
+        let content = [];
+
+            if (this.props.typeUser === 2){
+
+                content.push(<DialogContentText key={this.props.idAppNotif}>
+                Vous avez une demande d'application de
+                    {" " + this.props.prenomProfNotif + " " + this.props.nomProfNotif}.<br/>
+                    Cela concerne l'application {this.props.nomAppNotif}. {" "}
+                    <a target="_blank" href={'/store/' + this.props.idAppNotif}>Cliquez ici</a>
+                    {" "}pour voir l'application.<br/>
+                    Voulez-vous accpeter cette demande ?
+                </DialogContentText>)
+
+            }else{
+                content.push(<DialogContentText>
+
+                    Votre directeur d'etablissement a {this.props.isNotifAccepted === 0 ? ' refusé ' : ' accepté '} votre demande d'achat de l'application
+                        {" "} {this.props.nomAppNotif}.
+
+                </DialogContentText>
+                );
+            }
+            return content;
+    }
+
+    acceptAppRequest = () => {
+
+        this.props.validateApp(this.props.typeUser, this.props.token, this.props.idDemandeNotif, 1, this.props.idNotif)
+
+    }
+
+    declineAppRequest = () => {
+
+        this.props.validateApp(this.props.typeUser, this.props.token, this.props.idDemandeNotif, 0, this.props.idNotif)
+
+    }
+
+    handleCloseNotif= () => {
+
+        this.props.readNotif(this.props.idNotif, this.props.token);
+        this.setState({open: false});
+        window.location.reload();
+
+    }
+
     render() {
 
-        console.log(window.location.pathname);
+        const { anchorEl } = this.state;
 
         this.state.colorbar = window.location.pathname === '/store' ? '#ab47bc' : '';
 
-        const { anchorEl, mobileMoreAnchorEl } = this.state;
+        const { mobileMoreAnchorEl } = this.state;
         const { classes } = this.props;
         const isMenuOpen = Boolean(anchorEl);
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
         const { onOpenDrawer } = this.props;
-        const log = this.props;
 
         const renderMenu = (
             <Menu
@@ -127,15 +237,7 @@ class Header extends React.Component {
             >
                 <MenuItem>
                     <IconButton color="inherit">
-                        <Badge className={classes.margin} badgeContent={4} color="secondary">
-                            <MailIcon />
-                        </Badge>
-                    </IconButton>
-                    <p>Messages</p>
-                </MenuItem>
-                <MenuItem>
-                    <IconButton color="inherit">
-                        <Badge className={classes.margin} badgeContent={11} color="secondary">
+                        <Badge className={classes.margin} badgeContent={3} color="secondary">
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
@@ -163,16 +265,18 @@ class Header extends React.Component {
                             </Typography>
                             <div className={classes.grow} />
                             <div className={classes.sectionDesktop}>
-                                <IconButton color="inherit">
-                                    <Badge className={classes.margin} badgeContent={4} color="secondary">
-                                        <MailIcon />
-                                    </Badge>
-                                </IconButton>
-                                <IconButton color="inherit">
-                                    <Badge className={classes.margin} badgeContent={17} color="secondary">
+                                <IconButton color="inherit"
+                                    aria-owns={this.state.open ? 'fade-menu' : undefined}
+                                    aria-haspopup="true"
+                                    onClick={this.handleClick}
+                                >
+                                    <Badge className={classes.margin} badgeContent={this.props.nbNotifs === null ? 0 : this.props.nbNotifs} color="secondary">
                                         <NotificationsIcon />
                                     </Badge>
                                 </IconButton>
+                                <Menu id='fade-menu' anchorEl={this.state.anchorEl2} open={this.state.open} onClose={this.handleClose} TransitionComponent={Fade}>
+                                    { this.generateAllNotif() }
+                                </Menu>
                                 <IconButton
                                     aria-owns={isMenuOpen ? 'material-appbar' : null}
                                     aria-haspopup="true"
@@ -192,6 +296,32 @@ class Header extends React.Component {
                     {renderMenu}
                     {renderMobileMenu}
                     <Drawer open={this.state.open}/>
+                    <Dialog
+                        open={this.state.openNotif}
+                        onClose={this.handleClose}
+                        aria-labelledby="form-dialog-title"
+                    >
+                        <div>
+                            <DialogTitle id="form-dialog-title">{this.props.typeNotif === 1 ? "Demande d'achat d'application." : "Votre demande d'application"}</DialogTitle>
+                            <DialogContent>
+                                    {this.renderNotification()}
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.acceptAppRequest} color="primary" style={{display: this.props.typeUser === 1 ? 'none' : ''}}>
+                                    Oui
+                                </Button>
+                                <Button onClick={this.declineAppRequest} color="primary" style={{display: this.props.typeUser === 1 ? 'none' : ''}}>
+                                    Non
+                                </Button>
+                                <Button onClick={this.handleClose} color="primary" style={{display: this.props.typeUser === 1 ? 'none' : ''}}>
+                                    Plus tard
+                                </Button>
+                                <Button onClick={this.handleCloseNotif} color="primary" style={{display: this.props.typeUser === 2 ? 'none' : ''}}>
+                                    Ok
+                                </Button>
+                            </DialogActions>
+                        </div>
+                    </Dialog>
                 </div>
             );
         }
@@ -225,14 +355,31 @@ Header.propTypes = {
 const mapStateToProps = state => {
     return {
         opened: state.drawer.opened,
-        logged: state.login.logged
+        logged: state.login.logged,
+        idUser: state.login.id_user,
+        token: state.login.token,
+        nbNotifs: state.notification.nbNotif,
+        content: state.notification.content,
+        nomProfNotif: state.showNotif.nomProf,
+        prenomProfNotif: state.showNotif.prenomProf,
+        nomAppNotif: state.showNotif.nomApp,
+        typeNotif: state.showNotif.typeNotif,
+        idAppNotif: state.showNotif.idApp,
+        typeUser: state.login.typeUser,
+        idDemandeNotif: state.showNotif.idDemande,
+        isNotifAccepted: state.showNotif.isAccepted,
+        idNotif: state.showNotif.idNotif
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         onOpenDrawer: () => dispatch({ type: "OPEN_DRAWER_REQUEST" }),
-        handleLogoutRedux: () => dispatch({type: "LOGOUT_REQUEST"})
+        handleLogoutRedux: () => dispatch({type: "USER_LOGOUT"}),
+        getNotifs: (idUser, token) => dispatch({type: "GET_NOTIFS_REQUEST", idUser, token}),
+        showNotif: (idNotif, token) => dispatch({type: "SHOW_NOTIF_REQUEST", idNotif, token}),
+        validateApp: (typeUser, token, idDemande, validate, idNotif) => dispatch({type: "VALIDATE_APP_REQUEST", typeUser, token, idDemande, validate, idNotif}),
+        readNotif: (idNotif, token)=> dispatch({type: "READ_NOTIF_REQUEST", idNotif, token })
     };
 };
 

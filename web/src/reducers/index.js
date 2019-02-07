@@ -12,6 +12,13 @@ import updateProf from './UpdateProf';
 import studentProfile from './StudentProfileReducer';
 import classes from './ClassesReducer';
 import storeBuy from './StoreBuyReducer';
+import loading from './LoadingReducer';
+import appPage from './AppPageReducer';
+import appRegistred from './AppRegistredReducer';
+import notification from './notificationsReducer';
+import showNotif from './showNotifReducer';
+import reload from './reloadReducer';
+import showDash from './showDashReducer';
 
 const reducers =  combineReducers({
     drawer,
@@ -26,7 +33,14 @@ const reducers =  combineReducers({
     updateProf,
     studentProfile,
     classes,
-    storeBuy
+    storeBuy,
+    loading,
+    appPage,
+    appRegistred,
+    notification,
+    showNotif,
+    reload,
+    showDash
 });
 
 const rootReducer = (state, action) => {
