@@ -40,7 +40,6 @@ class changePassword extends Component{
             value: 0
         }
 
-        this.handleClose = this.handleClose.bind(this);
     }
 
     componentDidUpdate(){

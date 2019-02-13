@@ -42,6 +42,7 @@ export function* watcherSaga() {
     yield takeEvery('GET_APPS_REGISTRED_REQUEST', getAppRegistred);
     yield takeEvery('GET_APPNBR_REQUEST', getAppRegistredNbr);
     yield takeEvery('ASK_APP_REQUEST', askApp);
+    yield takeEvery('BUY_APP_REQUEST', buyApp);
     yield takeEvery('GET_NOTIFS_REQUEST', getNotifs);
     yield takeEvery('SHOW_NOTIF_REQUEST', showNotif);
     yield takeEvery('VALIDATE_APP_REQUEST', validateApp);
@@ -52,7 +53,7 @@ export function* watcherSaga() {
 // function that makes the api request and returns a Promise for response
 function fetchProf(datas) {
 
-    const url = "http://176.31.252.134:7001/api/v1/users/infos";
+    const url = "http://176.31.252.134:9001/api/v1/users/infos";
 
     return axios.get(url, {
         headers: {
@@ -65,7 +66,7 @@ function fetchProf(datas) {
 
 function fetchProfNotif(datas) {
 
-    const url = "http://176.31.252.134:7001/api/v1/users/infos/" + datas.id;
+    const url = "http://176.31.252.134:9001/api/v1/users/infos/" + datas.id;
 
     return axios.get(url, {
         headers: {
@@ -85,7 +86,7 @@ function login_in(logs){
 
     return axios({
         method: 'post',
-        url: 'http://176.31.252.134:7001/api/v1/login',
+        url: 'http://176.31.252.134:9001/api/v1/login',
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
         data: datas
     })
@@ -131,7 +132,7 @@ function get_all_students_api(datas){
 
     datasTosend.append('search', datas.search);
 
-    var url = datas.idClasse == 0 ? 'http://176.31.252.134:7001/api/v1/trombi/' : 'http://176.31.252.134:7001/api/v1/trombi/byClasse';
+    var url = datas.idClasse == 0 ? 'http://176.31.252.134:9001/api/v1/trombi/' : 'http://176.31.252.134:9001/api/v1/trombi/byClasse';
 
     return axios({
         method: 'post',
@@ -147,7 +148,7 @@ function get_all_students_api(datas){
 
 function get_nbr_students_api(datas){
 
-    var url = 'http://176.31.252.134:7001/api/v1/eleves/nbEleves';
+    var url = 'http://176.31.252.134:9001/api/v1/eleves/nbEleves';
 
     return axios({
         method: 'get',
@@ -170,7 +171,7 @@ function update_prof_api(datas){
 
     return axios({
         method: 'put',
-        url: 'http://176.31.252.134:7001/api/v1/users/update',
+        url: 'http://176.31.252.134:9001/api/v1/users/update',
         data: datasTosend,
         headers: {
         Accept: 'application/json',
@@ -203,7 +204,7 @@ function upload_img_api(datas){
 
     return axios({
         method: 'put',
-        url: 'http://176.31.252.134:7001/api/v1' + url,
+        url: 'http://176.31.252.134:9001/api/v1' + url,
         headers: {
             token: datas.token
         },
@@ -244,7 +245,7 @@ function get_user_classes_api(datas){
 
     return axios({
         method: 'get',
-        url: 'http://176.31.252.134:7001/api/v1/trombi/classes',
+        url: 'http://176.31.252.134:9001/api/v1/trombi/classes',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -256,7 +257,7 @@ function get_user_classes_api(datas){
 
 function get_apps_buy(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/store";
+    const url = "http://176.31.252.134:9001/api/v1/store";
 
     const datasTosend = new FormData();
     datasTosend.append('idType', '0');
@@ -275,7 +276,7 @@ function get_apps_buy(datas){
 
 function change_ident_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/users/changeEmail";
+    const url = "http://176.31.252.134:9001/api/v1/users/changeEmail";
 
     const datasTosend = new FormData();
     datasTosend.append('idUser', datas.idUser);
@@ -297,7 +298,7 @@ function change_ident_api(datas){
 
 function change_pass_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/users/changePassword";
+    const url = "http://176.31.252.134:9001/api/v1/users/changePassword";
 
     const datasTosend = new FormData();
     datasTosend.append('idUser', datas.idUser);
@@ -319,7 +320,7 @@ function change_pass_api(datas){
 
 function add_student_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/eleves/add";
+    const url = "http://176.31.252.134:9001/api/v1/eleves/add";
 
     const datasTosend = new FormData();
     datasTosend.append('directorId', datas.directorId);
@@ -343,7 +344,7 @@ function add_student_api(datas){
 
 function get_app_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/store/getApp";
+    const url = "http://176.31.252.134:9001/api/v1/store/getApp";
 
     const datasTosend = new FormData();
     datasTosend.append('idApp', datas.idApp);
@@ -363,7 +364,7 @@ function get_app_api(datas){
 
 function get_appstatus_api(datas) {
 
-    const url = "http://176.31.252.134:7001/api/v1/store/getAppStatus/" + datas.idApp;
+    const url = "http://176.31.252.134:9001/api/v1/store/getAppStatus/" + datas.idApp;
 
     return axios({
         method: 'get',
@@ -379,7 +380,7 @@ function get_appstatus_api(datas) {
 
 function get_app_registred_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/store/getAppsEcole";
+    const url = "http://176.31.252.134:9001/api/v1/store/getAppsEcole";
 
     return axios({
         method: 'get',
@@ -394,7 +395,7 @@ function get_app_registred_api(datas){
 
 function get_app_registrednbr_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/games/nbGames";
+    const url = "http://176.31.252.134:9001/api/v1/games/nbGames";
 
     return axios({
         method: 'get',
@@ -409,7 +410,7 @@ function get_app_registrednbr_api(datas){
 
 function ask_app_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/store/buyApp";
+    const url = "http://176.31.252.134:9001/api/v1/store/buyApp";
 
     const datasTosend = new FormData();
     datasTosend.append('idApp', datas.idApp);
@@ -428,9 +429,28 @@ function ask_app_api(datas){
     });
 }
 
+function buy_app_api(datas){
+
+    const url = "http://176.31.252.134:9001/api/v1/store/buyAppDirecteur";
+
+    const datasTosend = new FormData();
+    datasTosend.append('idApp', datas.idApp);
+
+    return axios({
+        method: 'post',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        },
+        data: datasTosend
+    });
+}
+
 function get_nb_notifs_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/notifs/getNbNotifs";
+    const url = "http://176.31.252.134:9001/api/v1/notifs/getNbNotifs";
 
     return axios({
         method: 'get',
@@ -444,7 +464,7 @@ function get_nb_notifs_api(datas){
 
 function get_all_notifs_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/notifs/popUpMenu";
+    const url = "http://176.31.252.134:9001/api/v1/notifs/popUpMenu";
 
     return axios({
         method: 'get',
@@ -458,7 +478,7 @@ function get_all_notifs_api(datas){
 
 function get_a_notif_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/notifs/getNotif/" + datas.idNotif;
+    const url = "http://176.31.252.134:9001/api/v1/notifs/getNotif/" + datas.idNotif;
 
     return axios({
         method: 'get',
@@ -477,7 +497,7 @@ function validate_app_api(datas){
     datasTosend.append('idDemande', datas.idDemande);
     datasTosend.append('validate', datas.validate);
 
-    const url = "http://176.31.252.134:7001/api/v1/store/validating";
+    const url = "http://176.31.252.134:9001/api/v1/store/validating";
 
     return axios({
         method: 'post',
@@ -492,7 +512,7 @@ function validate_app_api(datas){
 
 function read_notif_api(datas){
 
-    const url = "http://176.31.252.134:7001/api/v1/notifs/read/" + datas.idNotif;
+    const url = "http://176.31.252.134:9001/api/v1/notifs/read/" + datas.idNotif;
 
     return axios({
         method: 'put',
@@ -1029,6 +1049,41 @@ function* askApp(datas){
     try{
 
         const response = yield call(ask_app_api, datas);
+
+        if (response.data.status === 200){
+
+            const apps = JSON.stringify(response.data.response);
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "GET_APP_REGISTRED_SUCCESS", apps: apps });
+
+            yield put({type: "SNACK_PUT_SUCCESS", message: "La demande a bien ete effectuee." });
+
+            yield put({type: "RELOAD_REQUEST"});
+
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Une erreur s'est produite." });
+        }
+
+    }catch (e) {
+    }
+
+}
+
+function* buyApp(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(buy_app_api, datas);
 
         if (response.data.status === 200){
 

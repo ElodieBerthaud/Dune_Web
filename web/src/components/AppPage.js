@@ -86,6 +86,12 @@ class AppPage extends React.Component {
 
     }
 
+    handleBuyAppDir = () => {
+
+        this.props.buyAppDir(this.state.id, this.props.token);
+
+    }
+
 
     handleClose = () =>{
         this.setState({ openAskApp: false });
@@ -100,7 +106,6 @@ class AppPage extends React.Component {
         }
 
         const {classes} = this.props;
-        const bull = <span className={classes.bullet}>•</span>;
 
         return (
             <Card className={classes.card}>
@@ -133,7 +138,7 @@ class AppPage extends React.Component {
                                     variant="contained" color="primary" // <-- Just add me!
                                     label='My Label' className={classes.button}>
                                     <input style={{position: 'absolute', opacity: '0'}}/>
-                                    {this.props.appStatus === '0' ? 'SOUMETTRE' : 'DEJA DANS LA BIBLIOTHEQUE'}
+                                    {this.props.appStatus === '0' ? ( this.props.typeUser === 2 ? "ACHETER" : 'SOUMETTRE' ) : 'DEJA DANS LA BIBLIOTHEQUE'}
                                 </Button>
                         </Grid>
                         <Grid item xs={12}>
@@ -194,15 +199,24 @@ class AppPage extends React.Component {
                         <DialogTitle id="form-dialog-title">Demande d'application</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                Vous êtes sur le point de faire une demande d'achat d'application a votre directeur d'etablissement. Cette application ne sera disponible que si
-                                le directeur l'accepte. Etes-vous sur de vouloir continuer ?
+
+                                {this.props.typeUser !== 2 ?
+                                    "Vous êtes sur le point de faire une demande d'achat d'application a votre directeur d'etablissement. " +
+                                    "Cette application ne sera disponible que si" +
+                                    "le directeur l'accepte. Etes-vous sur de vouloir continuer ?" :
+
+                                    "Vous etres sur le point d'acheter une application. Si vous continuez, vous serez facture de 80 euros. Etes-vous " +
+                                    "sur de vouloir continuer ?"
+                                }
+
+
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={this.handleClose} color="primary">
                                 Annuler
                             </Button>
-                            <Button onClick={this.handleConfirmAsk} color="primary">
+                            <Button onClick={this.props.typeUser === 2 ? this.handleBuyAppDir : this.handleConfirmAsk} color="primary">
                                 Oui
                             </Button>
                         </DialogActions>
@@ -224,14 +238,16 @@ const mapStateToProps = state => {
         app: state.appPage.appContent,
         idEcole: state.login.idEcole,
         appStatus: state.appPage.status,
-        idProf: state.login.id_user
+        idProf: state.login.id_user,
+        typeUser: state.login.typeUser
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         getApp: (idApp, token, idEcole) => dispatch({ type: "GET_APP_REQUEST", idApp, token, idEcole }),
-        AskApp: (idApp, token, idProf, idEcole, commentaire) => dispatch({ type: "ASK_APP_REQUEST", idApp, token, idProf, idEcole, commentaire })
+        AskApp: (idApp, token, idProf, idEcole, commentaire) => dispatch({ type: "ASK_APP_REQUEST", idApp, token, idProf, idEcole, commentaire }),
+        buyAppDir: (idApp, token) => dispatch({ type: "BUY_APP_REQUEST", idApp, token })
     };
 };
 
