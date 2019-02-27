@@ -148,7 +148,7 @@ function get_all_students_api(datas){
 
 function get_nbr_students_api(datas){
 
-    var url = 'http://176.31.252.134:7001/api/v1/eleves/nbEleves';
+    var url = 'http://176.31.252.134:7001/api/v1/dashboard/nbEleves';
 
     return axios({
         method: 'get',
@@ -668,7 +668,7 @@ function* get_students_nbr(datas){
 
         const response = yield call(get_nbr_students_api, datas);
 
-        const nbStu = response.data.response[0].nbEleves;
+        const nbStu = response.data.nbEleves;
 
         if (response.data.status === 200){
             yield put({type: GET_STUDENTNBR, nbStudents: nbStu});
@@ -1161,8 +1161,6 @@ function* showNotif(datas){
             const responseProf = yield call(fetchProfNotif, datasProf);
 
             if (responseProf.data.status === 200){
-
-                console.log("NOTIFS PROF ===== " + JSON.stringify(responseProf.data));
 
                 const datasApp = {token: datas.token, idApp: responseNotif.data.response[0].idGame};
 

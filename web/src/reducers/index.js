@@ -19,6 +19,7 @@ import notification from './notificationsReducer';
 import showNotif from './showNotifReducer';
 import reload from './reloadReducer';
 import showDash from './showDashReducer';
+import showDashTmp from './showDashTmpReducer';
 
 const reducers =  combineReducers({
     drawer,
@@ -40,7 +41,8 @@ const reducers =  combineReducers({
     notification,
     showNotif,
     reload,
-    showDash
+    showDash,
+    showDashTmp
 });
 
 const rootReducer = (state, action) => {

@@ -12,7 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 // @material-ui/icons
 import Edit from "@material-ui/icons/Done";
 import Close from "@material-ui/icons/Close";
-import Check from "@material-ui/icons/Check";
+import RemoveRedEye from "@material-ui/icons/RemoveRedEye";
 // core components
 import tasksStyle from "./styles/tasksStyle.jsx";
 import {connect} from "react-redux";
@@ -51,6 +51,12 @@ class Tasks extends React.Component {
 
     }
 
+
+
+    seeNotif = (idNotif) => {
+        this.props.showNotif(idNotif, this.props.token);
+    }
+
     renderNotifications = () => {
 
       const classes = this.props;
@@ -65,7 +71,7 @@ class Tasks extends React.Component {
 
                 <TableRow key={obj.idNotif} className={classes.tableRow}>
                     <TableCell className={classes.tableCell} style={{padding: '0'}}>
-                        {obj.nomProf} vous a requete l'application <a target="_blank"
+                        Demande de l'application <a target="_blank"
                                                                       href={'/store/' + obj.idApp}>{obj.nomApp}.</a>
                     </TableCell>
                   <TableCell className={classes.tableActions}>
@@ -106,6 +112,25 @@ class Tasks extends React.Component {
                                 />
                             </IconButton>
                         </Tooltip>
+                      <Tooltip
+                          id="tooltip-top-start"
+                          title="Voir"
+                          placement="top"
+                          classes={{tooltip: classes.tooltip}}
+                          onClick={() => this.seeNotif(obj.idNotif)}
+                      >
+                          <IconButton
+                              aria-label="Close"
+                              className={classes.tableActionButton}
+
+                          >
+                              <RemoveRedEye
+                                  className={
+                                      classes.tableActionButtonIcon + " " + classes.close
+                                  }
+                              />
+                          </IconButton>
+                      </Tooltip>
                     </TableCell>
                 </TableRow>
             )
@@ -159,7 +184,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         validateApp: (typeUser, token, idDemande, validate, idNotif) => dispatch({type: "VALIDATE_APP_REQUEST", typeUser, token, idDemande, validate, idNotif}),
-        readNotif: (idNotif, token)=> dispatch({type: "READ_NOTIF_REQUEST", idNotif, token })
+        readNotif: (idNotif, token)=> dispatch({type: "READ_NOTIF_REQUEST", idNotif, token }),
+        showNotif: (idNotif, token) => dispatch({type: "SHOW_NOTIF_REQUEST", idNotif, token})
 
     };
 };

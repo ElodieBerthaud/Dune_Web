@@ -17,9 +17,10 @@ const initialState = {
     appPage: {success: null, error: null, appContent: null, status: null},
     appRegistred: {success: null, error: null, apps: null, appsNbr: 0},
     notification: {success: null, error: null, content: null, nbNotif: null},
-    showNotif: {success: null, error: null, contentProf: null, nomApp: null, idApp: null, typeNotif: null, idNotif: null, idDemande: null, isAccepted: null},
+    showNotif: {success: null, error: null, contentProf: null, nomApp: null, idApp: null, typeNotif: null, idNotif: null, idDemande: null, isAccepted: null, show: false},
     reload: {status: false},
-    showDash: {showDash: true}
+    showDash: {showDash: true},
+    showDashTmp: {showDash: true}
 }
 
 export default initialState;

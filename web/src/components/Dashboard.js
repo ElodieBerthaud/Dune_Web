@@ -15,22 +15,15 @@ import AccessTime from "@material-ui/icons/AccessTime";
 import Accessibility from "@material-ui/icons/Accessibility";
 import Games from '@material-ui/icons/Games';
 import Apps from '@material-ui/icons/Apps';
-import BugReport from "@material-ui/icons/Help";
-import Code from "@material-ui/icons/History";
 // core components
 import GridItem from "./Dashboard/GridItem.jsx";
 import GridContainer from "./Dashboard/GridContainer.jsx";
 import Table from "./Dashboard/Table.jsx";
-import Tasks from "./Dashboard/Tasks.jsx";
-import CustomTabs from "./Dashboard/CustomTabs.jsx";
 import Card from "./Dashboard/Card.jsx";
 import CardHeader from "./Dashboard/CardHeader.jsx";
 import CardIcon from "./Dashboard/CardIcon.jsx";
 import CardBody from "./Dashboard/CardBody.jsx";
 import CardFooter from "./Dashboard/CardFooter.jsx";
-
-
-import { bugs, website } from "./variables/general.jsx";
 
 import {
     dailySalesChart
@@ -40,7 +33,6 @@ import dashboardStyle from "./Dashboard/styles/dashboardStyle.jsx";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
@@ -50,15 +42,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Visibility';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 
-import Img from '../images/avatar.png';
+import ShowNotif from './ShowNotif';
+
+import Notificationreport from './NotificationReport';
 
 class Dashboard extends React.Component {
     state = {
@@ -70,13 +57,11 @@ class Dashboard extends React.Component {
 
         this.state = {
             open: false,
-            dashBoardNotif: false,
             openNotif: false,
             appsAsked: [],
             expanded: null
         };
 
-        this.director_report = this.director_report.bind(this);
         this.generateAllNotif = this.generateAllNotif.bind(this);
 
     }
@@ -91,43 +76,6 @@ class Dashboard extends React.Component {
 
     componentWillUpdate(){
 
-    }
-
-    director_report(isDirector){
-        if (isDirector){
-            return (
-                <GridItem xs={12} sm={12} md={6}>
-                    <CustomTabs
-                        title="Demandes d'applications:"
-                        headerColor="primary"
-                        tabs={[
-                            {
-                                tabName: "Demandes",
-                                tabIcon: BugReport,
-                                tabContent: (
-                                    <Tasks
-                                        checkedIndexes={[0, 3]}
-                                        tasksIndexes={[0, 1, 2, 3]}
-                                        tasks={bugs}
-                                    />
-                                )
-                            },
-                            {
-                                tabName: "Historiques",
-                                tabIcon: Code,
-                                tabContent: (
-                                    <Tasks
-                                        checkedIndexes={[0]}
-                                        tasksIndexes={[0, 1]}
-                                        tasks={website}
-                                    />
-                                )
-                            }
-                        ]}
-                    />
-                </GridItem>
-            );
-        }
     }
 
     showNotif(idNotif) {
@@ -173,112 +121,6 @@ class Dashboard extends React.Component {
 
     }
 
-    handleChange = panel => (event, expanded) => {
-        this.setState({
-            expanded: expanded ? panel : false,
-        });
-    };
-
-    renderProfNotifs = () => {
-
-        let content = [];
-
-        if (this.props.contentProf !== null){
-
-            console.log(this.props.contentProf);
-
-            for (var i = 0 ; i < this.props.contentProf.length ; i++) {
-
-                content.push(<ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                        <Avatar alt="Laurine Fourcade" src={"http://176.31.252.134:7001/files/profs/" + this.props.contentProf[i].picPath}/>
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={this.props.contentProf[i].nomPrenom}
-                        secondary={
-                            <React.Fragment>
-                                <Typography component="span" color="textPrimary">
-                                    Professeur
-                                </Typography>
-                                {this.props.contentProf[i].commentaire}
-                            </React.Fragment>
-                        }
-                    />
-                </ListItem>);
-            }
-
-            return content;
-
-        }
-
-    }
-
-    renderNotification = () => {
-
-        let content = [];
-
-        if (this.props.typeUser === 2 && this.props.contentProf !== null){
-
-            console.log(this.props.contentProf.length);
-
-            content.push(<div key={1}>
-                    <DialogContentText key={this.props.idAppNotif}>
-                    Vous avez une demande d'application.
-                    Cela concerne l'application {this.props.nomAppNotif}. {" "}
-                    <a target="_blank" href={'/store/' + this.props.idAppNotif}>Cliquez ici</a>
-                    {" "}pour voir l'application.<br/><br/>
-                    Voulez-vous accepter cette demande ?
-                        <br/><br/>
-                </DialogContentText>
-                <ExpansionPanel expanded={this.state.expanded === 'panel1'} onChange={this.handleChange('panel1')}  style={{overflow: "hidden"}}>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography >Qui a demande cette application ? ( {this.props.contentProf !== null ? this.props.contentProf.length : '' } personnes )</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                            <List>
-                                {this.renderProfNotifs()}
-                            </List>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            </div>
-        )
-
-        }else{
-            content.push(<DialogContentText>
-
-                    Votre directeur d'etablissement a {this.props.isNotifAccepted === 0 ? ' refusé ' : ' accepté '} votre demande d'achat de l'application
-                    {" "} {this.props.nomAppNotif}.
-
-                </DialogContentText>
-            );
-        }
-        return content;
-    }
-
-    acceptAppRequest = () => {
-
-        this.props.validateApp(this.props.typeUser, this.props.token, this.props.idDemandeNotif, 1, this.props.idNotif)
-
-    }
-
-    declineAppRequest = () => {
-
-        this.props.validateApp(this.props.typeUser, this.props.token, this.props.idDemandeNotif, 0, this.props.idNotif)
-
-    }
-
-    handleCloseNotif= () => {
-
-        this.props.readNotif(this.props.idNotif, this.props.token);
-        this.setState({open: false});
-        window.location.reload();
-
-    }
-
-    handleClose = () => {
-        this.setState({ anchorEl: null, open: false, openNotif: false });
-    };
-
     handleCloseDashNotifs = () => {
         this.setState({ anchorEl: null, dashBoardNotif: false });
     };
@@ -289,9 +131,8 @@ class Dashboard extends React.Component {
     };
 
     render() {
-        const { classes } = this.props;
 
-        this.props.nbNotifs > 0 ? this.state.dashBoardNotif = true : this.state.dashBoardNotif = false;
+        const { classes } = this.props;
 
         return (
             <div>
@@ -408,11 +249,14 @@ class Dashboard extends React.Component {
                         </GridItem>
                     </GridContainer>
                     <GridContainer>
-                        {this.director_report(this.props.isDirector)}
+                        <Notificationreport />
                     </GridContainer>
                 </div>
+
+
                 <Dialog
-                    open={this.state.dashBoardNotif && this.props.showDash}
+                    open={this.props.dashBoardNotif && this.props.showDash}
+                    onClose={this.handleCloseDashNotifs}
                     aria-labelledby="scroll-dialog-title">
                     <DialogTitle id="scroll-dialog-title" style={{textAlign: 'center'}}>Vous avez des notifications</DialogTitle>
                     <DialogContent>
@@ -421,40 +265,18 @@ class Dashboard extends React.Component {
                         </List>
                     </DialogContent>
                     <DialogActions>
-                        <Button color="primary" onClick={this.handleCloseDashNotifs}>
+                        <Button color="primary" onClick={this.props.stopNotifTmp}>
                             Ok
                         </Button>
                         <Button color="primary" onClick={this.handleCloseDashNotifsStop}>
                             Ne plus me prévenir
                         </Button>
                     </DialogActions>
+
                 </Dialog>
-                <Dialog
-                    open={this.state.openNotif}
-                    onClose={this.handleClose}
-                    aria-labelledby="form-dialog-title"
-                >
-                    <div>
-                        <DialogTitle id="form-dialog-title">{this.props.typeNotif === 1 ? "Demande d'achat d'application." : "Votre demande d'application"}</DialogTitle>
-                        <DialogContent>
-                            {this.renderNotification()}
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.acceptAppRequest} color="primary" style={{display: this.props.typeUser === 1 ? 'none' : ''}}>
-                                Oui
-                            </Button>
-                            <Button onClick={this.declineAppRequest} color="primary" style={{display: this.props.typeUser === 1 ? 'none' : ''}}>
-                                Non
-                            </Button>
-                            <Button onClick={this.handleClose} color="primary" style={{display: this.props.typeUser === 1 ? 'none' : ''}}>
-                                Plus tard
-                            </Button>
-                            <Button onClick={this.handleCloseNotif} color="primary" style={{display: this.props.typeUser === 2 ? 'none' : ''}}>
-                                Ok
-                            </Button>
-                        </DialogActions>
-                    </div>
-                </Dialog>
+
+                <ShowNotif/>
+
             </div>
         );
     }
@@ -476,15 +298,10 @@ const mapStateToProps = state => {
         typeNotif: state.showNotif.typeNotif,
         nbNotifs: state.notification.nbNotif,
         content: state.notification.content,
-        nomProfNotif: state.showNotif.nomProf,
-        prenomProfNotif: state.showNotif.prenomProf,
-        nomAppNotif: state.showNotif.nomApp,
-        idAppNotif: state.showNotif.idApp,
-        idDemandeNotif: state.showNotif.idDemande,
-        idNotif: state.showNotif.idNotif,
         showDash: state.showDash.showDash,
         nbGames: state.appRegistred.appsNbr,
-        contentProf: state.showNotif.contentProf
+        contentProf: state.showNotif.contentProf,
+        dashBoardNotif: state.showDashTmp.showDash
     };
 };
 
@@ -493,9 +310,8 @@ const mapDispatchToProps = dispatch => {
         showNotif: (idNotif, token) => dispatch({type: "SHOW_NOTIF_REQUEST", idNotif, token}),
         getStudentsNbr: (token) => dispatch({ type: "GET_STUDENTSNBR_REQUEST", token}),
         getAppsNbr: (token) => dispatch({ type: "GET_APPNBR_REQUEST", token}),
-        validateApp: (typeUser, token, idDemande, validate, idNotif) => dispatch({type: "VALIDATE_APP_REQUEST", typeUser, token, idDemande, validate, idNotif}),
-        readNotif: (idNotif, token)=> dispatch({type: "READ_NOTIF_REQUEST", idNotif, token }),
-        stopNotif: () => dispatch({type: "NOTIFS_DASH_STOP" })
+        stopNotif: () => dispatch({type: "NOTIFS_DASH_STOP" }),
+        stopNotifTmp: () => dispatch({type: "SHOW_DASH_TMP_STOP"})
 
     };
 };

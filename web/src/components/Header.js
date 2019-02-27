@@ -21,6 +21,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import ShowNotif from './ShowNotif';
 
 const styles = theme => ({
     root: {
@@ -296,32 +297,9 @@ class Header extends React.Component {
                     {renderMenu}
                     {renderMobileMenu}
                     <Drawer open={this.state.open}/>
-                    <Dialog
-                        open={this.state.openNotif}
-                        onClose={this.handleClose}
-                        aria-labelledby="form-dialog-title"
-                    >
-                        <div>
-                            <DialogTitle id="form-dialog-title">{this.props.typeNotif === 1 ? "Demande d'achat d'application." : "Votre demande d'application"}</DialogTitle>
-                            <DialogContent>
-                                    {this.renderNotification()}
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={this.acceptAppRequest} color="primary" style={{display: this.props.typeUser === 1 ? 'none' : ''}}>
-                                    Oui
-                                </Button>
-                                <Button onClick={this.declineAppRequest} color="primary" style={{display: this.props.typeUser === 1 ? 'none' : ''}}>
-                                    Non
-                                </Button>
-                                <Button onClick={this.handleClose} color="primary" style={{display: this.props.typeUser === 1 ? 'none' : ''}}>
-                                    Plus tard
-                                </Button>
-                                <Button onClick={this.handleCloseNotif} color="primary" style={{display: this.props.typeUser === 2 ? 'none' : ''}}>
-                                    Ok
-                                </Button>
-                            </DialogActions>
-                        </div>
-                    </Dialog>
+
+                    <ShowNotif/>
+
                 </div>
             );
         }
