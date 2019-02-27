@@ -24,6 +24,8 @@ import AddStudent from './components/ManageStudent';
 import loader from './images/loaders/bars-loader.gif';
 import DialogActions from '@material-ui/core/DialogActions';
 import AppPage from './components/AppPage';
+import Class from './components/Class';
+import Test from './components/test';
 
 class Main extends Component{
 
@@ -121,8 +123,10 @@ class Main extends Component{
                     <PrivateRoute exact path='/add-professor' component={ManageProfessor} authed={log.director}/>
                     <PrivateRoute exact path='/account' component={Account} authed={log.logged}/>
                     <PrivateRoute exact path='/add-student' component={AddStudent} authed={log.logged}/>
+                    <PrivateRoute exact path='/cours' component={Class} authed={log.logged}/>
                     <PrivateRoute exact path='/student-profile/:id' component={StudentProfile} authed={log.logged}/>
                     <PrivateRoute exact path='/store/:id' component={AppPage} authed={log.logged}/>
+                    <PrivateRoute exact path='/test' component={Test} authed={log.logged}/>
                     <Route path="*" component={P_404} />
                 </Switch>
 

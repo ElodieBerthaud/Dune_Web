@@ -19,7 +19,6 @@ import TextField from '@material-ui/core/TextField';
 import student from "../images/student.png";
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
-import ViewImage from './ViewImage';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';

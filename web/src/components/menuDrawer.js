@@ -6,6 +6,7 @@ import PersonAdd from '@material-ui/icons/PersonAdd';
 import GroupAdd from '@material-ui/icons/GroupAdd';
 import Dashboard from '@material-ui/icons/Dashboard';
 import BarChart from '@material-ui/icons/BarChart';
+import Class from '@material-ui/icons/Class';
 import ViewModule from '@material-ui/icons/ViewModule';
 import Shop from '@material-ui/icons/Shop';
 import { Link } from 'react-router-dom';
@@ -50,6 +51,14 @@ export const mainListItem = (
 
 export const SecondaryListItem = (props) =>
     <div>
+        <Link  to='/cours' style={{textDecoration: 'none'}}>
+            <ListItem button>
+                <ListItemIcon>
+                    <Class />
+                </ListItemIcon>
+                <ListItemText primary="Gerer mes cours" />
+            </ListItem>
+        </Link>
         {props.director === true ?
         <Link  to='/add-professor' style={{textDecoration: 'none'}}>
             <ListItem button>

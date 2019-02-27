@@ -50,7 +50,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Visibility';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
 
+import Img from '../images/avatar.png';
 
 class Dashboard extends React.Component {
     state = {
@@ -64,7 +72,8 @@ class Dashboard extends React.Component {
             open: false,
             dashBoardNotif: false,
             openNotif: false,
-            appsAsked: []
+            appsAsked: [],
+            expanded: null
         };
 
         this.director_report = this.director_report.bind(this);
@@ -164,19 +173,71 @@ class Dashboard extends React.Component {
 
     }
 
+    handleChange = panel => (event, expanded) => {
+        this.setState({
+            expanded: expanded ? panel : false,
+        });
+    };
+
     renderNotification = () => {
         let content = [];
 
         if (this.props.typeUser === 2){
 
-            content.push(<DialogContentText key={this.props.idAppNotif}>
-                Vous avez une demande d'application de
-                {" " + this.props.prenomProfNotif + " " + this.props.nomProfNotif}.<br/>
+            content.push(<div>
+                <DialogContentText key={this.props.idAppNotif}>
+                Vous avez une demande d'application.
                 Cela concerne l'application {this.props.nomAppNotif}. {" "}
                 <a target="_blank" href={'/store/' + this.props.idAppNotif}>Cliquez ici</a>
-                {" "}pour voir l'application.<br/>
+                {" "}pour voir l'application.<br/><br/>
                 Voulez-vous accpeter cette demande ?
-            </DialogContentText>)
+                    <br/><br/>
+            </DialogContentText>
+                <ExpansionPanel expanded={this.state.expanded === 'panel1'} onChange={this.handleChange('panel1')}  style={{overflow: "hidden"}}>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography >Qui a demande cette application ?</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <Typography>
+                            <List>
+                                <ListItem alignItems="flex-start">
+                                    <ListItemAvatar>
+                                        <Avatar alt="Laurine Fourcade" src={Img} />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary="Professeur"
+                                        secondary={
+                                            <React.Fragment>
+                                                <Typography component="span" color="textPrimary">
+                                                    Laurine Fourcade
+                                                </Typography>
+                                                {"J'aimerai cette application !!!"}
+                                            </React.Fragment>
+                                        }
+                                    />
+                                </ListItem>
+                                <ListItem alignItems="flex-start">
+                                    <ListItemAvatar>
+                                        <Avatar alt="Laurine Fourcade" src={Img} />
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary="Professeur"
+                                        secondary={
+                                            <React.Fragment>
+                                                <Typography component="span" color="textPrimary">
+                                                    Laurine Fourcade
+                                                </Typography>
+                                                {"J'aimerai cette application !!!"}
+                                            </React.Fragment>
+                                        }
+                                    />
+                                </ListItem>
+                            </List>
+                        </Typography>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            </div>
+        )
 
         }else{
             content.push(<DialogContentText>
