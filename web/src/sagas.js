@@ -493,7 +493,6 @@ function get_a_notif_api(datas){
 function validate_app_api(datas){
 
     const datasTosend = new FormData();
-    datasTosend.append('typeUser', datas.typeUser);
     datasTosend.append('idDemande', datas.idDemande);
     datasTosend.append('validate', datas.validate);
 
@@ -1161,13 +1160,9 @@ function* showNotif(datas){
 
             const responseProf = yield call(fetchProfNotif, datasProf);
 
-            console.log("NOTIFS PROF ===== " + responseProf.data.response[0]);
-
             if (responseProf.data.status === 200){
 
-                const nomProf = responseProf.data.response[0].nomUser;
-
-                const prenomProf = responseProf.data.response[0].prenomUser;
+                console.log("NOTIFS PROF ===== " + JSON.stringify(responseProf.data));
 
                 const datasApp = {token: datas.token, idApp: responseNotif.data.response[0].idGame};
 
@@ -1179,7 +1174,7 @@ function* showNotif(datas){
 
                     const idApp = responseApp.data.response[0].id;
 
-                    yield put({type: "SHOW_NOTIF_SUCCESS", nomProf: nomProf, prenomProf: prenomProf, nomApp: nomApp, idApp: idApp, typeNotif: typeNotif, idNotif: idNotif, idDemande: idDemande, isAccepted: isAccepted});
+                    yield put({type: "SHOW_NOTIF_SUCCESS", contentProf: responseProf.data.response, nomApp: nomApp, idApp: idApp, typeNotif: typeNotif, idNotif: idNotif, idDemande: idDemande, isAccepted: isAccepted});
                     yield put({type: "END_LOADING"});
 
                 }

@@ -179,61 +179,65 @@ class Dashboard extends React.Component {
         });
     };
 
-    renderNotification = () => {
+    renderProfNotifs = () => {
+
         let content = [];
 
-        if (this.props.typeUser === 2){
+        if (this.props.contentProf !== null){
 
-            content.push(<div>
-                <DialogContentText key={this.props.idAppNotif}>
-                Vous avez une demande d'application.
-                Cela concerne l'application {this.props.nomAppNotif}. {" "}
-                <a target="_blank" href={'/store/' + this.props.idAppNotif}>Cliquez ici</a>
-                {" "}pour voir l'application.<br/><br/>
-                Voulez-vous accpeter cette demande ?
-                    <br/><br/>
-            </DialogContentText>
+            console.log(this.props.contentProf);
+
+            for (var i = 0 ; i < this.props.contentProf.length ; i++) {
+
+                content.push(<ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                        <Avatar alt="Laurine Fourcade" src={"http://176.31.252.134:7001/files/profs/" + this.props.contentProf[i].picPath}/>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={this.props.contentProf[i].nomPrenom}
+                        secondary={
+                            <React.Fragment>
+                                <Typography component="span" color="textPrimary">
+                                    Professeur
+                                </Typography>
+                                {this.props.contentProf[i].commentaire}
+                            </React.Fragment>
+                        }
+                    />
+                </ListItem>);
+            }
+
+            return content;
+
+        }
+
+    }
+
+    renderNotification = () => {
+
+        let content = [];
+
+        if (this.props.typeUser === 2 && this.props.contentProf !== null){
+
+            console.log(this.props.contentProf.length);
+
+            content.push(<div key={1}>
+                    <DialogContentText key={this.props.idAppNotif}>
+                    Vous avez une demande d'application.
+                    Cela concerne l'application {this.props.nomAppNotif}. {" "}
+                    <a target="_blank" href={'/store/' + this.props.idAppNotif}>Cliquez ici</a>
+                    {" "}pour voir l'application.<br/><br/>
+                    Voulez-vous accepter cette demande ?
+                        <br/><br/>
+                </DialogContentText>
                 <ExpansionPanel expanded={this.state.expanded === 'panel1'} onChange={this.handleChange('panel1')}  style={{overflow: "hidden"}}>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography >Qui a demande cette application ?</Typography>
+                        <Typography >Qui a demande cette application ? ( {this.props.contentProf !== null ? this.props.contentProf.length : '' } personnes )</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                        <Typography>
                             <List>
-                                <ListItem alignItems="flex-start">
-                                    <ListItemAvatar>
-                                        <Avatar alt="Laurine Fourcade" src={Img} />
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary="Professeur"
-                                        secondary={
-                                            <React.Fragment>
-                                                <Typography component="span" color="textPrimary">
-                                                    Laurine Fourcade
-                                                </Typography>
-                                                {"J'aimerai cette application !!!"}
-                                            </React.Fragment>
-                                        }
-                                    />
-                                </ListItem>
-                                <ListItem alignItems="flex-start">
-                                    <ListItemAvatar>
-                                        <Avatar alt="Laurine Fourcade" src={Img} />
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary="Professeur"
-                                        secondary={
-                                            <React.Fragment>
-                                                <Typography component="span" color="textPrimary">
-                                                    Laurine Fourcade
-                                                </Typography>
-                                                {"J'aimerai cette application !!!"}
-                                            </React.Fragment>
-                                        }
-                                    />
-                                </ListItem>
+                                {this.renderProfNotifs()}
                             </List>
-                        </Typography>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             </div>
@@ -479,7 +483,8 @@ const mapStateToProps = state => {
         idDemandeNotif: state.showNotif.idDemande,
         idNotif: state.showNotif.idNotif,
         showDash: state.showDash.showDash,
-        nbGames: state.appRegistred.appsNbr
+        nbGames: state.appRegistred.appsNbr,
+        contentProf: state.showNotif.contentProf
     };
 };
 
