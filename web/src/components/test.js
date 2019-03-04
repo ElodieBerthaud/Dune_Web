@@ -1,46 +1,30 @@
 import React, { Component } from 'react';
 import { Document, Page } from 'react-pdf/dist/pdf.worker.entry.js';
+import {Elements, StripeProvider} from 'react-stripe-elements';
+import CheckoutForm from './CheckoutForm';
 
 class test extends Component{
 
-    state = {
-        numPages: null,
-        pageNumber: 1,
+    constructor(props) {
+        super(props);
+        this.submit = this.submit.bind(this);
     }
 
-    onDocumentLoadSuccess = ({ numPages }) => {
-        this.setState({ numPages });
+    async submit(ev) {
+        // User clicked submit
     }
-
-    goToPrevPage = () =>
-        this.setState(state => ({ pageNumber: state.pageNumber - 1 }));
-    goToNextPage = () =>
-        this.setState(state => ({ pageNumber: state.pageNumber + 1 }));
 
     render() {
-        const { pageNumber, numPages } = this.state;
 
         return (
-            <div>
-                <nav>
-                    <button onClick={this.goToPrevPage}>Prev</button>
-                    <button onClick={this.goToNextPage}>Next</button>
-                </nav>
-
-                <div>
-                <Document
-                    file="./2020_PLD_Dune201902KOV2.pdf"
-                    onLoadSuccess={this.onDocumentLoadSuccess.bind(this)}
-                >
-                    <Page pageNumber={pageNumber} width={600} />
-                </Document>
+            <StripeProvider apiKey="pk_test_BSNzEnrgwUv0HK3wvUGiaDOs">
+                <div className="example">
+                    <h1>React Stripe Elements Example</h1>
+                    <Elements>
+                        <CheckoutForm />
+                    </Elements>
                 </div>
-
-
-                <p>
-                    Page {pageNumber} of {numPages}
-                </p>
-            </div>
+            </StripeProvider>
         );
     }
 

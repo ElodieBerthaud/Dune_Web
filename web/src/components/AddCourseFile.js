@@ -22,6 +22,7 @@ import {withRouter} from "react-router";
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function getSteps() {
     return ['Type de media', 'Nommer le document', 'Choix du document'];
@@ -156,14 +157,17 @@ class AddCourseFile extends Component{
 
                         <FormControlLabel
                             control={
-                                <Checkbox
-                                    checked={this.state.shareFile}
-                                    onChange={this.handleChangeFileChecked}
-                                    name="shareFile"
-                                    color="primary"
-                                    value="Share"
-                                />
-                        }
+                                <Tooltip title="Partager a toute l'ecole" placement="top">
+                                    <Checkbox
+                                        checked={this.state.shareFile}
+                                        onChange={this.handleChangeFileChecked}
+                                        name="shareFile"
+                                        color="primary"
+                                        value="Share"
+                                    />
+                                </Tooltip>
+
+                            }
                         label="Partager"
                         />
                     </FormGroup>

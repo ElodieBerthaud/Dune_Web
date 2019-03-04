@@ -255,7 +255,7 @@ class Dashboard extends React.Component {
 
 
                 <Dialog
-                    open={this.props.dashBoardNotif && this.props.showDash}
+                    open={this.props.dashBoardNotif && this.props.showDash && this.props.nbNotifs > 0}
                     onClose={this.handleCloseDashNotifs}
                     aria-labelledby="scroll-dialog-title">
                     <DialogTitle id="scroll-dialog-title" style={{textAlign: 'center'}}>Vous avez des notifications</DialogTitle>
