@@ -20,7 +20,8 @@ const initialState = {
     showNotif: {success: null, error: null, contentProf: null, nomApp: null, idApp: null, typeNotif: null, idNotif: null, idDemande: null, isAccepted: null, show: false},
     reload: {status: false},
     showDash: {showDash: true},
-    showDashTmp: {showDash: true}
+    showDashTmp: {showDash: true},
+    getAvis: {error: null, success: null, contentAvis: null}
 }
 
 export default initialState;

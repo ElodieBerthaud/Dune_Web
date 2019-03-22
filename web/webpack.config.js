@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const settings = {
     distPath: path.join(__dirname, "dist"),
     srcPath: path.join(__dirname, "src")
@@ -62,6 +62,16 @@ module.exports = (env, options) => {
                     },
                 },
                 {
+                    test: /\.jsx?$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        query: {
+                            presets:['@babel/preset-react']
+                        }
+                    }
+                },
+                {
                     test: /\.(jpe?g|png|gif|svg|ico)$/i,
                     use: [
                         {
@@ -71,13 +81,32 @@ module.exports = (env, options) => {
                             }
                         }
                     ]
+                },
+                {
+                    test: /\.css$/,
+                    use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: [ 'css-loader' ] })
+                },
+                {
+                    test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                    loader: 'url-loader?limit=100000'
                 }
             ]
         },
+        serve: { //object
+            port: 7000,
+            content: './dist',
+        },
+        output: {
+            path: path.join(__dirname, 'dist'),
+            filename: 'bundle.js',
+            publicPath: 'http://localhost:3000',
+            globalObject: 'this'
+        },
         plugins: [
             new HtmlWebpackPlugin({
-                template: srcPathExtend("index.html")
-            })
+                template: srcPathExtend("index.html"),
+            }),
+            new ExtractTextPlugin("styles.css")
         ]
     };
 };

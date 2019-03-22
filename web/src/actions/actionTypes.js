@@ -94,6 +94,14 @@ export const STOP_RELOAD = "STOP_RELOAD";
 
 export const SHOW_DASH_TMP_STOP = "SHOW_DASH_TMP_STOP";
 
+export const ADD_AVIS_REQUEST = "ADD_AVIS_REQUEST";
+export const ADD_AVIS_SUCCESS = "ADD_AVIS_SUCCESS";
+export const ADD_AVIS_ERROR = "ADD_AVIS_ERROR";
+
+export const GET_AVIS_REQUEST = "GET_AVIS_REQUEST";
+export const GET_AVIS_SUCCESS = "GET_AVIS_SUCCESS";
+export const GET_AVIS_ERROR = "GET_AVIS_ERROR";
+
 
 
 

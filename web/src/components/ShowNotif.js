@@ -61,8 +61,6 @@ class showNotif extends Component{
 
         if (this.props.contentProf !== null){
 
-            console.log(this.props.contentProf);
-
             for (var i = 0 ; i < this.props.contentProf.length ; i++) {
 
                 content.push(<ListItem alignItems="flex-start">

@@ -47,6 +47,9 @@ export function* watcherSaga() {
     yield takeEvery('SHOW_NOTIF_REQUEST', showNotif);
     yield takeEvery('VALIDATE_APP_REQUEST', validateApp);
     yield takeEvery('READ_NOTIF_REQUEST', readNotif);
+    yield takeEvery('ADD_AVIS_REQUEST', addAvis);
+    yield takeEvery('GET_AVIS_REQUEST', getAvis);
+
 }
 
 //GET PROFESSOR INFOS
@@ -523,6 +526,48 @@ function read_notif_api(datas){
     });
 }
 
+function add_avis_api(datas){
+
+    const datasTosend = new FormData();
+    datasTosend.append('idGame', datas.idGame);
+    datasTosend.append('note', datas.note);
+    datasTosend.append('commentaire', datas.commentaire);
+
+    const url = "http://176.31.252.134:7001/api/v1/store/addAvis";
+
+    return axios({
+        method: 'post',
+        url: url,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        },
+        data: datasTosend
+    });
+
+}
+
+const onGetJson = async (rest, data) =>
+    await fetch(data, rest)
+        .then(res => res.json())
+        .then(res => res)
+        .catch(error => error);
+
+function get_avis_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/store/avis/" + datas.idGame;
+
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        }
+    });
+
+}
+
 //DRAWER
 
 function* openDrawer(){
@@ -969,10 +1014,8 @@ function* getApp(datas){
 
             yield put({type: "END_LOADING"});
 
-            yield put({type: "GET_APP_SUCCESS", appContent: response.data.response[0], status: responseStatus.data.appStatus });
-
-
-        }
+                yield put({type: "GET_APP_SUCCESS", appContent: response.data.response[0], status: responseStatus.data.appStatus });
+            }
         //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
         else{
 
@@ -1231,6 +1274,70 @@ function* readNotif(datas){
         }
 
     }catch (e) {
+    }
+
+}
+
+function* addAvis(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(add_avis_api, datas);
+
+        if (response.data.status === 200){
+
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_SUCCESS", message: "Votre avis a bien ete ajoute." });
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+            yield put({type: "END_LOADING"});
+
+        }
+
+    }catch (e) {
+
+        yield put({type: "END_LOADING"});
+
+        yield put({type: "SNACK_PUT_ERROR", message: "Une erreur est survenue." });
+
+    }
+
+}
+
+function* getAvis(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(get_avis_api, datas);
+
+        if (response.data.status === 200){
+
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "GET_AVIS_SUCCESS", content: response.data.response});
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+            //yield put({type: "END_LOADING"});
+
+        }
+
+    }catch (e) {
+
+        yield put({type: "END_LOADING"});
+
+        yield put({type: "SNACK_PUT_ERROR", message: "Une erreur est survenue." });
+
     }
 
 }

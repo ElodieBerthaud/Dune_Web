@@ -5,12 +5,17 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import IconButton from '@material-ui/core/IconButton';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Paper from '@material-ui/core/Paper';
 import Rater from 'react-rater';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import dashboardStyle from "./Dashboard/styles/dashboardStyle";
+import dashboardStyle from "./Dashboard/styles/dashboardStyle.jsx";
 import {withRouter} from "react-router";
 import {connect} from "react-redux";
 import Dialog from '@material-ui/core/Dialog';
@@ -18,8 +23,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import PutAvis from './PutAvis';
+import GetAvis from './getAvis';
+import SimpleGridList from './SingleLineGridList';
 
-const styles = {
+const styles = theme => ({
     card: {
         minWidth: 275,
     },
@@ -34,7 +42,26 @@ const styles = {
     pos: {
         marginBottom: 12,
     },
-};
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
+    },
+    gridList: {
+        flexWrap: 'nowrap',
+        // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+        transform: 'translateZ(0)',
+    },
+    title: {
+        color: theme.palette.primary.light,
+    },
+    titleBar: {
+        background:
+            'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+    },
+});
 
 function TabContainer(props) {
     return (
@@ -61,7 +88,7 @@ class AppPage extends React.Component {
 
     componentDidMount () {
 
-        const { id } = this.props.match.params
+        const { id } = this.props.match.params;
 
         this.state.id = id;
 
@@ -141,14 +168,7 @@ class AppPage extends React.Component {
                                     {this.props.appStatus === '0' ? ( this.props.typeUser === 2 ? "ACHETER" : 'SOUMETTRE' ) : 'DEJA DANS LA BIBLIOTHEQUE'}
                                 </Button>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Paper className={classes.paper}>
-                                <img style={{width: '20%', margin: '2%'}} src={require('../images/store/71r6d65MteL.png')} />
-                                <img style={{width: '20%', margin: '2%'}} src={require('../images/store/71r6d65MteL.png')} />
-                                <img style={{width: '20%', margin: '2%'}} src={require('../images/store/71r6d65MteL.png')} />
-                                <img style={{width: '20%', margin: '2%'}} src={require('../images/store/71r6d65MteL.png')} />
-                            </Paper>
-                        </Grid>
+                        <SimpleGridList/>
                         <Grid item xs={12}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -183,8 +203,8 @@ class AppPage extends React.Component {
                                 <Tab label="Laisser un avis" />
                             </Tabs>
 
-                            {this.state.value === 0 && <TabContainer></TabContainer>}
-                            {this.state.value === 1 && <TabContainer></TabContainer>}
+                            {this.state.value === 0 && <TabContainer><GetAvis contentAvis={this.props.contentAvis} idApp={this.state.id}/></TabContainer>}
+                            {this.state.value === 1 && <TabContainer><PutAvis idApp={this.state.id}/></TabContainer>}
 
                         </Grid>
                     </Grid>
@@ -247,7 +267,8 @@ const mapDispatchToProps = dispatch => {
     return {
         getApp: (idApp, token, idEcole) => dispatch({ type: "GET_APP_REQUEST", idApp, token, idEcole }),
         AskApp: (idApp, token, idProf, idEcole, commentaire) => dispatch({ type: "ASK_APP_REQUEST", idApp, token, idProf, idEcole, commentaire }),
-        buyAppDir: (idApp, token) => dispatch({ type: "BUY_APP_REQUEST", idApp, token })
+        buyAppDir: (idApp, token) => dispatch({ type: "BUY_APP_REQUEST", idApp, token }),
+        getAvis: (idGame, token) => dispatch({ type: "GET_AVIS_REQUEST", idGame, token })
     };
 };
 
