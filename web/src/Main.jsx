@@ -25,7 +25,7 @@ import loader from './images/loaders/bars-loader.gif';
 import DialogActions from '@material-ui/core/DialogActions';
 import AppPage from './components/AppPage';
 import Class from './components/Class';
-import Test from './components/test';
+import Test from './components/TestContainer';
 
 class Main extends Component{
 

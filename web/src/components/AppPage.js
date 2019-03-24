@@ -5,11 +5,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Paper from '@material-ui/core/Paper';
 import Rater from 'react-rater';
 import Tabs from '@material-ui/core/Tabs';
@@ -34,10 +29,7 @@ const styles = theme => ({
     bullet: {
         display: 'inline-block',
         margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 14,
+        transform: 'scale(0.8)'
     },
     pos: {
         marginBottom: 12,
@@ -73,13 +65,16 @@ function TabContainer(props) {
 
 class AppPage extends React.Component {
 
+    emptyContent = true;
+
     state = {
         id: null,
         value: 0,
         nameApp: null,
         picPath: null,
         nomCreator: null,
-        openAskApp: false
+        openAskApp: false,
+        moyenne: null
     }
 
     constructor(props){
@@ -93,6 +88,8 @@ class AppPage extends React.Component {
         this.state.id = id;
 
         this.props.getApp(this.state.id, this.props.token, this.props.idEcole);
+
+        this.props.getNbAvis(this.state.id, this.props.token);
     }
 
     handleChange = (event, value) => {
@@ -152,7 +149,7 @@ class AppPage extends React.Component {
                             <br />
                                 2-4 joueurs
                             <br />
-                                <Rater total={5} rating={4} interactive={false} />
+                                <Rater total={5} rating={this.props.moyenne} interactive={false} /> ({this.props.nbAvis})
                             <br />
                         </Grid>
                         <Grid item xs={3}>
@@ -203,7 +200,7 @@ class AppPage extends React.Component {
                                 <Tab label="Laisser un avis" />
                             </Tabs>
 
-                            {this.state.value === 0 && <TabContainer><GetAvis contentAvis={this.props.contentAvis} idApp={this.state.id}/></TabContainer>}
+                            {this.state.value === 0 && <TabContainer><GetAvis empty={this.emptyContent} contentAvis={this.props.contentAvis} idApp={this.state.id}/></TabContainer>}
                             {this.state.value === 1 && <TabContainer><PutAvis idApp={this.state.id}/></TabContainer>}
 
                         </Grid>
@@ -259,7 +256,9 @@ const mapStateToProps = state => {
         idEcole: state.login.idEcole,
         appStatus: state.appPage.status,
         idProf: state.login.id_user,
-        typeUser: state.login.typeUser
+        typeUser: state.login.typeUser,
+        moyenne: state.nbAvis.moyenne,
+        nbAvis: state.getAvis.nbAvis
     };
 };
 
@@ -268,7 +267,8 @@ const mapDispatchToProps = dispatch => {
         getApp: (idApp, token, idEcole) => dispatch({ type: "GET_APP_REQUEST", idApp, token, idEcole }),
         AskApp: (idApp, token, idProf, idEcole, commentaire) => dispatch({ type: "ASK_APP_REQUEST", idApp, token, idProf, idEcole, commentaire }),
         buyAppDir: (idApp, token) => dispatch({ type: "BUY_APP_REQUEST", idApp, token }),
-        getAvis: (idGame, token) => dispatch({ type: "GET_AVIS_REQUEST", idGame, token })
+        getAvis: (idGame, token) => dispatch({ type: "GET_AVIS_REQUEST", idGame, token }),
+        getNbAvis: (idGame, token) => dispatch({ type: "GET_NB_AVIS_REQUEST", idGame, token })
     };
 };
 

@@ -21,6 +21,7 @@ import reload from './reloadReducer';
 import showDash from './showDashReducer';
 import showDashTmp from './showDashTmpReducer';
 import getAvis from './avisReducer';
+import nbAvis from "./NbAvisReducer";
 
 const reducers =  combineReducers({
     drawer,
@@ -44,7 +45,8 @@ const reducers =  combineReducers({
     reload,
     showDash,
     showDashTmp,
-    getAvis
+    getAvis,
+    nbAvis
 });
 
 const rootReducer = (state, action) => {

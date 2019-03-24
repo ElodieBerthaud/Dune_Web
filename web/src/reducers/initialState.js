@@ -21,7 +21,8 @@ const initialState = {
     reload: {status: false},
     showDash: {showDash: true},
     showDashTmp: {showDash: true},
-    getAvis: {error: null, success: null, contentAvis: null}
+    getAvis: {error: null, success: null, contentAvis: null, nbAvis: null},
+    nbAvis: {nbAvis: null, moyenne: null, success: null, error: null, lastNbAvis: null}
 }
 
 export default initialState;

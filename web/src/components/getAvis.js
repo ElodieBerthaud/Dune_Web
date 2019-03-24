@@ -12,10 +12,19 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Rater from 'react-rater';
 import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
 
 });
+
+function getDate(timestamp){
+
+    var ts = new Date(timestamp);
+
+    return ts.toLocaleString();
+
+}
 
 class getAvis extends Component {
 
@@ -23,77 +32,132 @@ class getAvis extends Component {
 
         super(props);
 
+        //this.lastContent = [];
+
         this.state = {
-            commentaire: ''
+            commentaire: '',
+            id: null,
+            loadMore: false,
+            render: false,
+            lastContent: []
         };
 
     }
 
     componentDidMount(){
 
+        this.setState({lastContent: []});
+
         const { id } = this.props.match.params;
 
-        this.props.getAvis(id, this.props.token);
+        this.state.id = id;
 
+        this.props.getAvis(id, this.props.token, 0);
+
+    }
+
+
+    componentWillUnmount() {
+
+        this.setState({lastContent: []});
+
+        this.state.lastContent = [];
+
+    }
+
+    getAvis = () => {
+
+        const { id } = this.props.match.params;
+
+        this.state.id = id;
+
+        this.props.getAvis(id, this.props.token, this.props.lastNbAvis);
+
+        this.state.loadMore = true;
+
+    }
+
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+
+        if (nextProps.avis !== this.props.avis){
+
+            return true;
+        }
     }
 
     renderAvisList = () => {
 
-        let content = [];
+        const contentToReturn = [];
 
-        if (this.props.avis !== null){
+        if(this.props.avis !== null){
 
-            for (var i = 0 ; i < this.props.avis.length ; i++) {
+            if (this.props.avis.length === 0) {
 
-                content.push(<div>
-                    <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                        <Avatar alt="" src={"http://176.31.252.134:7001/files/profs/" + this.props.avis[i].photo}/>
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={this.props.avis[i].nomProf + ' ' + this.props.avis[i].prenomProf}
-                        secondary={
-                            <React.Fragment>
-                                <Typography component="span" color="textPrimary">
-                                    Professeur
-                                </Typography>
+                contentToReturn.push(<div style={{textAlign: 'center'}}>
 
-                                <Typography component="span" color="textPrimary">
-                                    <Rater
-                                        onRate={this.changeRate}
-                                        total={5}
-                                        rating={this.props.avis[i].note}
-                                        interactive={false}
-                                    />
-                                </Typography>
+                        Soyez le premier à laisser un avis !
 
-                                <Typography component="span" color="textPrimary" style={{fontStyle: 'italic'}}>
-                                    {this.props.avis[i].commentaire}
+                    </div>
+                );
+            }else{
 
-                                </Typography>
+                for (var i = 0 ; i < this.props.avis.length ; i++) {
 
-                            </React.Fragment>
-                        }
-                    />
-                </ListItem>
-                <Divider variant="inset" />
-                </div>);
-            }
+                    this.state.lastContent.push(
+                        <div key={i}>
+                            <ListItem alignItems="flex-start">
+                                <ListItemAvatar>
+                                    <Avatar alt=""
+                                            src={"http://176.31.252.134:7001/files/profs/" + this.props.avis[i].photo}/>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={this.props.avis[i].nomProf + ' ' + this.props.avis[i].prenomProf}
+                                    secondary={
+                                        <React.Fragment>
+                                            <Typography component="span" color="textPrimary">
+                                                { getDate(this.props.avis[i].date) }
+                                            </Typography>
 
-            if (this.props.avis.length === 0){
+                                            <Rater
+                                                onRate={this.changeRate}
+                                                total={5}
+                                                rating={this.props.avis[i].note}
+                                                interactive={false}
+                                            />
 
-                content.push(<div style={{textAlign: 'center'}}>
+                                            <Typography component="span" color="textPrimary"
+                                                        style={{fontStyle: 'italic'}}>
 
-                            Soyez le premier a laisser un avis !
+                                                {this.props.avis[i].commentaire}
 
+                                            </Typography>
+
+                                        </React.Fragment>
+                                    }
+                                />
+                            </ListItem>
+                            <Divider variant="inset"/>
                         </div>
                     );
+                }
 
+                contentToReturn.push(this.state.lastContent);
+
+                if (this.state.lastContent.length < this.props.nbAvis) {
+
+                    contentToReturn.push(
+                        <div style={{textAlign: 'center', margin: '5%'}} key={-1}>
+                            <Button variant="contained" color="primary" onClick={this.getAvis}>
+                                Charger plus d'avis
+                            </Button>
+                        </div>
+                    );
+                }
             }
 
         }
 
-        return content;
+        return contentToReturn;
 
     }
 
@@ -102,7 +166,7 @@ class getAvis extends Component {
     render() {
         return (
             <div>
-                <List>
+                <List id="renderAvisList">
                     {this.renderAvisList()}
                 </List>
             </div>
@@ -119,7 +183,9 @@ const mapStateToProps = state => {
 
     return {
         avis: state.getAvis.contentAvis,
-        token: state.login.token
+        token: state.login.token,
+        nbAvis: state.getAvis.nbAvis,
+        lastNbAvis: state.nbAvis.lastNbAvis
     };
 
 };
@@ -127,7 +193,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 
     return {
-        getAvis: (idGame, token) => dispatch({ type: "GET_AVIS_REQUEST", idGame, token })
+        getAvis: (idGame, token, depart) => dispatch({ type: "GET_AVIS_REQUEST", idGame, token, depart }),
 
     };
 

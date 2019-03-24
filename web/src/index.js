@@ -1,5 +1,10 @@
+import "regenerator-runtime/runtime";
+import "@babel/register";
+import "babel-polyfill";
+
 import React from "react";
 import ReactDOM from "react-dom";
+
 import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { Provider } from "react-redux";
@@ -8,7 +13,7 @@ import rootReducer from "./reducers/index.js";
 import { watcherSaga } from "./sagas";
 
 import {BrowserRouter} from 'react-router-dom';
-import App from './components/App';
+import App from './components/App.jsx';
 
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -37,7 +42,7 @@ const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVT
 
 const enHanceCreateStore = compose(
     applyMiddleware(sagaMiddleware),
-    reduxReset(),  // Will use 'RESET' as default action.type to trigger reset
+    reduxReset(), // Will use 'RESET' as default action.type to trigger reset
     reduxDevTools
 )(createStore)
 const store = enHanceCreateStore(pReducer)
@@ -51,7 +56,7 @@ ReactDOM.render((
     <Provider store={store}>
         <PersistGate loading={<Loader/>} persistor={persistor}>
             <BrowserRouter>
-                    <App />
+                <App />
             </BrowserRouter>
         </PersistGate>
     </Provider>
