@@ -9,7 +9,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { Provider } from "react-redux";
 
-import rootReducer from "./reducers/index.js";
+import rootReducer from "./store";
 import { watcherSaga } from "./saga/sagas";
 
 import {BrowserRouter} from 'react-router-dom';

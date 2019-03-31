@@ -1,4 +1,4 @@
-import { put } from "redux-saga/es/effects";s
+import { put } from "redux-saga/es/effects";
 
 //DRAWER
 export function* openDrawer(){
