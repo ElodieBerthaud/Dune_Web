@@ -75,6 +75,8 @@ class PutAvis extends Component {
 
         this.props.AddAvis(this.props.id, this.state.rate, this.state.multiline, this.props.token);
 
+        this.setState({multiline: '', rate: 5});
+
     }
 
     render() {

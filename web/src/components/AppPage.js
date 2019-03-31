@@ -196,7 +196,7 @@ class AppPage extends React.Component {
                                 textColor="primary"
                                 centered
                             >
-                                <Tab label="Avis" />
+                                <Tab label={"Avis " + "(" + this.props.nbAvis + ")"} />
                                 <Tab label="Laisser un avis" />
                             </Tabs>
 

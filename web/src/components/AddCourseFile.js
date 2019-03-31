@@ -6,16 +6,13 @@ import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import dashboardStyle from "./Dashboard/styles/dashboardStyle";
+import dashboardStyle from "./Dashboard/styles/dashboardStyle.jsx";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
-import student from "../images/student.png";
-import Avatar from '@material-ui/core/Avatar';
-import classNames from 'classnames';
 import MenuItem from '@material-ui/core/MenuItem';
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
@@ -25,7 +22,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 
 function getSteps() {
-    return ['Type de media', 'Nommer le document', 'Choix du document'];
+    return ['Type de media', 'Nommer le document', 'Choix du document', 'Description du document'];
 }
 
 class AddCourseFile extends Component{
@@ -35,7 +32,8 @@ class AddCourseFile extends Component{
         cath: 0,
         idCath: 0,
         nomFicher: '',
-        shareFile: false
+        shareFile: false,
+        descFichier: ''
     }
 
     constructor(props){
@@ -72,8 +70,22 @@ class AddCourseFile extends Component{
         }
         else if (this.state.activeStep === 1){
 
-            if (this.state.nomEleve === '' || this.state.prenomEleve === ''){
-                this.props.SendAlert('Veuillez remplir tous les champs avant de continuer.')
+            this.setState(state => ({
+                activeStep: state.activeStep + 1,
+            }));
+
+        }
+        else if (this.state.activeStep === 2){
+
+            this.setState(state => ({
+                activeStep: state.activeStep + 1,
+            }));
+
+        }
+        else if (this.state.activeStep === 3){
+
+            if (this.state.descFichier === ''){
+                this.props.SendAlert('Veuillez remplir une description avant de continuer.')
             }else{
 
                 this.setState(state => ({
@@ -83,7 +95,7 @@ class AddCourseFile extends Component{
             }
 
         }
-        else if (this.state.activeStep === 2){
+        else if (this.state.activeStep === 3){
 
             console.log(this.state.cath);
             console.log(this.state.nomFicher);
@@ -172,6 +184,25 @@ class AddCourseFile extends Component{
                         />
                     </FormGroup>
                 </div>;
+            case 3:
+                return <div> <p> Veuillez remplir une description pour ce document. </p>
+                    <FormControl  className={classes.formControl} style={{margin: '3%', width: '70%'}}>
+                        <TextField
+                            id="outlined-textarea"
+                            label="Description du fichier"
+                            placeholder="Description"
+                            name="descFichier"
+                            onChange={this.handleChange}
+                            value={this.state.descFichier}
+                            multiline
+                            className={classes.textField}
+                            margin="normal"
+                            variant="outlined"
+                            fullWidth={true}
+                        />
+                    </FormControl>
+                </div>
+                    ;
             default:
                 return 'Unknown step';
         }
@@ -238,8 +269,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        SendAlert: (message) => dispatch({ type: "SNACK_PUT_ERROR", message })
-    };
+            SendAlert: (message) => dispatch({ type: "SNACK_PUT_ERROR", message })
+            };
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(AddCourseFile)));

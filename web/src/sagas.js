@@ -553,7 +553,7 @@ function get_avis_api(datas){
     const datasTosend = new FormData();
     datasTosend.append('idApp', datas.idGame);
     datasTosend.append('depart', datas.depart);
-    datasTosend.append('nbRes', 2);
+    datasTosend.append('nbRes', 5);
 
     const url = "http://176.31.252.134:7001/api/v1/store/avis";
 

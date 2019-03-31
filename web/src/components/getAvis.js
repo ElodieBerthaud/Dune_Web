@@ -82,6 +82,8 @@ class getAvis extends Component {
         if (nextProps.avis !== this.props.avis){
 
             return true;
+        }else{
+            return false;
         }
     }
 
