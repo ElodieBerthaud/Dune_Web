@@ -16,7 +16,7 @@ import RemoveRedEye from "@material-ui/icons/RemoveRedEye";
 // core components
 import tasksStyle from "./styles/tasksStyle.jsx";
 import {connect} from "react-redux";
-import dashboardStyle from "./styles/dashboardStyle";
+import dashboardStyle from "./styles/dashboardStyle.jsx";
 import {withRouter} from "react-router";
 
 class Tasks extends React.Component {

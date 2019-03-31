@@ -12,7 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import dashboardStyle from "./Dashboard/styles/dashboardStyle";
+import dashboardStyle from "./Dashboard/styles/dashboardStyle.jsx";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import TextField from '@material-ui/core/TextField';

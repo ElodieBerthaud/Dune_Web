@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import dashboardStyle from "./Dashboard/styles/dashboardStyle";
+import dashboardStyle from "./Dashboard/styles/dashboardStyle.jsx";
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';

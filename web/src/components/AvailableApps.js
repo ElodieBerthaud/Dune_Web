@@ -4,7 +4,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from "@material-ui/core/styles/index";
-import dashboardStyle from "./Dashboard/styles/dashboardStyle";
+import dashboardStyle from "./Dashboard/styles/dashboardStyle.jsx";
 import { withRouter } from "react-router";
 import {connect} from "react-redux";
 import Avatar from '@material-ui/core/Avatar';

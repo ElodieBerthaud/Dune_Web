@@ -11,7 +11,7 @@ import {connect} from "react-redux";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import ViewImage from './ViewImage';
-import ChangePassword from './changePassword';
+import ChangePassword from './changePassword.js';
 
 const styles = theme => ({
     card: {
