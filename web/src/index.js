@@ -10,7 +10,7 @@ import createSagaMiddleware from "redux-saga";
 import { Provider } from "react-redux";
 
 import rootReducer from "./reducers/index.js";
-import { watcherSaga } from "./sagas";
+import { watcherSaga } from "./saga/sagas";
 
 import {BrowserRouter} from 'react-router-dom';
 import App from './components/App.jsx';
