@@ -83,5 +83,22 @@ export function add_student_api(datas){
 
 }
 
+//Get results of a student
+export function get_student_results_api(datas){
+
+    const url = "http://176.31.252.134:7001/api/v1/eleves/stats/bulletin/" + datas.idEleve;
+
+    return axios({
+        method: 'get',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        }
+    });
+
+}
+
 
 

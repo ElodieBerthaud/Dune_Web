@@ -15,7 +15,6 @@ import ViewImage from './ViewImage';
 const styles = theme => ({
     card: {
         margin: 0,
-        backgroundColor: ''
     },
     media: {
         height: 50,

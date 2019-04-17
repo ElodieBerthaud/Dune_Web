@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux';
 import One_profile from './One_profile';
+import Stats from "./studentStatistics";
 
 const styles = {
     root: {
@@ -46,13 +47,19 @@ class StudentProfile extends Component{
     }
 
 
+
+    handleChange = (event, value) => {
+        this.setState({ value });
+    };
+
+
     render(){
 
         const { classes } = this.props;
 
         return(
             <div>
-                <Card className={classes.card} classes={{root: classes.card}}>
+                <Card className={classes.card} classes={{root: classes.card}} style={{backgroundColor: '#e0f7fa'}}>
                     <h1 style={{textAlign: 'center'}}>Profil de l'eleve</h1>
                     <CardContent style={{padding: '0', margin:'1%'}}>
                         <Paper className={classes.root} style={{backgroundColor: 'rgb(255, 255, 246)'}}>
@@ -70,7 +77,7 @@ class StudentProfile extends Component{
                         </Paper>
 
                         {this.state.value === 0 && <TabContainer><One_profile id={this.state.idStudent}/></TabContainer>}
-                        {this.state.value === 1 && <TabContainer></TabContainer>}
+                        {this.state.value === 1 && <TabContainer><Stats  idStudent={this.state.idStudent}/></TabContainer>}
                         {this.state.value === 2 && <TabContainer></TabContainer>}
 
                     </CardContent>

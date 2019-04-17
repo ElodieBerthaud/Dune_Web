@@ -22,6 +22,8 @@ import showDash from './reducers/Dashboard/showDashReducer';
 import showDashTmp from './reducers/Dashboard/showDashTmpReducer';
 import getAvis from './reducers/Views/avisReducer';
 import nbAvis from "./reducers/Views/NbAvisReducer";
+import files from './reducers/FileUpload/getFilesReducer';
+import studentResults from './reducers/Students/StudentResultsReducer';
 
 const reducers =  combineReducers({
     drawer,
@@ -46,7 +48,9 @@ const reducers =  combineReducers({
     showDash,
     showDashTmp,
     getAvis,
-    nbAvis
+    nbAvis,
+    files,
+    studentResults
 });
 
 const rootReducer = (state, action) => {

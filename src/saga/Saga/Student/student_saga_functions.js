@@ -1,6 +1,6 @@
 import {GET_STUDENTNBR, GET_STUDENTS_ERROR, GET_STUDENTS_SUCCESS} from "../../../actions/actionTypes";
 import { put, call } from "redux-saga/es/effects";
-import {get_all_students_api, get_nbr_students_api, student_profile_api, add_student_api} from '../../Api/Students/students_api_functions';
+import {get_all_students_api, get_nbr_students_api, student_profile_api, add_student_api, get_student_results_api} from '../../Api/Students/students_api_functions';
 
 //Get all student of a user
 export function* get_all_students(datas){
@@ -84,6 +84,60 @@ export function* addStudent(datas){
             yield put({type: "END_LOADING"});
 
             yield put({type: "SNACK_PUT_SUCCESS", message: "Le nouvel eleve a bien ete ajoute."});
+
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Une erreur s'est produite." });
+        }
+
+    }catch (e) {
+
+    }
+
+}
+
+export function* get_student_results(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(get_student_results_api, datas);
+
+        console.log(response);
+
+        if (response.data.status === 200){
+
+            yield put({type: "END_LOADING"});
+
+            let matiere = [];
+            let moyenne = [];
+            let moyenneClasse = [];
+            let nbPlay = [];
+
+            let content = [];
+
+            console.log(response.data.response.length);
+
+            for (var i = 0 ; i < response.data.response.length; i++){
+                var tmp = [];
+                tmp.push(response.data.response[i].labeltype);
+                tmp.push(response.data.response[i].moyenne);
+                tmp.push(response.data.response[i].moyenneClasse);
+                tmp.push(response.data.response[i].nbPlayed);
+                content.push(tmp);
+            }
+
+            console.log(content);
+
+            yield put({type: "STUDENT_RESULTS_SUCCESS",
+                moyenneG: response.data.moyenneGeneralEleve,
+                moyenneClasse: response.data.moyenneGeneraleClasse,
+                content: content});
 
         }
         //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.

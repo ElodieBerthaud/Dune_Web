@@ -22,7 +22,9 @@ const initialState = {
     showDash: {showDash: true},
     showDashTmp: {showDash: true},
     getAvis: {error: null, success: null, contentAvis: null, nbAvis: null},
-    nbAvis: {nbAvis: null, moyenne: null, success: null, error: null, lastNbAvis: null}
+    nbAvis: {nbAvis: null, moyenne: null, success: null, error: null, lastNbAvis: null},
+    files: {success: null, error: null, files: null},
+    studentResults: {success: null, error: null, content: null, moyenneG: null, moyenneClasse: null}
 }
 
 export default initialState;
