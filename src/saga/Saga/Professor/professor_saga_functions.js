@@ -9,19 +9,32 @@ import {fetchProf, add_professor_api, update_prof_api} from '../../Api/Professor
 
 //Add a professor
 export function* add_professor(datas){
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
 
     try{
 
         const response = yield call(add_professor_api, datas);
 
         if (response.data.status === 200){
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_SUCCESS", message: "Le professeur a bien été crée." });
+
             yield put({type: ADD_PROFESSOR_SUCCESS});
+
         }else if (response.data.status === 501){
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Un compte existe déja avec cette adresse email. veuillez en entrer une autre." });
+
             yield put({type: ADD_PROFESSOR_ERROR, error: 501});
         }
 
-    }catch (e) {
 
+    }catch (e) {
+        yield put({type: "END_LOADING"});
+
+        yield put({type: "SNACK_PUT_ERROR", message: "Une erreur est survenue." });
         yield put({type: ADD_PROFESSOR_ERROR, error: e.response.status});
 
     }

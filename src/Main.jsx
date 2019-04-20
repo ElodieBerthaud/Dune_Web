@@ -48,6 +48,9 @@ class Main extends Component{
         if (this.props.passSuccess){
             window.location = '/';
         }
+        else{
+            //window.location.reload();
+        }
     }
 
     componentWillUpdate(){
@@ -78,6 +81,10 @@ class Main extends Component{
                 logout_user();
             }, 3000);
 
+    }
+
+    handleCloseError = () =>{
+        window.location.reload();
     }
 
     render(){
@@ -156,7 +163,7 @@ class Main extends Component{
                     <MySnackbarContent
                         variant="error"
                         message={this.props.message}
-
+                        autoHideDuration={4000}
                     />
                 </Snackbar>
 

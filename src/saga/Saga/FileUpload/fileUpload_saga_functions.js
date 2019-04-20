@@ -1,6 +1,6 @@
-import {EMPTY_IMG_REQUEST, GET_IMG_RESPONSE, SNACK_PUT_SUCCESS} from "../../../actions/actionTypes";
+import {EMPTY_IMG_REQUEST, GET_IMG_RESPONSE, SNACK_PUT_SUCCESS, SNACK_PUT_ERROR} from "../../../actions/actionTypes";
 import { put, call } from "redux-saga/es/effects";
-import {upload_img_api} from '../../Api/FileUpload/upload_api_functions';
+import {upload_img_api, upload_file_api} from '../../Api/FileUpload/upload_api_functions';
 import {fetchProf} from "../../Api/Professor/professor_api_functions";
 
 //open image viewer
@@ -41,12 +41,38 @@ export function* uploadImage(datas){
                 yield  put({type: 'GET_USER_INFOS', lastname: lastname, name: name, email: email, pic: pic});
                 yield put({type: EMPTY_IMG_REQUEST});
                 yield put({type: SNACK_PUT_SUCCESS, message: 'Votre photo a bien éte mise a jour.'});
+            }else{
+                yield put({type: SNACK_PUT_ERROR, message: 'Une erreur est survenue.'});
+
             }
         }
 
     }catch (e) {
-
+        yield put({type: SNACK_PUT_ERROR, message: 'Une erreur est survenue.'});
     }
 
 }
 
+
+//Add a new file to the fileManager
+export function* uploadFile(datas){
+
+    try{
+
+        const response = yield call(upload_file_api, datas);
+
+        if (response.data.status === 200){
+
+            yield put({type: SNACK_PUT_SUCCESS, message: 'Votre fichier a bien été ajouté.'});
+
+        }else{
+            yield put({type: SNACK_PUT_ERROR, message: 'Une erreur est survenue.'});
+        }
+
+    }catch (e) {
+
+        yield put({type: SNACK_PUT_ERROR, message: 'Une erreur est survenue.'});
+
+    }
+
+}

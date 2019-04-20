@@ -77,7 +77,7 @@ class AveragesChart extends Component {
     render() {
         return (
             <div>
-                <Chart options={options} chartType="Bar" width="100%" height="400px" data={this.state.data} />
+                <Chart loader={"../images/loaders/bars-loader.gif"} options={options} chartType="Bar" width="100%" height="400px" data={this.state.data} />
             </div>
         );
     }

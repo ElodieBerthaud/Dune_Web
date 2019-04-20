@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import AverageTab from './AveragesTab';
 import CountUp from 'react-countup';
 import AverageChart from './AveragesChart';
+import BulletinPDF from './BulletinPDF';
 
 const styles = theme => ({
     root: {
@@ -194,6 +195,8 @@ componentWillMount() {
                     <Grid item xs={5}>
                         <Paper className={classes.paper} style={{padding: '5%'}}>
                             <AverageChart mG={this.props.moyenneG} mC={this.props.moyenneClasse}/>
+                        </Paper>
+                        <Paper className={classes.paper} style={{padding: '5%'}}>
                         </Paper>
                     </Grid>
                 </Grid>

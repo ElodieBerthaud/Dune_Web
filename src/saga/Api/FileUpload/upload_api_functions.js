@@ -33,3 +33,25 @@ export function upload_img_api(datas){
     });
 
 }
+
+export function upload_file_api(datas){
+
+    const datasTosend = new FormData();
+
+    datasTosend.append('fileName', datas.fileName);
+    datasTosend.append('description', datas.description);
+    datasTosend.append('private', datas.share === true ? 1 : 0);
+    datasTosend.append('fileUser', datas.fileUser);
+    datasTosend.append('fileType', datas.fileType);
+
+
+    return axios({
+        method: 'post',
+        url: 'http://176.31.252.134:7001/api/v1/filesManager/uploadFile',
+        headers: {
+            token: datas.token
+        },
+        data: datasTosend
+    });
+
+}

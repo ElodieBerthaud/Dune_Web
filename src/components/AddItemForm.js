@@ -12,8 +12,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import loader from '../images/loaders/bars-loader.gif';
 import {connect} from "react-redux";
-import check from './../images/loaders/icons8-approval-100.png';
-import error from './../images/loaders/error.png';
 
 const emailRegex = require('email-regex');
 
@@ -245,43 +243,6 @@ class AddItemForm extends React.Component {
                     </div>
                 </Dialog>
 
-                <Dialog
-                    open={this.state.error}
-                    aria-labelledby="form-dialog-title"
-                >
-                    <div style={this.state.loader ? {display:"none"} : {display:''}}>
-                        <DialogTitle id="form-dialog-title">Erreur Lors de l'ajout d'un professeur</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                <img alt='chargement' src={error} style={{display: 'inherit', margin: '0 auto'}} />
-                                {this.props.error === 501 ? 'Un compte existe déja avec cette adresse email. veuillez en entrer une autre.' : ''}
-                                {this.props.error === 401 ? 'Votre session a expirée.' : ''}
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleClose_error} color="primary">
-                                Ok
-                            </Button>
-                        </DialogActions>
-                    </div>
-                </Dialog>
-
-                <Dialog
-                    open={addSuccess === null ? false : addSuccess === true ? true : false}
-                    aria-labelledby="form-dialog-title"
-                >
-                    <div style={this.state.loader ? {display:"none"} : {display:''}}>
-                        <DialogTitle id="form-dialog-title">L'ajout a bien été effectué !</DialogTitle>
-                        <DialogContent>
-                            <img alt='chargement' src={check} style={{display: 'inherit', margin: '0 auto'}} />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleClose_error} color="primary">
-                                Ok
-                            </Button>
-                        </DialogActions>
-                    </div>
-                </Dialog>
             </div>
 
         );

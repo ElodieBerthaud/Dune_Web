@@ -20,6 +20,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import Test from "./test";
 
 function getSteps() {
     return ['Type de media', 'Nommer le document', 'Choix du document', 'Description du document'];
@@ -33,7 +34,11 @@ class AddCourseFile extends Component{
         idCath: 0,
         nomFicher: '',
         shareFile: false,
-        descFichier: ''
+        descFichier: '',
+        file: null,
+        urlPDF: null,
+        openPDF: false,
+        fileName: ''
     }
 
     constructor(props){
@@ -46,12 +51,23 @@ class AddCourseFile extends Component{
 
     handleChange = event => {
 
-        this.setState({ [event.target.name]: event.target.value });
+        if (event.target.name === 'file' && event.target.value !== null){
+
+            const file = URL.createObjectURL(event.target.files[0]);
+
+            const file_obj = event.target.files[0];
+
+            this.setState({openPDF: true, urlPDF: file_obj, fileName: file_obj.name, file: file_obj});
+        }else{
+            this.setState({ [event.target.name]: event.target.value });
+        }
+
     };
 
     handleChangeFileChecked = event => {
 
         this.setState({ [event.target.name]: !this.state.shareFile });
+
     };
 
     handleNext = () => {
@@ -70,38 +86,49 @@ class AddCourseFile extends Component{
         }
         else if (this.state.activeStep === 1){
 
-            this.setState(state => ({
-                activeStep: state.activeStep + 1,
-            }));
+            if (this.state.nomFicher === null){
+                this.props.SendAlert('Veuillez choisir un nom de fichier avant de continuer.');
+
+            }else {
+                this.setState(state => ({
+                    activeStep: state.activeStep + 1,
+                }));
+            }
 
         }
         else if (this.state.activeStep === 2){
 
-            this.setState(state => ({
-                activeStep: state.activeStep + 1,
-            }));
+            if (this.state.file === null){
+                this.props.SendAlert('Veuillez choisir un fichier avant de continuer.');
 
-        }
-        else if (this.state.activeStep === 3){
-
-            if (this.state.descFichier === ''){
-                this.props.SendAlert('Veuillez remplir une description avant de continuer.')
-            }else{
-
+            }else {
                 this.setState(state => ({
                     activeStep: state.activeStep + 1,
                 }));
-
             }
 
         }
         else if (this.state.activeStep === 3){
 
-            console.log(this.state.cath);
-            console.log(this.state.nomFicher);
-            console.log(this.state.shareFile);
+            if (this.state.descFichier === ''){
+                this.props.SendAlert('Veuillez remplir une description avant de continuer.');
+            }else{
 
-            //this.props.addStudent(this.props.token, this.props.idUser, this.state.classeName, this.state.nomEleve, this.state.prenomEleve, this.state.picEleveSend);
+                console.log(this.state.cath);
+                console.log(this.state.nomFicher);
+                console.log(this.state.shareFile);
+                console.log(this.state.file);
+                console.log(this.state.descFichier);
+
+                this.props.AddFile(this.props.token, this.state.nomFicher === '' ? this.state.fileName : this.state.nomFicher, this.state.descFichier, this.state.shareFile, this.state.file, this.state.cath);
+
+            }
+
+        }
+        else if (this.state.activeStep === 4){
+
+
+
 
         }
     };
@@ -128,24 +155,27 @@ class AddCourseFile extends Component{
                                 }}
                             >
                                 <MenuItem value={0}>
-                                    <em>Choisissez une cathegorie</em>
+                                    <em>Choisissez une catégorie</em>
                                 </MenuItem>
-                                <MenuItem value={1}>Image</MenuItem>
-                                <MenuItem value={2}>Video</MenuItem>
-                                <MenuItem value={3}>PDF</MenuItem>
+                                <MenuItem value={"IMG"}>Image</MenuItem>
+                                <MenuItem value={"MP4"}>Video</MenuItem>
+                                <MenuItem value={"PDF"}>PDF</MenuItem>
                             </Select>
                     </FormControl>
                 </div>;
             case 1:
-                return <div> <p> Remplissez les champs ci-dessous </p>
+                return <div> <p> Remplissez les champs ci-dessous (20 caractères maximum)</p>
                     <FormControl  className={classes.formControl} style={{margin: '3%'}}>
                         <TextField
                             name="nomFicher"
                             style={{width:'100%'}}
                             label="Nom"
                             placeholder="Nom"
-                            value={this.state.nomEleve}
+                            value={this.state.nomFicher}
                             onChange={this.handleChange}
+                            inputProps={{
+                                maxLength: 20,
+                            }}
                         /><br />
                     </FormControl>
                 </div>
@@ -157,13 +187,16 @@ class AddCourseFile extends Component{
                     <FormGroup row style={{margin: '5%'}}>
                         <FormControlLabel
                             control={
-                                <Button
-                                    style={{margin: '0 auto'}}
-                                    variant="contained" color="primary" // <-- Just add me!
-                                    label='My Label' className={classes.button}>
-                                    <input type="file" name='file' style={{position: 'absolute', opacity: '0'}}/>
-                                    Choisir un fichier
-                                </Button>
+                                <Tooltip title={this.state.fileName !== '' ? this.state.fileName : 'Aucun fichier choisi'} placement="top">
+
+                                    <Button
+                                        style={{margin: '0 auto'}}
+                                        variant="contained" color="primary" // <-- Just add me!
+                                        label='My Label' className={classes.button}>
+                                        <input type="file" name='file' style={{position: 'absolute', opacity: '0'}} onChange={this.handleChange}/>
+                                        Choisir un fichier
+                                    </Button>
+                                </Tooltip>
                             }
                         />
 
@@ -237,6 +270,7 @@ class AddCourseFile extends Component{
                                             >
                                                 Precedent
                                             </Button>
+
                                             <Button
                                                 variant="contained"
                                                 color="primary"
@@ -252,6 +286,15 @@ class AddCourseFile extends Component{
                         );
                     })}
                 </Stepper>
+
+                {this.state.openPDF === true && this.state.cath === "PDF" ?
+
+                    <Test mode={"apercu"} open={this.state.openPDF} url={this.state.urlPDF}/>
+
+                    : ''
+
+                }
+
             </div>
         );
     }
@@ -264,13 +307,15 @@ AddCourseFile.propTypes = {
 
 const mapStateToProps = state => {
     return {
+        token: state.login.token
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-            SendAlert: (message) => dispatch({ type: "SNACK_PUT_ERROR", message })
-            };
+            SendAlert: (message) => dispatch({ type: "SNACK_PUT_ERROR", message }),
+            AddFile: (token, fileName, description, share, fileUser, fileType) => dispatch({type: "UPLOAD_FILE_REQUEST", token, fileName, description, share, fileUser, fileType})
+    };
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(AddCourseFile)));

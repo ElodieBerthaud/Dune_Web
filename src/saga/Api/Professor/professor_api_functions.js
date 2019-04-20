@@ -32,19 +32,21 @@ export function fetchProfNotif(datas) {
 
 
 //ADD PROF FROM API
-export function add_professor_api(add){
+export function add_professor_api(datas){
 
-    const datas = new URLSearchParams();
-    datas.append('nom', add.surname);
-    datas.append('prenom', add.name);
-    datas.append('email', add.email)
-    datas.append('token', add.token);
-    datas.append('directorId', 1);
+    const data = new URLSearchParams();
+    data.append('nom', datas.surname);
+    data.append('prenom', datas.name);
+    data.append('email', datas.email);
 
     return axios({
         method: 'post',
         url: 'http://176.31.252.134:7001/api/v1/users/add',
-        data: datas
+        data: data,
+        headers: {
+            Accept: 'application/json',
+            token: datas.token
+        }
     })
 
 }

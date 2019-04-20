@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux';
 import One_profile from './One_profile';
 import Stats from "./studentStatistics";
+import BulletinPDF from "./BulletinPDF";
 
 const styles = {
     root: {
@@ -60,7 +61,7 @@ class StudentProfile extends Component{
         return(
             <div>
                 <Card className={classes.card} classes={{root: classes.card}} style={{backgroundColor: '#e0f7fa'}}>
-                    <h1 style={{textAlign: 'center'}}>Profil de l'eleve</h1>
+                    <h1 style={{textAlign: 'center'}}>{this.props.nomEleve !== null && this.props.prenomEleve !== null ? this.props.prenomEleve + ' ' + this.props.nomEleve : ''}</h1>
                     <CardContent style={{padding: '0', margin:'1%'}}>
                         <Paper className={classes.root} style={{backgroundColor: 'rgb(255, 255, 246)'}}>
                             <Tabs
@@ -78,7 +79,7 @@ class StudentProfile extends Component{
 
                         {this.state.value === 0 && <TabContainer><One_profile id={this.state.idStudent}/></TabContainer>}
                         {this.state.value === 1 && <TabContainer><Stats  idStudent={this.state.idStudent}/></TabContainer>}
-                        {this.state.value === 2 && <TabContainer></TabContainer>}
+                        {this.state.value === 2 && <TabContainer><BulletinPDF/></TabContainer>}
 
                     </CardContent>
                 </Card>
@@ -90,7 +91,9 @@ class StudentProfile extends Component{
 
 const mapStateToProps = state => {
     return {
-        token: state.login.token
+        token: state.login.token,
+        nomEleve: state.studentProfile.nomEleve,
+        prenomEleve: state.studentProfile.prenomEleve
     };
 };
 

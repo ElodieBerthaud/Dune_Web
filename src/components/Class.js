@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import {withStyles} from "@material-ui/core/styles/index";
 import PropTypes from 'prop-types';
 import AddCourseFile from './AddCourseFile';
+import GetCourseFiles from './GetCourseFiles';
 
 function TabContainer(props) {
     return (
@@ -62,7 +63,7 @@ class Class extends Component{
                             </Tabs>
                         </Paper>
 
-                        {this.state.value === 0 && <TabContainer></TabContainer>}
+                        {this.state.value === 0 && <TabContainer><GetCourseFiles/></TabContainer>}
                         {this.state.value === 1 && <TabContainer><AddCourseFile /></TabContainer>}
 
                     </CardContent>
