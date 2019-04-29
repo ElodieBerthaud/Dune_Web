@@ -2,6 +2,7 @@ import {EMPTY_IMG_REQUEST, GET_IMG_RESPONSE, SNACK_PUT_SUCCESS, SNACK_PUT_ERROR}
 import { put, call } from "redux-saga/es/effects";
 import {upload_img_api, upload_file_api} from '../../Api/FileUpload/upload_api_functions';
 import {fetchProf} from "../../Api/Professor/professor_api_functions";
+import {get_files} from './getFiles_saga_functions';
 
 //open image viewer
 export function*   show_image(file){
@@ -40,6 +41,7 @@ export function* uploadImage(datas){
 
                 yield  put({type: 'GET_USER_INFOS', lastname: lastname, name: name, email: email, pic: pic});
                 yield put({type: EMPTY_IMG_REQUEST});
+                const response_2 = yield call(fetchProf, datas_2);
                 yield put({type: SNACK_PUT_SUCCESS, message: 'Votre photo a bien éte mise a jour.'});
             }else{
                 yield put({type: SNACK_PUT_ERROR, message: 'Une erreur est survenue.'});
@@ -53,8 +55,7 @@ export function* uploadImage(datas){
 
 }
 
-
-//Add a new file to the fileManager
+//Update a file to the fileManager
 export function* uploadFile(datas){
 
     try{
@@ -76,3 +77,4 @@ export function* uploadFile(datas){
     }
 
 }
+

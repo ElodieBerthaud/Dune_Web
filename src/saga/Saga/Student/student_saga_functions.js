@@ -1,6 +1,6 @@
 import {GET_STUDENTNBR, GET_STUDENTS_ERROR, GET_STUDENTS_SUCCESS} from "../../../actions/actionTypes";
 import { put, call } from "redux-saga/es/effects";
-import {get_all_students_api, get_nbr_students_api, student_profile_api, add_student_api, get_student_results_api} from '../../Api/Students/students_api_functions';
+import {get_all_students_api, get_nbr_students_api, student_profile_api, add_student_api, get_student_results_api, update_student_api} from '../../Api/Students/students_api_functions';
 
 //Get all student of a user
 export function* get_all_students(datas){
@@ -48,6 +48,8 @@ export function* get_students_nbr(datas){
 //get all informations of a student
 export function* student_profile(datas){
 
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
     try{
 
         const response = yield call(student_profile_api, datas);
@@ -60,11 +62,14 @@ export function* student_profile(datas){
             const picEleve = response.data.response[0].picPath;
 
             yield put({type: 'STUDENT_PROFILE_SUCCESS', nomEleve: nomEleve, prenomEleve: prenomEleve, noEleve: noEleve, idEleve: idEleve, picEleve: picEleve})
+            yield put({type: "END_LOADING"});
 
+        }else{
+            yield put({type: "END_LOADING"});
         }
 
     }catch (e) {
-
+        yield put({type: "END_LOADING"});
     }
 
 }
@@ -113,12 +118,6 @@ export function* get_student_results(datas){
         if (response.data.status === 200){
 
             yield put({type: "END_LOADING"});
-
-            let matiere = [];
-            let moyenne = [];
-            let moyenneClasse = [];
-            let nbPlay = [];
-
             let content = [];
 
             console.log(response.data.response.length);
@@ -139,6 +138,35 @@ export function* get_student_results(datas){
                 moyenneClasse: response.data.moyenneGeneraleClasse,
                 content: content});
 
+        }
+        //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
+        else{
+
+            yield put({type: "END_LOADING"});
+
+            yield put({type: "SNACK_PUT_ERROR", message: "Une erreur s'est produite." });
+        }
+
+    }catch (e) {
+
+    }
+
+}
+
+//Update stusents' infos
+export function* updateStudent(datas){
+
+    yield put({type: "LOADING", loadmessage: "Veuillez patienter." });
+
+    try{
+
+        const response = yield call(update_student_api, datas);
+
+        if (response.data.status === 200){
+
+            yield call(student_profile, datas);
+
+            yield put({type: "SNACK_PUT_SUCCESS", message: "Les informations ont bien été modifiées."});
         }
         //Pour l'instant, je ne vois pas l'utilite de mettre une erreur dans un state pour le changement d'identifiant. La snackBar est OK.
         else{

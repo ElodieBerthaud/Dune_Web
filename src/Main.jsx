@@ -3,29 +3,28 @@ import Login from './containers/LoginContainer';
 import { Switch, Route } from 'react-router-dom';
 import 'typeface-roboto';
 import { Redirect } from 'react-router';
-import Dashboard from "./components/Dashboard";
-import Follow from "./components/Follow";
-import Students from "./components/Students";
-import ManageProfessor from "./components/ManageProfessor";
-import Account from "./components/Account";
+import Dashboard from "./components/Dash/Dashboard";
+import Students from "./components/Students/Students";
+import ManageProfessor from "./components/Professors/ManageProfessor";
+import Account from "./components/User/Account";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import PrivateRoute from "./components/PrivateRoute";
-import P_404 from './components/P_404';
-import MySnackbarContent from './components/MySnackbarContent';
+import PrivateRoute from "./components/Main/PrivateRoute";
+import P_404 from './components/Main/P_404';
+import MySnackbarContent from './components/Snacks/MySnackbarContent';
 import Snackbar from '@material-ui/core/Snackbar';
-import StoreApp from './components/StoreApp';
+import StoreApp from './components/Store/StoreApp';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import StudentProfile from './components/StudentProfile';
-import AddStudent from './components/ManageStudent';
+import StudentProfile from './components/Students/StudentProfile';
+import AddStudent from './components/Students/ManageStudent';
 import loader from './images/loaders/bars-loader.gif';
 import DialogActions from '@material-ui/core/DialogActions';
-import AppPage from './components/AppPage';
-import Class from './components/Class';
-import Test from './components/TestContainer';
+import AppPage from './components/Store/AppPage';
+import Class from './components/FileManager/Class';
+import Test from './components/Tests/TestContainer';
 
 class Main extends Component{
 
@@ -47,9 +46,6 @@ class Main extends Component{
 
         if (this.props.passSuccess){
             window.location = '/';
-        }
-        else{
-            //window.location.reload();
         }
     }
 
@@ -103,6 +99,14 @@ class Main extends Component{
             this.logout();
         }
 
+        if (this.props.reload){
+            console.log("RELOAD");
+            setTimeout(function () {
+                this.props.stopReloadStatus();
+                window.location.reload();
+            }, 2000);
+        }
+
         return(
             <main>
                 <Dialog
@@ -124,7 +128,6 @@ class Main extends Component{
                             )
                     )}/>
                     <PrivateRoute exact path='/dashboard' component={Dashboard} authed={log.logged}/>
-                    <PrivateRoute exact path='/follow' component={Follow} authed={log.logged}/>
                     <PrivateRoute exact path='/students' component={Students} authed={log.logged}/>
                     <PrivateRoute exact path='/store' component={StoreApp} authed={log.logged}/>
                     <PrivateRoute exact path='/add-professor' component={ManageProfessor} authed={log.director}/>
@@ -157,13 +160,13 @@ class Main extends Component{
                         horizontal: 'right',
                     }}
                     open={this.props.error && this.state.open}
-                    autoHideDuration={4000}
+                    autohideduration={4000}
                     onClose={this.handleClose}
                 >
                     <MySnackbarContent
                         variant="error"
                         message={this.props.message}
-                        autoHideDuration={4000}
+                        autohideduration={4000}
                     />
                 </Snackbar>
 
@@ -200,7 +203,7 @@ const mapStateToProps = state => {
         tokenUnvalid: state.login.tokenUnValid,
         loading: state.loading.loading,
         loadmessage: state.loading.loadmessage,
-        reload: state.reload.status
+        reload: state.snackContent.reload
     };
 };
 

@@ -40,7 +40,7 @@ export function upload_file_api(datas){
 
     datasTosend.append('fileName', datas.fileName);
     datasTosend.append('description', datas.description);
-    datasTosend.append('private', datas.share === true ? 1 : 0);
+    datasTosend.append('private', datas.prive === true ? 1 : 0);
     datasTosend.append('fileUser', datas.fileUser);
     datasTosend.append('fileType', datas.fileType);
 

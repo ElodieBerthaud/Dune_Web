@@ -21,7 +21,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
 import registerServiceWorker from "./registerServiceWorker";
 import { PersistGate } from 'redux-persist/lib/integration/react';
-import Loader from '../src/components/Loader';
+import Loader from './components/Main/Loader';
 import reduxReset from 'redux-reset';
 
 //

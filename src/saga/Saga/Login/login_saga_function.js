@@ -19,14 +19,13 @@ export function* login(logs){
     try{
 
         const response = yield call(login_in, datas);
-
         if (response.data.success === true) {
             const token = response.data.token;
             const user_id = response.data.currUser;
             const director = response.data.typeUser === 1 ? false : true;
             const typeUser = response.data.typeUser;
             const idEcole = response.data.idEcole;
-            yield put({ type: "LOGIN_SUCCESS", token: token, director: director, typeUser: typeUser});
+            yield put({ type: "LOGIN_SUCCESS", token: token, director: director, typeUser: typeUser, idUser: user_id});
 
             yield put({ type: "GET_NOTIFS_REQUEST", idUser: user_id, token: token});
 

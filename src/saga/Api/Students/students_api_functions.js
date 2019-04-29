@@ -100,5 +100,29 @@ export function get_student_results_api(datas){
 
 }
 
+//Update infos os a stusent
+export function update_student_api(datas){
+
+    const datasTosend = new FormData();
+    datasTosend.append('idEleve', datas.id);
+    datasTosend.append('nomEleve', datas.nom);
+    datasTosend.append('prenomEleve', datas.prenom);
+
+
+    const url = "http://176.31.252.134:7001/api/v1/eleves/update/";
+
+    return axios({
+        method: 'put',
+        url: url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+            token: datas.token
+        },
+        data: datasTosend
+    });
+
+}
+
 
 

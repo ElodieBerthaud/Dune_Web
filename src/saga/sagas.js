@@ -6,10 +6,11 @@ import {add_professor, update_prof} from './Saga/Professor/professor_saga_functi
 import {getUserClasses} from './Saga/School/school_saga_functions';
 import {snack_req} from './Saga/SnackBar/snackbar_saga_functions';
 import {getAppsBuy, getApp, getAppRegistred, getAppRegistredNbr, askApp, buyApp} from './Saga/Store/store_saga_functions';
-import {student_profile, addStudent, get_all_students, get_students_nbr, get_student_results} from './Saga/Student/student_saga_functions';
+import {student_profile, addStudent, get_all_students, get_students_nbr, get_student_results, updateStudent} from './Saga/Student/student_saga_functions';
 import {getAvis, getNbAvis, addAvis} from './Saga/Views/views_saga_functions';
 import {openDrawer, closeDrawer} from './Saga/Drawer/drawer_saga_functions';
-import {get_files} from './Saga/FileUpload/getFiles_saga_functions';
+import {get_files, update_files, delete_file} from './Saga/FileUpload/getFiles_saga_functions';
+import {delete_file_api} from "./Api/FileUpload/getFiles_api_functions";
 
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -48,6 +49,7 @@ export function* watcherSaga() {
     yield takeEvery("UPLOAD_FILE_REQUEST", uploadFile);
     yield takeEvery("GET_FILES_REQUEST", get_files);
     yield takeEvery("STUDENT_RESULTS_REQUEST", get_student_results);
-
-
+    yield takeEvery("UPDATE_FILE", update_files);
+    yield takeEvery("UPDATE_STUDENT", updateStudent);
+    yield takeEvery("DELETE_FILE", delete_file);
 }

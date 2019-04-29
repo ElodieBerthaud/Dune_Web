@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Header from './Header';
+import Header from './Main/Header';
 import "../css/Login.css";
-import Footer from './Footer';
+import Footer from './Main/Footer';
 import Main from '../Main.jsx';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import Theme from './colors';
+import Theme from './Main/colors';
 import "../css/index.css";
 
 class App extends Component {
