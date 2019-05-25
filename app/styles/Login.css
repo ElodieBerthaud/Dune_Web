@@ -1,0 +1,54 @@
+@media screen and (min-width: 800px) {
+    .WrapLogin{
+        border: 1px solid #80CBC4;
+        border-radius: 5px;
+        text-align: center;
+        padding-bottom: 1%;
+        background-color: #E0F7FA;
+        margin-left: 35%;
+        margin-right: 35%;
+        margin-top: 10%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .WrapLogin {
+        border: 1px solid #80CBC4;
+        border-radius: 5px;
+        text-align: center;
+        padding-bottom: 1%;
+        background-color: #E0F7FA;
+        margin-left: 15%;
+        margin-right: 15%;
+        margin-top: 10%;
+    }
+}
+
+.WrapUser{
+    border: 1px solid #80CBC4;
+    border-radius: 5px;
+    text-align: center;
+    padding-bottom: 1%;
+    background-color: #fee599;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 10%;
+}
+
+.button{
+    margin-top: 20px;
+}
+
+.title{
+    margin-top: 20px;
+    color: #757575;
+    font-size: 1.5em;
+}
+
+.login{
+    margin: 0 auto;
+}
+
+.salut:hover{
+    background-color: red;
+}

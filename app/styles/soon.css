@@ -1,0 +1,13 @@
+.CommingSoon{
+    text-align: center;
+}
+
+.CommingSoon .inside{
+     font-size: 1.5em;
+     color: lightslategrey;
+ }
+
+.CommingSoon .icon{
+    width: 100px;
+    height: 100px;
+}
