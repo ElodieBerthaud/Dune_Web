@@ -5,7 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 import GroupAdd from '@material-ui/icons/GroupAdd';
 import Dashboard from '@material-ui/icons/Dashboard';
-import BarChart from '@material-ui/icons/BarChart';
+import ViewWeek from '@material-ui/icons/ViewWeek';
 import Class from '@material-ui/icons/Class';
 import ViewModule from '@material-ui/icons/ViewModule';
 import Shop from '@material-ui/icons/Shop';
@@ -69,4 +69,18 @@ export const SecondaryListItem = (props) =>
                 <ListItemText primary="Ajouter des éleves" />
             </ListItem>
         </Link>
+    </div>
+
+export const ThirdListItem = (props) =>
+    <div>
+        {props.director === true ?
+            <Link  to='/abonnements' style={{textDecoration: 'none'}}>
+                <ListItem button>
+                    <ListItemIcon>
+                        <ViewWeek />
+                    </ListItemIcon>
+                    <ListItemText primary="Gestion d'abonnements" />
+                </ListItem>
+            </Link>
+            : ''}
     </div>

@@ -5,3 +5,4 @@ Pour plus de détails: http://176.31.252.134:8000 (Site de presentation de Dune)
 
 
  Ce repository GitHub correspond au developpement de la plate-forme Web. Cette plate-forme permettra aux utilisateurs (Professeurs/directeurs d'établissement) de gérer leurs classes, voir les resultats des exercices, accéder au trombinoscope des éleves, préparer des cours et bien plus encore.
+

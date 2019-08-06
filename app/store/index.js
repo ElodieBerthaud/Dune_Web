@@ -25,6 +25,8 @@ import nbAvis from './reducers/Views/NbAvisReducer';
 import files from './reducers/FileUpload/getFilesReducer';
 import studentResults from './reducers/Students/StudentResultsReducer';
 import dashboard from './reducers/Dashboard/DashboardReducer';
+import subscribe from './reducers/Subs/SubscribeReducer';
+import payments from './reducers/Payments/PaymentsReducer';
 
 const reducers = combineReducers({
   drawer,
@@ -52,7 +54,9 @@ const reducers = combineReducers({
   nbAvis,
   files,
   studentResults,
-  dashboard
+  dashboard,
+  subscribe,
+  payments
 });
 
 const rootReducer = (state, action) => {

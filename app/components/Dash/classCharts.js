@@ -88,7 +88,6 @@ class classCharts extends Component {
           this.state.data.push(tmp);
         }
       }
-      console.log(this.state.data);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {

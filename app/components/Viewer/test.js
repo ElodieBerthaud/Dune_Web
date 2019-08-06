@@ -26,7 +26,7 @@ const DialogTitle = withStyles((theme) => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
     margin: 0,
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing.unit * 2
   },
   closeButton: {
     position: 'absolute',
@@ -207,7 +207,6 @@ class Test extends Component {
               <Document
                 file={this.props.url}
                 onLoadSuccess={this.onDocumentLoadSuccess}
-                loading={this.renderLoading()}
                 onClick={this.zoomCanvas}
               >
                 <Page pageNumber={this.state.pageNumber} onLoadSuccess={this.onPageLoadSuccess} />

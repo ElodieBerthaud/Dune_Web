@@ -174,10 +174,14 @@ class Header extends React.Component {
       window.location.reload();
     }
 
+  handleFacturation = () => {
+      window.location = '/facturation';
+  }
+
     render() {
       const { anchorEl } = this.state;
 
-      this.state.colorbar = window.location.pathname === '/store' ? '#ab47bc' : '';
+      this.state.colorbar = window.location.pathname === '/store' ? '#ab47bc' : window.location.pathname === '/abonnements' ? '#00838f' : window.location.pathname === '/facturation' ? '#e57373' : '';
 
       const { mobileMoreAnchorEl } = this.state;
       const { classes } = this.props;
@@ -194,6 +198,7 @@ class Header extends React.Component {
           onClose={this.handleMenuClose}
         >
           <MenuItem onClick={this.handleAccount}>Mon compte</MenuItem>
+          { this.props.director ? <MenuItem onClick={this.handleFacturation}>Facturation</MenuItem> : '' }
           <MenuItem onClick={this.handleLogout}>Se deconnecter</MenuItem>
         </Menu>
       );
@@ -315,7 +320,8 @@ const mapStateToProps = (state) => ({
   typeUser: state.login.typeUser,
   idDemandeNotif: state.showNotif.idDemande,
   isNotifAccepted: state.showNotif.isAccepted,
-  idNotif: state.showNotif.idNotif
+  idNotif: state.showNotif.idNotif,
+  director: state.login.director
 });
 
 const mapDispatchToProps = (dispatch) => ({

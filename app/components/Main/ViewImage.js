@@ -24,6 +24,7 @@ class ViewImage extends Component {
     const {
       email, idUser, token, file_upload
     } = this.props;
+
     this.setState({ open: false });
 
     if (this.props.student) {

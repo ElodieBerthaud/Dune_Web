@@ -1,5 +1,6 @@
 import 'regenerator-runtime/runtime';
 import '@babel/register';
+import {StripeProvider} from 'react-stripe-elements';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -41,7 +42,8 @@ const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVT
 
 const enHanceCreateStore = compose(
   applyMiddleware(sagaMiddleware),
-  reduxReset()
+  reduxReset(),
+    reduxDevTools
 )(createStore);
 const store = enHanceCreateStore(pReducer);
 
@@ -54,7 +56,9 @@ ReactDOM.render((
   <Provider store={store}>
     <PersistGate loading={<Loader />} persistor={persistor}>
       <BrowserRouter>
-        <App />
+          <StripeProvider apiKey="pk_test_BSNzEnrgwUv0HK3wvUGiaDOs">
+              <App />
+          </StripeProvider>
       </BrowserRouter>
     </PersistGate>
   </Provider>

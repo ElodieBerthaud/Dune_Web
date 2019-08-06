@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
-import { mainListItem, SecondaryListItem } from './menuDrawer';
+import { mainListItem, SecondaryListItem, ThirdListItem } from './menuDrawer';
 import avatar from '../../images/avatar.png';
 
 const styles = {
@@ -60,6 +60,8 @@ class Drawer extends React.Component {
           <List>{mainListItem}</List>
           <Divider />
           <SecondaryListItem director={this.props.director} />
+          <Divider />
+          <ThirdListItem director={this.props.director} />
         </div>
       );
 
@@ -76,7 +78,7 @@ class Drawer extends React.Component {
           >
             <div className={classes.row}>
               <Avatar
-                src={this.props.image === null ? avatar : `http://176.31.252.134:9001/files/profs/${this.props.image}`}
+                src={this.props.image === null ? avatar : `http://api.dune-table.com/files/profs/${this.props.image}`}
                 className={classNames(classes.avatar, classes.bigAvatar)}
                 style={{
                   margin: '2% auto', width: '100px', height: '100px', marginBottom: '0', maxWidth: '300px'

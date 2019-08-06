@@ -66,7 +66,13 @@ const initialState = {
     success: null, error: null, content: null, moyenneG: null, moyenneClasse: null
   },
   down: { file: null, link: null },
-  dashboard: { GamesPlayed: null, rank: null, classesAvg: null }
+  dashboard: { GamesPlayed: null, rank: null, classesAvg: null },
+  subscribe: {
+    current_abo: null, isValid: null, popupOpen: false, popupContent: null, popupAboTitle: null, aboId: null
+  },
+  payments: {
+    ibanInfos: null, paymentTime: null, isPayed: null, access_infos: false, passPopup: false
+  }
 };
 
 export default initialState;

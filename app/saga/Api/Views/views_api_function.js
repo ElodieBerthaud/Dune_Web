@@ -1,4 +1,5 @@
 import axios from 'axios';
+import API_URL_DEV from '../config';
 
 // Add an view (comment + mark /5) on an app's page
 export function add_avis_api(datas) {
@@ -7,7 +8,7 @@ export function add_avis_api(datas) {
   datasTosend.append('note', datas.note);
   datasTosend.append('commentaire', datas.commentaire);
 
-  const url = 'http://176.31.252.134:9001/api/v1/store/addAvis';
+  const url = 'http://'+api_url_dev+'/api/v1/store/addAvis';
 
   return axios({
     method: 'post',
@@ -28,7 +29,7 @@ export function get_avis_api(datas) {
   datasTosend.append('depart', datas.depart);
   datasTosend.append('nbRes', 5);
 
-  const url = 'http://176.31.252.134:9001/api/v1/store/avis';
+  const url = 'http://'+api_url_dev+'/api/v1/store/avis';
 
   return axios({
     method: 'post',
@@ -44,7 +45,7 @@ export function get_avis_api(datas) {
 
 // Get nbr of view of an app (Average of all marks)
 export function get_nbr_avis_api(datas) {
-  const url = `http://176.31.252.134:9001/api/v1/store/nbAvis/${datas.idGame}`;
+  const url = 'http://'+api_url_dev+'/api/v1/store/nbAvis/'+datas.idGame;
 
   return axios({
     method: 'get',

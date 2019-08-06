@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import Test from '../Viewer/test.js';
+import {Elements} from 'react-stripe-elements';
+import PaymentForm from '../Payments/PaymentForm';
+import Genpdf from './testGenPDF';
 
 class Follow extends Component {
   render() {
     return (
-      <div>
-        <Test mode={'tableau'} url={'http://176.31.252.134:9001/files/fm/GameDesignFinal.pdf'} />
-      </div>
+       <div>
+           <Genpdf/>
+       </div>
     );
   }
 }

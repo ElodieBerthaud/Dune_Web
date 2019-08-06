@@ -228,8 +228,6 @@ class AddStudent extends React.Component {
           }));
         }
       } else if (this.state.activeStep === 2) {
-          console.log(this.state.picEleveSend);
-          console.log(this.state.picElevePrev);
         this.props.addStudent(this.props.token, this.props.idUser, this.state.classeName, this.state.nomEleve, this.state.prenomEleve, this.state.picEleveSend);
       }
     };

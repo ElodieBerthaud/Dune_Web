@@ -21,6 +21,9 @@ import AppPage from '../Store/AppPage';
 import Class from '../FileManager/Class';
 import Test from '../Tests/TestContainer';
 import Login from '../Login/Login';
+import Abos from '../../containers/Abos/Abos';
+import PassPopup from '../Payments/passPopup';
+import Facturation from '../../containers/Payments/Facturation';
 
 class Main extends Component {
   constructor(props) {
@@ -121,6 +124,8 @@ class Main extends Component {
             <PrivateRoute exact path="/student-profile/:id" component={StudentProfile} authed={log.logged} />
             <PrivateRoute exact path="/store/:id" component={AppPage} authed={log.logged} />
             <PrivateRoute exact path="/test" component={Test} authed={log.logged} />
+            <PrivateRoute exact path="/abonnements" component={Abos} authed={log.logged} />
+            <PrivateRoute exact path="/facturation" component={Facturation} authed={log.logged} />
             <Route path="*" component={P_404} />
           </Switch>
           <Dialog
@@ -135,6 +140,8 @@ class Main extends Component {
               </DialogActions>
             </div>
           </Dialog>
+
+          <PassPopup open={this.props.passOpen} />
 
         </main>
       );
@@ -152,7 +159,8 @@ const mapStateToProps = (state) => ({
   loading: state.loading.loading,
   loadmessage: state.loading.loadmessage,
   redirect: state.snackContent.redirect,
-  pathToRedirect: state.snackContent.pathToRedirect
+  pathToRedirect: state.snackContent.pathToRedirect,
+  passOpen: state.payments.passPopup
 });
 
 const mapDispatchToProps = (dispatch) => ({

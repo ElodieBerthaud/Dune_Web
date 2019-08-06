@@ -19,7 +19,7 @@ import { getAvis, getNbAvis, addAvis } from './Saga/Views/views_saga_functions';
 import { openDrawer, closeDrawer } from './Saga/Drawer/drawer_saga_functions';
 import { get_files, update_files, delete_file } from './Saga/FileUpload/getFiles_saga_functions';
 import { get_gamesnbr } from './Saga/Dashboard/dashboard_saga_functions';
-import { delete_file_api } from './Api/FileUpload/getFiles_api_functions';
+import {get_sub_infos} from './Saga/Subs/Subscribe';
 
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -62,4 +62,5 @@ export function* watcherSaga() {
   yield takeEvery('UPDATE_STUDENT', updateStudent);
   yield takeEvery('DELETE_FILE', delete_file);
   yield takeEvery('GET_DASHBOARD_REQUEST', get_gamesnbr);
+  yield takeEvery('GET_SUB_INFO_REQUEST', get_sub_infos);
 }

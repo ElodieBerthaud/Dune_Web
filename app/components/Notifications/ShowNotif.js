@@ -56,7 +56,7 @@ class showNotif extends Component {
         for (let i = 0; i < this.props.contentProf.length; i++) {
           content.push(<ListItem key={this.props.contentProf[i].idUser}>
             <ListItemAvatar>
-              <Avatar alt="Laurine Fourcade" src={`http://176.31.252.134:9001/files/profs/${this.props.contentProf[i].picPath}`} />
+              <Avatar alt="Laurine Fourcade" src={`http://api.dune-table.com/files/profs/${this.props.contentProf[i].picPath}`} />
             </ListItemAvatar>
             <ListItemText
               primary={this.props.contentProf[i].nomPrenom}

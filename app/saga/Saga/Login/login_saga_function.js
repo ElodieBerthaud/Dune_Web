@@ -28,7 +28,6 @@ export function* login(logs) {
       yield put({
         type: 'LOGIN_SUCCESS', token, director, typeUser, idUser: user_id
       });
-
       yield put({ type: 'GET_NOTIFS_REQUEST', idUser: user_id, token });
 
       const datas_2 = {

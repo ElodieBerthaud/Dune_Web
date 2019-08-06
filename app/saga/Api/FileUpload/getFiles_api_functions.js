@@ -1,4 +1,5 @@
 import axios from 'axios';
+import API_URL_DEV from '../config';
 
 export function get_files_api(datas) {
   const datasTosend = new FormData();
@@ -10,7 +11,7 @@ export function get_files_api(datas) {
 
   return axios({
     method: 'post',
-    url: 'http://176.31.252.134:9001/api/v1/filesManager/getAll',
+    url: 'http://'+api_url_dev+'/api/v1/filesManager/getAll',
     headers: {
       token: datas.token
     },
@@ -28,7 +29,7 @@ export function update_files_api(datas) {
 
   return axios({
     method: 'put',
-    url: 'http://176.31.252.134:9001/api/v1/filesManager/editFile',
+    url: 'http://'+api_url_dev+'/api/v1/filesManager/editFile',
     headers: {
       token: datas.token
     },
@@ -44,7 +45,7 @@ export function delete_file_api(datas) {
 
   return axios({
     method: 'delete',
-    url: 'http://176.31.252.134:9001/api/v1/filesManager/deleteFile',
+    url: 'http://'+api_url_dev+'/api/v1/filesManager/deleteFile',
     headers: {
       token: datas.token
     },

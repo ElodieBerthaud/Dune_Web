@@ -82,7 +82,7 @@ class Account extends Component {
         <Card className={classes.card} classes={{ root: classes.card }}>
           <div>
             <Avatar
-              src={this.props.image === null ? avatar : `http://176.31.252.134:9001/files/profs/${this.props.image}`}
+              src={this.props.image === null ? avatar : `http://api.dune-table.com/files/profs/${this.props.image}`}
               className={classNames(classes.avatar, classes.bigAvatar)}
               style={{
                 margin: '2% auto', width: '15%', height: '15%', marginBottom: '0'
@@ -156,6 +156,7 @@ class Account extends Component {
                             Modifier identifiant/mot de passe
             </Button>
             <ChangePassword open={this.state.openChangeModal} />
+
           </CardContent>
         </Card>
         <ViewImage />
@@ -186,7 +187,8 @@ const mapDispatchToProps = (dispatch) => ({
   }),
   ChangeUserInfos: (prenomProf, nomProf, emailProf, idProf, token) => dispatch({
     type: 'UPDATE_PROF_REQUEST', prenomProf, nomProf, emailProf, idProf, token
-  })
+  }),
+  passOpen: () => dispatch({ type: 'PASS_POPUP_OPEN' }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Account));

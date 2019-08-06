@@ -1,15 +1,16 @@
 import axios from 'axios';
-
+import API_URL_DEV from '../config.js';
 
 // Login via dune API
 export function login_in(logs) {
+  console.log(api_url_dev);
   const datas = new URLSearchParams();
   datas.append('email', logs.email);
   datas.append('password', logs.password);
 
   return axios({
     method: 'post',
-    url: 'http://176.31.252.134:9001/api/v1/login',
+    url: 'http://'+api_url_dev+'/api/v1/login',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     data: datas
   });
@@ -23,7 +24,7 @@ export function forgot_password_api(datas) {
 
   return axios({
     method: 'post',
-    url: 'http://176.31.252.134:9001/api/v1/login/reset',
+    url: 'http://'+api_url_dev+'/api/v1/login/reset',
     data: datasTosend
   });
 }
@@ -31,7 +32,7 @@ export function forgot_password_api(datas) {
 
 // Change password
 export function change_pass_api(datas) {
-  const url = 'http://176.31.252.134:9001/api/v1/users/changePassword';
+  const url = 'http://'+api_url_dev+'/api/v1/users/changePassword';
 
   const datasTosend = new FormData();
   datasTosend.append('idUser', datas.idUser);
@@ -53,7 +54,7 @@ export function change_pass_api(datas) {
 
 // Change connexion's Email
 export function change_ident_api(datas) {
-  const url = 'http://176.31.252.134:9001/api/v1/users/changeEmail';
+  const url = 'http://'+api_url_dev+'/api/v1/users/changeEmail';
 
   const datasTosend = new FormData();
   datasTosend.append('idUser', datas.idUser);
@@ -79,7 +80,7 @@ export function verify_token_api(datas) {
 
   return axios({
     method: 'post',
-    url: 'http://176.31.252.134:9001/api/v1/tokens/verifyToken',
+    url: 'http://'+api_url_dev+'/api/v1/tokens/verifyToken',
     data: datasTosend
   });
 }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import API_URL_DEV from '../config';
 
 // Get all classes of a professor.
 export function get_user_classes_api(datas) {
@@ -7,7 +7,7 @@ export function get_user_classes_api(datas) {
 
   return axios({
     method: 'get',
-    url: 'http://176.31.252.134:9001/api/v1/trombi/classes',
+    url: 'http://'+api_url_dev+'/api/v1/trombi/classes',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

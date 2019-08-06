@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import API_URL_DEV from '../config';
 
 // Upload img for a student or a professor.
 export function upload_img_api(datas) {
@@ -22,7 +22,7 @@ export function upload_img_api(datas) {
 
   return axios({
     method: 'put',
-    url: `http://176.31.252.134:9001/api/v1${url}`,
+    url: 'http://'+api_url_dev+'/api/v1'+url,
     headers: {
       token: datas.token
     },
@@ -39,9 +39,10 @@ export function upload_file_api(datas) {
   datasTosend.append('fileUser', datas.fileUser);
   datasTosend.append('fileType', datas.fileType);
 
+
   return axios({
     method: 'post',
-    url: 'http://176.31.252.134:9001/api/v1/filesManager/uploadFile',
+    url: 'http://'+api_url_dev+'/api/v1/filesManager/uploadFile',
     headers: {
       token: datas.token
     },

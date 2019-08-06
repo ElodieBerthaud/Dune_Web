@@ -1,9 +1,9 @@
 import axios from 'axios';
-
+import API_URL_DEV from '../config';
 
 // Get nbr of notifications
 export function get_nb_notifs_api(datas) {
-  const url = 'http://176.31.252.134:9001/api/v1/notifs/getNbNotifs';
+  const url = 'http://'+api_url_dev+'/api/v1/notifs/getNbNotifs';
 
   return axios({
     method: 'get',
@@ -18,7 +18,7 @@ export function get_nb_notifs_api(datas) {
 
 // Get the list of all notification (Just for the user who is connected)
 export function get_all_notifs_api(datas) {
-  const url = 'http://176.31.252.134:9001/api/v1/notifs/popUpMenu';
+  const url = 'http://'+api_url_dev+'/api/v1/notifs/popUpMenu';
 
   return axios({
     method: 'get',
@@ -33,7 +33,7 @@ export function get_all_notifs_api(datas) {
 
 // Get the content of a notification (IdApp, Game Name, ...)
 export function get_a_notif_api(datas) {
-  const url = `http://176.31.252.134:9001/api/v1/notifs/getNotif/${datas.idNotif}`;
+  const url = 'http://'+api_url_dev+'/api/v1/notifs/getNotif/'+datas.idNotif;
 
   return axios({
     method: 'get',
@@ -52,7 +52,7 @@ export function validate_app_api(datas) {
   datasTosend.append('idDemande', datas.idDemande);
   datasTosend.append('validate', datas.validate);
 
-  const url = 'http://176.31.252.134:9001/api/v1/store/validating';
+  const url = 'http://'+api_url_dev+'/api/v1/store/validating';
 
   return axios({
     method: 'post',
@@ -68,7 +68,7 @@ export function validate_app_api(datas) {
 
 // Set a notification as READ
 export function read_notif_api(datas) {
-  const url = `http://176.31.252.134:9001/api/v1/notifs/read/${datas.idNotif}`;
+  const url = 'http://'+api_url_dev+'/api/v1/notifs/read/'+datas.idNotif;
 
   return axios({
     method: 'put',
