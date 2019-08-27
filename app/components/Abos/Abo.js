@@ -90,7 +90,7 @@ class Abo extends Component {
                                 price={<div><p className={classes.price}>A partir de <span className={classes.bold}> 80€ / mois </span></p></div>}
                                 id={this.props.current_abo}
                                 desc={abo3}
-                                isActive={this.props.current_abo === 2}/>
+                                isActive={true}/>
                         </Grid>
                     </Grid>
                 </div>

@@ -8,7 +8,7 @@ export function add_avis_api(datas) {
   datasTosend.append('note', datas.note);
   datasTosend.append('commentaire', datas.commentaire);
 
-  const url = 'http://'+api_url_dev+'/api/v1/store/addAvis';
+  const url = api_url_dev+'/store/addAvis';
 
   return axios({
     method: 'post',
@@ -29,7 +29,7 @@ export function get_avis_api(datas) {
   datasTosend.append('depart', datas.depart);
   datasTosend.append('nbRes', 5);
 
-  const url = 'http://'+api_url_dev+'/api/v1/store/avis';
+  const url = api_url_dev+'/store/avis';
 
   return axios({
     method: 'post',
@@ -45,7 +45,22 @@ export function get_avis_api(datas) {
 
 // Get nbr of view of an app (Average of all marks)
 export function get_nbr_avis_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/store/nbAvis/'+datas.idGame;
+  const url = api_url_dev+'/store/nbAvis/'+datas.idGame;
+
+  return axios({
+    method: 'get',
+    url,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      token: datas.token
+    }
+  });
+}
+
+// Get view of a user on an app
+export function get_user_view_api(datas) {
+  console.log("API");
+  const url = api_url_dev+'/store/getUserAvis/'+datas.idGame;
 
   return axios({
     method: 'get',

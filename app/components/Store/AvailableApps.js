@@ -45,7 +45,7 @@ class AvailableApps extends Component {
                 onClick={this.gotToApp.bind(this, obj[i].id)}
               >
                 <Avatar
-                  src={`http://api.dune-table.com/files/apps/${obj[i].picPath}`}
+                  src={api_url_dev + `/files/apps/${obj[i].picPath}`}
                   className={classNames(classes.avatar, classes.bigAvatar)}
                   style={{
                     margin: '0 auto', width: '40%', height: '40%', marginTop: '10%'

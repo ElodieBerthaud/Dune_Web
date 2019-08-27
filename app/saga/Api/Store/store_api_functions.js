@@ -3,7 +3,7 @@ import API_URL_DEV from '../config';
 
 // Get apps which are available on the store.
 export function get_apps_buy(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/store';
+  const url = api_url_dev+'/store';
 
   const datasTosend = new FormData();
   datasTosend.append('idType', '0');
@@ -23,7 +23,7 @@ export function get_apps_buy(datas) {
 
 // Get informations about an app (by id)
 export function get_app_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/store/getApp';
+  const url = api_url_dev+'/store/getApp';
 
   const datasTosend = new FormData();
   datasTosend.append('idApp', datas.idApp);
@@ -43,7 +43,7 @@ export function get_app_api(datas) {
 
 // Get app status (in library, to buy, pending ask)
 export function get_appstatus_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/store/getAppStatus/'+datas.idApp;
+  const url = api_url_dev+'/store/getAppStatus/'+datas.idApp;
 
   return axios({
     method: 'get',
@@ -59,7 +59,7 @@ export function get_appstatus_api(datas) {
 
 // Get all apps in the school's library
 export function get_app_registred_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/store/getAppsEcole';
+  const url = api_url_dev+'/store/getAppsEcole';
 
   return axios({
     method: 'get',
@@ -75,7 +75,7 @@ export function get_app_registred_api(datas) {
 
 // Get nbr of apps on the school's library
 export function get_app_registrednbr_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/games/nbGames';
+  const url = api_url_dev+'/games/nbGames';
 
   return axios({
     method: 'get',
@@ -91,7 +91,7 @@ export function get_app_registrednbr_api(datas) {
 
 // Ask an app to the director of the school
 export function ask_app_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/store/buyApp';
+  const url = api_url_dev+'/store/buyApp';
 
   const datasTosend = new FormData();
   datasTosend.append('idApp', datas.idApp);
@@ -113,7 +113,7 @@ export function ask_app_api(datas) {
 
 // Buy directly an app (When commected with director's account)
 export function buy_app_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/store/buyAppDirecteur';
+  const url = api_url_dev+'/store/buyAppDirecteur';
 
   const datasTosend = new FormData();
   datasTosend.append('idApp', datas.idApp);

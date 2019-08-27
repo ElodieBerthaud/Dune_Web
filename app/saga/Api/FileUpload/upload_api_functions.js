@@ -22,7 +22,7 @@ export function upload_img_api(datas) {
 
   return axios({
     method: 'put',
-    url: 'http://'+api_url_dev+'/api/v1'+url,
+    url: api_url_dev+url,
     headers: {
       token: datas.token
     },
@@ -42,7 +42,7 @@ export function upload_file_api(datas) {
 
   return axios({
     method: 'post',
-    url: 'http://'+api_url_dev+'/api/v1/filesManager/uploadFile',
+    url: api_url_dev+'/filesManager/uploadFile',
     headers: {
       token: datas.token
     },

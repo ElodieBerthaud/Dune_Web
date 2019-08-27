@@ -1,5 +1,5 @@
 import { put, call } from 'redux-saga/es/effects';
-import { add_avis_api, get_avis_api, get_nbr_avis_api } from '../../Api/Views/views_api_function';
+import { add_avis_api, get_avis_api, get_nbr_avis_api, get_user_view_api } from '../../Api/Views/views_api_function';
 
 // add a view on an app
 export function* addAvis(datas) {
@@ -72,6 +72,30 @@ export function* getNbAvis(datas) {
     else {
       yield put({ type: 'END_LOADING' });
     }
+  } catch (e) {
+    yield put({ type: 'END_LOADING' });
+
+    yield put({ type: 'SNACK_PUT_ERROR', message: 'Une erreur est survenue.' });
+  }
+}
+
+// Get view of a user on an app
+export function* getUserAvis(datas) {
+  yield put({ type: 'LOADING', loadmessage: 'Veuillez patienter.' });
+console.log("GET USER AVIS");
+  try {
+    const response = yield call(get_user_view_api, datas);
+console.log(response);
+    if (response.data.status === 200) {
+      const note = response.data.response[0].note;
+      const commentaire = response.data.response[0].commentaire;
+
+      yield put({ type: 'GET_USERAVIS_SUCCESS', avis: true, note: note, commentaire: commentaire });
+
+    } else if (response.data.status === 201) {
+      yield put({type: 'GET_USERAVIS_SUCCESS', avis: false, note: null, commentaire: null});
+    }
+    yield put({ type: 'END_LOADING' });
   } catch (e) {
     yield put({ type: 'END_LOADING' });
 

@@ -66,7 +66,7 @@ class Student extends React.Component {
               <CardActionArea>
                 <Avatar
                   alt="Adelle Charles"
-                  src={obj[i].picPath ? 'http://' + api_url_dev + '/files/eleves/' + obj[i].picPath : student}
+                  src={obj[i].picPath ? api_url_dev + '/files/eleves/' + obj[i].picPath : student}
                   className={classNames(classes.avatar, classes.bigAvatar)}
                   style={{
                     margin: '0 auto', width: '40%', height: '40%', marginTop: '10%'
@@ -97,7 +97,6 @@ class Student extends React.Component {
   }
 
   render() {
-    console.log(api_url_dev);
     return (
       <div style={{ textAlign: 'center' }}>
         {this.renderStudents()}

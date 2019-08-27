@@ -7,7 +7,7 @@ export function get_user_classes_api(datas) {
 
   return axios({
     method: 'get',
-    url: 'http://'+api_url_dev+'/api/v1/trombi/classes',
+    url: api_url_dev+'/trombi/classes',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

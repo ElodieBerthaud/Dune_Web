@@ -4,7 +4,7 @@ import API_URL_DEV from '../config';
 // GET PROFESSOR INFOS
 // function that makes the api request and returns a Promise for response
 export function fetchProf(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/users/infos';
+  const url = api_url_dev+'/users/infos';
 
   return axios.get(url, {
     headers: {
@@ -17,7 +17,7 @@ export function fetchProf(datas) {
 
 // Get prof infos only for notifications
 export function fetchProfNotif(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/notifs/getArrayProf/'+datas.idDemande;
+  const url = api_url_dev+'/notifs/getArrayProf/'+datas.idDemande;
 
   return axios.get(url, {
     headers: {
@@ -38,7 +38,7 @@ export function add_professor_api(datas) {
 
   return axios({
     method: 'post',
-    url: 'http://'+api_url_dev+'/api/v1/users/add',
+    url: api_url_dev+'/users/add',
     data,
     headers: {
       Accept: 'application/json',
@@ -56,7 +56,7 @@ export function update_prof_api(datas) {
 
   return axios({
     method: 'put',
-    url: 'http://'+api_url_dev+'/api/v1/users/update',
+    url: api_url_dev+'/users/update',
     data: datasTosend,
     headers: {
       Accept: 'application/json',

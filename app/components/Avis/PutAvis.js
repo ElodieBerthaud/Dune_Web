@@ -47,7 +47,20 @@ class PutAvis extends Component {
     };
   }
 
-    changeRate = (event) => {
+  componentWillMount() {
+    this.props.getUserAvis(this.props.id, this.props.token);
+    console.log("WTF");
+
+    if (this.props.note !== null){
+      this.setState({rate: this.props.note})
+    }
+    if (this.props.commentaire !== null){
+      this.setState({multiline: this.props.commentaire})
+    }
+
+  }
+
+  changeRate = (event) => {
       const rate = document.getElementsByClassName('react-rater-star is-active')[0].style;
 
       this.state.rate = event.rating;
@@ -65,7 +78,6 @@ class PutAvis extends Component {
 
     render() {
       const classes = this.props;
-
       return (
         <div>
 
@@ -118,13 +130,16 @@ PutAvis.propTypes = {
 
 const mapStateToProps = (state) => ({
   token: state.login.token,
-  id: state.appPage.appContent.id
+  id: state.appPage.appContent.id,
+  note: state.userAvis.note,
+  commentaire: state.userAvis.commentaire
 });
 
 const mapDispatchToProps = (dispatch) => ({
   AddAvis: (idGame, note, commentaire, token) => dispatch({
     type: 'ADD_AVIS_REQUEST', idGame, note, commentaire, token
-  })
+  }),
+  getUserAvis: (idGame, token) => dispatch({type: 'GET_USER_AVIS', idGame, token})
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PutAvis)));

@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import classNames from 'classnames';
 import { mainListItem, SecondaryListItem, ThirdListItem } from './menuDrawer';
 import avatar from '../../images/avatar.png';
+import desert from '../../images/desert.jpg';
 
 const styles = {
   list: {
@@ -18,7 +19,7 @@ const styles = {
     width: 'auto',
   },
   paper: {
-    backgroundImage: 'url(http://t.wallpaperweb.org/wallpaper/nature/1440x1080/1733_desert_1440x1080.jpg)',
+    backgroundImage: `url(${desert})`,
     backgroundSize: 'cover'
   }
 };
@@ -78,7 +79,7 @@ class Drawer extends React.Component {
           >
             <div className={classes.row}>
               <Avatar
-                src={this.props.image === null ? avatar : `http://api.dune-table.com/files/profs/${this.props.image}`}
+                src={this.props.image === null ? avatar : api_url_dev + '/files/profs/' + this.props.image}
                 className={classNames(classes.avatar, classes.bigAvatar)}
                 style={{
                   margin: '2% auto', width: '100px', height: '100px', marginBottom: '0', maxWidth: '300px'

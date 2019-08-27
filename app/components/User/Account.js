@@ -82,7 +82,7 @@ class Account extends Component {
         <Card className={classes.card} classes={{ root: classes.card }}>
           <div>
             <Avatar
-              src={this.props.image === null ? avatar : `http://api.dune-table.com/files/profs/${this.props.image}`}
+              src={this.props.image === null ? avatar : api_url_dev + `/files/profs/${this.props.image}`}
               className={classNames(classes.avatar, classes.bigAvatar)}
               style={{
                 margin: '2% auto', width: '15%', height: '15%', marginBottom: '0'
@@ -156,6 +156,14 @@ class Account extends Component {
                             Modifier identifiant/mot de passe
             </Button>
             <ChangePassword open={this.state.openChangeModal} />
+            <br />
+            {this.props.director ? <Button
+                variant="contained"
+                color="primary"// <-- Just add me!
+                style={{ backgroundColor: '#ffa726' }}
+            >
+              Informations bancaires de l'école
+            </Button> : ''}
 
           </CardContent>
         </Card>

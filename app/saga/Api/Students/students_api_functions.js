@@ -10,7 +10,7 @@ export function get_all_students_api(datas) {
 
   datasTosend.append('search', datas.search);
 
-  const url = datas.idClasse == 0 ? 'http://'+api_url_dev+'/api/v1/trombi/' : 'http://'+api_url_dev+'/api/v1/trombi/byClasse';
+  const url = datas.idClasse == 0 ? api_url_dev+'/trombi/' : api_url_dev+'/trombi/byClasse';
 
   return axios({
     method: 'post',
@@ -27,7 +27,7 @@ export function get_all_students_api(datas) {
 
 // Get nbr of students of a professors (Or director). Usefull for printing in dashboard.
 export function get_nbr_students_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/dashboard/nbEleves';
+  const url = api_url_dev+'/dashboard/nbEleves';
 
   return axios({
     method: 'get',
@@ -45,7 +45,7 @@ export function get_nbr_students_api(datas) {
 export function student_profile_api(datas) {
   return axios({
     method: 'get',
-    url: 'http://'+api_url_dev+'/api/v1/eleves/'+datas.id,
+    url: api_url_dev+'/eleves/'+datas.id,
     headers: {
       'Content-Type': 'multipart/form-data',
       token: datas.token
@@ -56,7 +56,7 @@ export function student_profile_api(datas) {
 
 // Add a student into a class
 export function add_student_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/eleves/add';
+  const url = api_url_dev+'/eleves/add';
 
   const datasTosend = new FormData();
   datasTosend.append('directorId', datas.directorId);
@@ -79,7 +79,7 @@ export function add_student_api(datas) {
 
 // Get results of a student
 export function get_student_results_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/eleves/stats/bulletin/'+datas.idEleve;
+  const url = api_url_dev+'/eleves/stats/bulletin/'+datas.idEleve;
 
   return axios({
     method: 'get',
@@ -100,7 +100,7 @@ export function update_student_api(datas) {
   datasTosend.append('prenomEleve', datas.prenom);
 
 
-  const url = 'http://'+api_url_dev+'/api/v1/eleves/update/';
+  const url = api_url_dev+'/eleves/update/';
 
   return axios({
     method: 'put',

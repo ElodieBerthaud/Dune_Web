@@ -15,11 +15,12 @@ import {
 import {
   student_profile, addStudent, get_all_students, get_students_nbr, get_student_results, updateStudent
 } from './Saga/Student/student_saga_functions';
-import { getAvis, getNbAvis, addAvis } from './Saga/Views/views_saga_functions';
+import { getAvis, getNbAvis, addAvis, getUserAvis } from './Saga/Views/views_saga_functions';
 import { openDrawer, closeDrawer } from './Saga/Drawer/drawer_saga_functions';
 import { get_files, update_files, delete_file } from './Saga/FileUpload/getFiles_saga_functions';
 import { get_gamesnbr } from './Saga/Dashboard/dashboard_saga_functions';
 import {get_sub_infos} from './Saga/Subs/Subscribe';
+import {access_facturation, request_iban} from './Saga/Payments/payments_saga_functions';
 
 
 // watcher saga: watches for actions dispatched to the store, starts worker saga
@@ -63,4 +64,7 @@ export function* watcherSaga() {
   yield takeEvery('DELETE_FILE', delete_file);
   yield takeEvery('GET_DASHBOARD_REQUEST', get_gamesnbr);
   yield takeEvery('GET_SUB_INFO_REQUEST', get_sub_infos);
+  yield takeEvery('SUBMIT_IBAN_REQUEST', access_facturation);
+  yield takeEvery('ACCESS_PAYMENT_INFOS_REQUEST', request_iban);
+  yield takeEvery('GET_USER_AVIS', getUserAvis);
 }

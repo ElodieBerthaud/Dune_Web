@@ -92,7 +92,7 @@ class getAvis extends Component {
                   <ListItemAvatar>
                     <Avatar
                       alt=""
-                      src={`http://api.dune-table.com/files/profs/${this.props.avis[i].photo}`}
+                      src={`https://api.dune-table.com/files/profs/${this.props.avis[i].photo}`}
                     />
                   </ListItemAvatar>
                   <ListItemText

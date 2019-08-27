@@ -8,7 +8,9 @@ class Follow extends Component {
   render() {
     return (
        <div>
-           <Genpdf/>
+           <Elements>
+            <PaymentForm />
+           </Elements>
        </div>
     );
   }

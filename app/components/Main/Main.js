@@ -49,7 +49,7 @@ class Main extends Component {
     checkValidToken = () => {
       const { token, verifyToken } = this.props;
 
-      verifyToken(token);
+      //verifyToken(token);
     }
 
 
@@ -150,6 +150,7 @@ class Main extends Component {
 
 const mapStateToProps = (state) => ({
   logged: state.login.logged,
+  factu: state.payments.access_infos,
   director: state.login.director,
   passSuccess: state.password.success,
   passError: state.password.error,
@@ -164,7 +165,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  verifyToken: (token) => dispatch({ type: 'VERIFY_TOKEN_REQUEST', token }),
+  //verifyToken: (token) => dispatch({ type: 'VERIFY_TOKEN_REQUEST', token }),
   logout_user: () => dispatch({ type: 'USER_LOGOUT' }),
   resetSnack: () => dispatch({ type: 'SNACK_RESET' }),
   stopReloadStatus: () => dispatch({ type: 'STOP_RELOAD' })

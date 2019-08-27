@@ -21,6 +21,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import dashboardStyle from '../Dash/Dashboard/styles/dashboardStyle.jsx';
+import * as config from '../../saga/Api/config';
 
 class showNotif extends Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class showNotif extends Component {
         for (let i = 0; i < this.props.contentProf.length; i++) {
           content.push(<ListItem key={this.props.contentProf[i].idUser}>
             <ListItemAvatar>
-              <Avatar alt="Laurine Fourcade" src={`http://api.dune-table.com/files/profs/${this.props.contentProf[i].picPath}`} />
+              <Avatar alt="Professeur" src={`51.38.187.216:9000/files/profs/${this.props.contentProf[i].picPath}`} />
             </ListItemAvatar>
             <ListItemText
               primary={this.props.contentProf[i].nomPrenom}

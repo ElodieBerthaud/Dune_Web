@@ -10,7 +10,7 @@ export function login_in(logs) {
 
   return axios({
     method: 'post',
-    url: 'http://'+api_url_dev+'/api/v1/login',
+    url: api_url_dev+'/login',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     data: datas
   });
@@ -24,7 +24,7 @@ export function forgot_password_api(datas) {
 
   return axios({
     method: 'post',
-    url: 'http://'+api_url_dev+'/api/v1/login/reset',
+    url: api_url_dev+'/login/reset',
     data: datasTosend
   });
 }
@@ -32,7 +32,7 @@ export function forgot_password_api(datas) {
 
 // Change password
 export function change_pass_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/users/changePassword';
+  const url = api_url_dev+'/users/changePassword';
 
   const datasTosend = new FormData();
   datasTosend.append('idUser', datas.idUser);
@@ -54,7 +54,7 @@ export function change_pass_api(datas) {
 
 // Change connexion's Email
 export function change_ident_api(datas) {
-  const url = 'http://'+api_url_dev+'/api/v1/users/changeEmail';
+  const url = api_url_dev+'/users/changeEmail';
 
   const datasTosend = new FormData();
   datasTosend.append('idUser', datas.idUser);
@@ -80,7 +80,7 @@ export function verify_token_api(datas) {
 
   return axios({
     method: 'post',
-    url: 'http://'+api_url_dev+'/api/v1/tokens/verifyToken',
+    url: api_url_dev+'/tokens/verifyToken',
     data: datasTosend
   });
 }

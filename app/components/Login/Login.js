@@ -126,53 +126,10 @@ class Login extends Component {
     render() {
       const { passpending, passsuccess, classes } = this.props;
 
-      document.body.style.backgroundImage = 'url(http://t.wallpaperweb.org/wallpaper/nature/1440x1080/1733_desert_1440x1080.jpg)';
+      document.body.style.backgroundImage = 'url(../../../images/desert.jpg)';
       document.body.style.backgroundSize = 'cover';
 
       return (
-
-      /*
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    aria-labelledby="form-dialog-title"
-                >
-                    <div style={passpending ? {textAlign:'center', margin: '10%'} : {display:'none'}}>
-                        <img src={loader} style={{display: 'inherit', margin: '0 auto'}} alt={'loader'}/>
-                        Veulliez patienter, votre mail est en cours d'envoi...
-                    </div>
-                    <div style={passsuccess || passpending ? {display:"none"} : {display:''}}>
-                        <DialogTitle id="form-dialog-title">Mot de passe oublié</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                Vous avez égaré votre mot de passe. Pour en recevoir un nouveau, veuillez renseignez votre adresse Email.
-                            </DialogContentText>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                name="emailforgot"
-                                id="name"
-                                label="Email Address"
-                                type="email"
-                                value={this.state.emailForgot}
-                                fullWidth
-                                error={this.state.emptyforgotemail}
-                                onChange={this.handleChangeForgot}
-                                helperText={!this.checkEmailForgot() ? 'Email invalide.' : ''}
-                            />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
-                                Annuler
-                            </Button>
-                            <Button onClick={this.handleCheckFormForgot} color="primary">
-                                Recevoir mon nouveau mot de passe
-                            </Button>
-                        </DialogActions>
-                    </div>
-                </Dialog>
-*/
-
         <div className={classes.main}>
           <Paper className={classes.paper}>
             <Avatar className={classes.avatar}>

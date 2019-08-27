@@ -17,6 +17,7 @@ import Fade from '@material-ui/core/Fade';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Drawer from './Drawer';
 import ShowNotif from '../Notifications/ShowNotif';
+import Tutorial from '../tutorial/Tutorial';
 
 const styles = (theme) => ({
   root: {
@@ -275,6 +276,7 @@ class Header extends React.Component {
             <Drawer open={this.state.open} />
 
             <ShowNotif />
+            <Tutorial />
 
           </div>
         );

@@ -68,7 +68,6 @@ class One_profile extends Component {
 
     render() {
       const { classes } = this.props;
-      console.log(api_url_dev);
 
       return (
         <div>
@@ -76,7 +75,7 @@ class One_profile extends Component {
             <div>
               <Avatar
                 alt="Adelle Charles"
-                src={this.props.picEleve ? 'http://' + api_url_dev + '/files/eleves/' + this.props.picEleve : student}
+                src={this.props.picEleve ? api_url_dev + '/files/eleves/' + this.props.picEleve : student}
                 className={classNames(classes.avatar, classes.bigAvatar)}
                 style={{
                   margin: '2% auto', width: '15%', height: '15%', marginBottom: '0'

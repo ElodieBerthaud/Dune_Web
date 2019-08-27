@@ -11,7 +11,7 @@ export function get_files_api(datas) {
 
   return axios({
     method: 'post',
-    url: 'http://'+api_url_dev+'/api/v1/filesManager/getAll',
+    url: api_url_dev+'/filesManager/getAll',
     headers: {
       token: datas.token
     },
@@ -29,7 +29,7 @@ export function update_files_api(datas) {
 
   return axios({
     method: 'put',
-    url: 'http://'+api_url_dev+'/api/v1/filesManager/editFile',
+    url: api_url_dev+'/filesManager/editFile',
     headers: {
       token: datas.token
     },
@@ -45,7 +45,7 @@ export function delete_file_api(datas) {
 
   return axios({
     method: 'delete',
-    url: 'http://'+api_url_dev+'/api/v1/filesManager/deleteFile',
+    url: api_url_dev+'/filesManager/deleteFile',
     headers: {
       token: datas.token
     },

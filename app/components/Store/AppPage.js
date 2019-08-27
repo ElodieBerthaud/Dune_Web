@@ -133,7 +133,7 @@ class AppPage extends React.Component {
           <CardContent>
             <Grid container spacing={24}>
               <Grid item xs={3}>
-                <img style={{ width: '100%' }} src={this.state.picPath !== null ? 'http://' + api_url_dev + '/files/apps/' + this.state.picPath : ''} />
+                <img style={{ width: '100%' }} src={this.state.picPath !== null ? api_url_dev + '/files/apps/' + this.state.picPath : ''} />
               </Grid>
               <Grid item xs={3} style={{ lineHeight: '2.5' }}>
                 {this.state.nameApp}

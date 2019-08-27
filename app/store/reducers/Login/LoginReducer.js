@@ -7,7 +7,7 @@ export default function login(state = initialState.login, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
       return {
-        ...state, logged: true, token: action.token, director: action.director, tokenUnValid: false, typeUser: action.typeUser, idUser: action.idUser
+        ...state, logged: true, token: action.token, director: action.director, tokenUnValid: false, typeUser: action.typeUser, idUser: action.idUser, tutorial: action.tutorial
       };
     case LOGIN_ERROR:
       return {

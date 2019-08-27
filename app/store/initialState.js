@@ -4,7 +4,7 @@ const initialState = {
   },
   drawer: { opened: false },
   login: {
-    logged: false, token: null, redirect: false, director: null, tokenUnValid: false, typeUser: null, idUser: null
+    logged: false, token: null, redirect: false, director: null, tokenUnValid: false, typeUser: null, idUser: null, tutorial: null
   },
   manageProfessor: {
     add: false, update: false, success: null, error: null
@@ -72,6 +72,9 @@ const initialState = {
   },
   payments: {
     ibanInfos: null, paymentTime: null, isPayed: null, access_infos: false, passPopup: false
+  },
+  userAvis: {
+    avis: null, note: null, commentaire: null
   }
 };
 
