@@ -1,6 +1,5 @@
 import 'regenerator-runtime/runtime';
 import '@babel/register';
-import {StripeProvider} from 'react-stripe-elements';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -56,9 +55,7 @@ ReactDOM.render((
   <Provider store={store}>
     <PersistGate loading={<Loader />} persistor={persistor}>
       <BrowserRouter>
-          <StripeProvider apiKey="pk_test_BSNzEnrgwUv0HK3wvUGiaDOs">
               <App />
-          </StripeProvider>
       </BrowserRouter>
     </PersistGate>
   </Provider>

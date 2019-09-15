@@ -1,5 +1,5 @@
 import { put, call } from 'redux-saga/es/effects';
-import { add_avis_api, get_avis_api, get_nbr_avis_api, get_user_view_api } from '../../Api/Views/views_api_function';
+import { add_avis_api, get_avis_api, get_nbr_avis_api, get_user_view_api, update_user_view_api } from '../../Api/Views/views_api_function';
 
 // add a view on an app
 export function* addAvis(datas) {
@@ -82,10 +82,8 @@ export function* getNbAvis(datas) {
 // Get view of a user on an app
 export function* getUserAvis(datas) {
   yield put({ type: 'LOADING', loadmessage: 'Veuillez patienter.' });
-console.log("GET USER AVIS");
   try {
     const response = yield call(get_user_view_api, datas);
-console.log(response);
     if (response.data.status === 200) {
       const note = response.data.response[0].note;
       const commentaire = response.data.response[0].commentaire;
@@ -100,5 +98,22 @@ console.log(response);
     yield put({ type: 'END_LOADING' });
 
     yield put({ type: 'SNACK_PUT_ERROR', message: 'Une erreur est survenue.' });
+  }
+}
+
+//Get view of a user on an app
+export function* updateUserAvis(datas) {
+  yield put({ type: 'LOADING', loadmessage: 'Veuillez patienter.' });
+  try {
+    const response = yield call(update_user_view_api, datas);
+    if (response.data.status === 200) {
+
+      yield put({ type: 'SNACK_PUT_SUCCESS', message: 'Votre avis a bien ete ajoute.' });
+    }
+    yield put({ type: 'END_LOADING' });
+  } catch (e) {
+    yield put({ type: 'END_LOADING' });
+    yield put({ type: 'SNACK_PUT_ERROR', message: 'Une erreur est survenue.' });
+    console.log(e);
   }
 }

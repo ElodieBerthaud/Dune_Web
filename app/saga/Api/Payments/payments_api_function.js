@@ -7,7 +7,7 @@ export function verify_password(datas) {
 
     return axios({
         method: 'post',
-        url: 'http://51.38.187.216:9000/facturation/secure/verifPassword',
+        url: api_url_dev + '/facturation/secure/verifPassword',
         headers: {
             token: datas.token
         },
@@ -15,16 +15,19 @@ export function verify_password(datas) {
     });
 }
 
-export async function request_iban_api(datas){
+export async function send_payment_method(datas){
 
-    /*let {token} = await datas.stripe.createToken({name: "Name"});
+    return await datas.cardElement.createPaymentMethod('card');
 
-    let response = await axios({
-                    method: 'post',
-                    url: 'http://51.38.187.216:9000/facturation/secure/verifPassword',
-                    headers: {
-                    token: datas.token
-                },
-                data: datasTosend
-            });*/
+}
+
+export function sendToken(datas){
+    return axios({
+        method: 'post',
+        url: api_url_dev + '/stripe/payments/addMethod',
+        headers: {
+            token: datas.tokenSession
+        },
+        data: {pm_id: datas.pm_id}
+    });
 }
