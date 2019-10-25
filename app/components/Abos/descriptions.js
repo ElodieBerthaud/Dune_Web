@@ -2,7 +2,7 @@ import React from 'react';
 
 export const abo1 =
     <ul style={{listStyleType: 'none', padding: '0', margin: '0'}}>
-        <li>100 fichiers</li>
+        <li>50 fichiers</li>
         <li>10Mo / fichiers</li>
         <li>Applications payantes</li>
         <li>Révision + Réparations payantes</li>

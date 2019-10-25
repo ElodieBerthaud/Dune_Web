@@ -49,19 +49,19 @@ class PutAvis extends Component {
 
   componentWillMount() {
     this.props.getUserAvis(this.props.id, this.props.token);
-    console.log("WTF");
+  }
 
-    if (this.props.note !== null){
-      this.setState({rate: this.props.note})
-    }
-    if (this.props.commentaire !== null){
-      this.setState({multiline: this.props.commentaire})
+  componentWillUpdate(nextProps, nextState, nextContext) {
+
+    if (nextProps.note !== this.props.note && nextProps.commentaire !== this.props.commentaire) {
+        this.setState({rate: nextProps.note})
+        this.setState({multiline: nextProps.commentaire})
     }
 
   }
 
   changeRate = (event) => {
-      const rate = document.getElementsByClassName('react-rater-star is-active')[0].style;
+      //const rate = document.getElementsByClassName('react-rater-star is-active')[0].style;
 
       this.state.rate = event.rating;
     }
@@ -71,7 +71,11 @@ class PutAvis extends Component {
     }
 
     sendAvis = () => {
+    if (this.props.avis){
+      this.props.UpdateAvis(this.props.id, this.state.rate, this.state.multiline, this.props.token);
+    } else {
       this.props.AddAvis(this.props.id, this.state.rate, this.state.multiline, this.props.token);
+    }
 
       this.setState({ multiline: '', rate: 5 });
     }
@@ -132,12 +136,16 @@ const mapStateToProps = (state) => ({
   token: state.login.token,
   id: state.appPage.appContent.id,
   note: state.userAvis.note,
-  commentaire: state.userAvis.commentaire
+  commentaire: state.userAvis.commentaire,
+  avis: state.userAvis.avis
 });
 
 const mapDispatchToProps = (dispatch) => ({
   AddAvis: (idGame, note, commentaire, token) => dispatch({
     type: 'ADD_AVIS_REQUEST', idGame, note, commentaire, token
+  }),
+  UpdateAvis: (idGame, note, commentaire, token) => dispatch({
+    type: 'UPDATE_AVIS_REQUEST', idGame, note, commentaire, token
   }),
   getUserAvis: (idGame, token) => dispatch({type: 'GET_USER_AVIS', idGame, token})
 });

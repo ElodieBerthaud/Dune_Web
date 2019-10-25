@@ -1,7 +1,7 @@
 import { put, call } from 'redux-saga/es/effects';
 import {
     get_sub_info_api,
-    is_valid_sub
+    subscribe_api
 } from '../../Api/Subs/subs_api_functions';
 
 // Get all student of a user
@@ -10,12 +10,31 @@ export function* get_sub_infos(datas) {
         const response = yield call(get_sub_info_api, datas);
 
         if (response.status === 200) {
-            const response2 = yield call(is_valid_sub, datas);
-            if (response2.data.response === "OK") {
-                yield put({type: 'GET_SUB_INFO_SUCCESS', abo: response.data.response[0].typeAbo, valid: null});
-            }
+            console.log(response);
+            yield put({type: 'GET_SUB_INFO_SUCCESS', current_abo: response.data.response[0].typeAbo, isValid: response.data.response[0].status});
         } else {
             yield put({ type: GET_SUB_INFO_ERROR });
+        }
+    } catch (e) {
+
+
+    }
+}
+
+// Get all student of a user
+export function* subscribe(datas) {
+    const response = yield call(subscribe_api, datas);
+    console.log(datas);
+    try {
+        console.log(response);
+        if (response.status === 200) {
+            yield put({
+                type: 'SNACK_PUT_SUCCESS', message: 'Vous avez un nouvel abonnement !', redirect: true, pathToRedirect: '/dashboard'
+            });
+            //yield put({type: 'GET_SUB_INFO_SUCCESS', current_abo: response.data.response[0].typeAbo, isValid: response.data.response[0].status});
+        } else {
+            yield put({
+                type: 'SNACK_PUT_ERROR', message: 'Une erreur est survenue.'});
         }
     } catch (e) {
 

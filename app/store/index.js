@@ -28,6 +28,7 @@ import dashboard from './reducers/Dashboard/DashboardReducer';
 import subscribe from './reducers/Subs/SubscribeReducer';
 import payments from './reducers/Payments/PaymentsReducer';
 import userAvis from './reducers/Views/userAvisReducer';
+import addPayment from './reducers/Payments/addPaymentReducer';
 
 const reducers = combineReducers({
   drawer,
@@ -58,7 +59,8 @@ const reducers = combineReducers({
   dashboard,
   subscribe,
   payments,
-  userAvis
+  userAvis,
+  addPayment
 });
 
 const rootReducer = (state, action) => {

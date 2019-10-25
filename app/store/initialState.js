@@ -68,13 +68,16 @@ const initialState = {
   down: { file: null, link: null },
   dashboard: { GamesPlayed: null, rank: null, classesAvg: null },
   subscribe: {
-    current_abo: null, isValid: null, popupOpen: false, popupContent: null, popupAboTitle: null, aboId: null
+    popupOpen: false, popupContent: null, popupAboTitle: null, aboId: null, current_abo: null, isValid: null, priceMonth: null, priceYear: null
   },
   payments: {
     ibanInfos: null, paymentTime: null, isPayed: null, access_infos: false, passPopup: false
   },
   userAvis: {
     avis: null, note: null, commentaire: null
+  },
+  addPayment: {
+    loading: false, success: false, error: false, errorMsg: null
   }
 };
 

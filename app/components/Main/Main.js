@@ -24,6 +24,8 @@ import Login from '../Login/Login';
 import Abos from '../../containers/Abos/Abos';
 import PassPopup from '../Payments/passPopup';
 import Facturation from '../../containers/Payments/Facturation';
+import CGU from './CGU';
+import Contact from './Contact';
 
 class Main extends Component {
   constructor(props) {
@@ -87,7 +89,7 @@ class Main extends Component {
       }
 
       return (
-        <main>
+        <main style={{minHeight: '500px'}}>
 
           <Dialog
             open={this.props.tokenUnvalid}
@@ -126,6 +128,8 @@ class Main extends Component {
             <PrivateRoute exact path="/test" component={Test} authed={log.logged} />
             <PrivateRoute exact path="/abonnements" component={Abos} authed={log.logged} />
             <PrivateRoute exact path="/facturation" component={Facturation} authed={log.logged} />
+            <PrivateRoute exact path="/cgu" component={CGU} authed={log.logged} />
+            <PrivateRoute exact path="/contact" component={Contact} authed={log.logged} />
             <Route path="*" component={P_404} />
           </Switch>
           <Dialog

@@ -20,14 +20,12 @@ export function* login(logs) {
   try {
     const response = yield call(login_in, datas);
     if (response.data.success === true) {
-      console.log(response);
       const token = response.data.token;
       const user_id = response.data.currUser;
       const director = response.data.typeUser !== 1;
       const typeUser = response.data.typeUser;
       const idEcole = response.data.idEcole;
       const tutorial = response.data.status === 201;
-      console.log(response);
       yield put({
         type: 'LOGIN_SUCCESS', token, director, typeUser, idUser: user_id, tutorial: tutorial
       });

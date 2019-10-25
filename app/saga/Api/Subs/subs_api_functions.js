@@ -30,3 +30,21 @@ export function is_valid_sub(datas){
         }
     });
 }
+
+export function subscribe_api(datas){
+    console.log("CALL API");
+    const url = api_url_dev+'/abonnement/subscribe';
+
+    return axios({
+        method: 'post',
+        url,
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            token: datas.token
+        },
+        data: {
+            plan: datas.plan
+        }
+    });
+}

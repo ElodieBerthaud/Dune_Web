@@ -101,6 +101,7 @@ module.exports = (options) => ({
           },
         ],
       },
+
       {
         test: /\.html$/,
         use: 'html-loader',

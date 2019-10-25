@@ -59,7 +59,6 @@ export function get_nbr_avis_api(datas) {
 
 // Get view of a user on an app
 export function get_user_view_api(datas) {
-  console.log("API");
   const url = api_url_dev+'/store/getUserAvis/'+datas.idGame;
 
   return axios({
@@ -69,5 +68,25 @@ export function get_user_view_api(datas) {
       'Content-Type': 'multipart/form-data',
       token: datas.token
     }
+  });
+}
+
+// Update the view of a user on an app
+export function update_user_view_api(datas) {
+  const datasTosend = new FormData();
+  datasTosend.append('idApp', datas.idGame);
+  datasTosend.append('note', datas.note);
+  datasTosend.append('commentaire', datas.commentaire);
+
+  const url = api_url_dev+'/store/updateUserAvis';
+
+  return axios({
+    method: 'put',
+    url,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      token: datas.token
+    },
+    data: datasTosend
   });
 }

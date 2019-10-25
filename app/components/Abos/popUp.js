@@ -22,6 +22,7 @@ class popUp extends Component {
     }
 
     render() {
+        console.log(this.props.open);
         return (
             <div>
                 <Dialog
@@ -56,7 +57,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 
     return {
-        ClosePopup: () => dispatch({ type: 'ABO_POPUP_CLOSE' })
+        ClosePopup: () => dispatch({ type: 'ABO_POPUP_CLOSE' }),
     };
 
 };

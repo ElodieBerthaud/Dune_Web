@@ -3,7 +3,6 @@ import API_URL_DEV from '../config.js';
 
 // Login via dune API
 export function login_in(logs) {
-  console.log(api_url_dev);
   const datas = new URLSearchParams();
   datas.append('email', logs.email);
   datas.append('password', logs.password);

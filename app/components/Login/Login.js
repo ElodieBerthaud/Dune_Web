@@ -136,7 +136,7 @@ class Login extends Component {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-                        Connection
+                        Connexion
             </Typography>
             <form className={classes.form} onSubmit={this.handleCheckFormConnect}>
               <FormControl margin="normal" required fullWidth>
@@ -144,7 +144,7 @@ class Login extends Component {
                 <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.handleChange} />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Password</InputLabel>
+                <InputLabel htmlFor="password">Mot de passe</InputLabel>
                 <Input
                   name="password"
                   type="password"
