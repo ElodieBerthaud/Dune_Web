@@ -1,0 +1,48 @@
+.footer {
+    min-height: 200px;
+    max-height: 200px;
+    border-top: 1px solid white;
+}
+
+.footer .container {
+    color: white;
+    margin: auto;
+    width: 50%;
+    display: block;
+    text-align: center;
+    max-height: 200px;
+}
+
+.footer .container .ine{
+    display: inline-block;
+    padding: 5%;
+}
+
+.Term {
+    width: 70%;
+    margin: auto;
+}
+
+.Term .content {
+    padding: 5%;
+}
+
+.Term .title {
+
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.contact {
+    text-align: center;
+    display: block;
+}
+
+.in {
+    display: inline-block;
+    margin: 2% !important;
+    width: 60%;
+}
