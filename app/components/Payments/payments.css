@@ -62,6 +62,7 @@
     font-size: 16px;
     color: #424770;
     letter-spacing: 0.025em;
+    margin: 0;
 }
 
 .input:focus, .StripeElement--focus {
@@ -89,3 +90,28 @@ label {
 .error {
     color: #c23d4b;
 }
+
+.cardImg {
+    max-width: 300px;
+}
+
+.paymentTextContainer {
+    font-size: 0.9em;
+    padding: 5%;
+}
+
+.paymentTextStyle {
+    font-style: italic;
+    text-align: center;
+    color: #8bc34a !important;
+}
+
+.btnWrapper {
+    position: relative;
+}
+
+.disableForm {
+    opacity: 0.3;
+}
+
+
